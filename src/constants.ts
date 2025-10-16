@@ -6,7 +6,7 @@ export const RPC_ENDPOINT = import.meta.env.VITE_RPC_ENDPOINT ?? 'https://api.ma
 
 // Solana address that will receive fees when somebody plays on this platform
 export const PLATFORM_CREATOR_ADDRESS = new PublicKey(
-  '5tie23xz65NpqUV9eXjoBmWhBrcJYC8CyXURSYzTj77L',
+  'E6Qp2BaKHx1vAtg5P3ahQA67NQqRWjjStMUWte2RUBih',
 )
 
 // Gamba explorer URL - Appears in RecentPlays
@@ -16,7 +16,7 @@ export const EXPLORER_URL = 'https://explorer.gamba.so'
 export const PLATFORM_SHARABLE_URL = 'play.gamba.so'
 
 // Creator fee (in %)
-export const PLATFORM_CREATOR_FEE = 0.01 // 1% !!max 7%!!
+export const PLATFORM_CREATOR_FEE = 0.04 // 1% !!max 7%!!
 
 export const MULTIPLAYER_FEE = 0.015 // 1% 
 
@@ -24,7 +24,7 @@ export const MULTIPLAYER_FEE = 0.015 // 1%
 export const PLATFORM_JACKPOT_FEE = 0.001 // 0.1%,  not jackpot game specific, but platform wide
 
 // Referral fee (in %)
-export const PLATFORM_REFERRAL_FEE = 0.0025 // 0.25%
+export const PLATFORM_REFERRAL_FEE = 0.01 // 1%
 
 /** If the user should be able to revoke an invite after they've accepted an invite */
 export const PLATFORM_ALLOW_REFERRER_REMOVAL = true
