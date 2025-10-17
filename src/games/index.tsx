@@ -47,17 +47,16 @@ export const GAMES: ExtendedGameBundle[] = [
     app: React.lazy(() => import('./Flip')),
   },
   {
-    id: 'hilo',
+    id: 'blackjack',
     meta: {
-      background: '#ff4f4f',
-      name: 'HiLo',
-      image: '/games/hilo.png',
+      background: '#084700',
+      name: 'BlackJack',
+      image: '/games/blackjack.png',
       description: `
-        HiLo is a game of foresight and luck, challenging players to guess whether the next card will be higher or lower. Make consecutive correct guesses to increase your winnings, and decide when to cash out for maximum rewards.
+        A simplified blackjack game where you and the dealer each get two cards. Win 2.5x your wager with a blackjack (21 with two cards), or 2x if your total beats the dealer's without exceeding 21. Ties or lower totals result in a loss. Enjoy quick gameplay without the usual complexities.
       `,
     },
-    props: { logo: '/logo.svg' },
-    app: React.lazy(() => import('./HiLo')),
+    app: React.lazy(() => import('./BlackJack')),
   },
   {
     id: 'mines',
@@ -108,16 +107,17 @@ export const GAMES: ExtendedGameBundle[] = [
     app: React.lazy(() => import('./CrashGame')),
   },
   {
-    id: 'blackjack',
+    id: 'hilo',
     meta: {
-      background: '#084700',
-      name: 'BlackJack',
-      image: '/games/blackjack.png',
+      background: '#ff4f4f',
+      name: 'HiLo',
+      image: '/games/hilo.png',
       description: `
-        A simplified blackjack game where you and the dealer each get two cards. Win 2.5x your wager with a blackjack (21 with two cards), or 2x if your total beats the dealer's without exceeding 21. Ties or lower totals result in a loss. Enjoy quick gameplay without the usual complexities.
+        HiLo is a game of foresight and luck, challenging players to guess whether the next card will be higher or lower. Make consecutive correct guesses to increase your winnings, and decide when to cash out for maximum rewards.
       `,
     },
-    app: React.lazy(() => import('./BlackJack')),
+    props: { logo: '/logo.svg' },
+    app: React.lazy(() => import('./HiLo')),
   },
   {
     id: 'jackpot',
