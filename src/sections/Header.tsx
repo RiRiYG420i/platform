@@ -20,7 +20,7 @@ import { ENABLE_LEADERBOARD } from '../constants'
 const Bonus = styled.button`
   all: unset;
   cursor: pointer;
-  color: #ffe42d;
+  color: #d1d1cdff;
   border-radius: 10px;
   padding: 2px 10px;
   font-size: 12px;
@@ -38,7 +38,7 @@ const StyledHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 10px;
-  background: #c8ff00ff;
+  background: #646464b7;
   backdrop-filter: blur(20px);
   position: fixed;
   top: 0;

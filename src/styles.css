@@ -19,7 +19,7 @@
 
   --gamba-ui-input-background: #1ed60e;
   --gamba-ui-input-color: #d80f0f;
-  --gamba-ui-input-background-hover: #0505da;
+  --gamba-ui-input-background-hover: #373744;
 }
 
 body, input, button, textarea, pre {
@@ -58,6 +58,6 @@ body::-webkit-scrollbar-thumb {
   height: 40px;
   line-height: 40px;
   font-weight: normal;
-  background: rgb(55, 57, 82);
+  background: rgb(5, 12, 105);
   border-radius: 10px;
 }
