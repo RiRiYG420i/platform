@@ -76,28 +76,26 @@ const ButtonGroup = styled.div`
 `;
 
 const ActionButton = styled.button`
-  /* Base styles */
   border: none;
   border-radius: 10px;
   padding: 12px 20px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: #ffffffdf;
+  background: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
   color: black;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  flex-grow: 1; /* Allows buttons to share space on mobile */
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex-grow: 1;
   text-align: center;
 
   &:hover {
-    background: white;
-    transform: translateY(-2px); /* Subtle hover effect */
+    background: linear-gradient(90deg, #FFD700, #FFEFBA, #FFFFFF);
+    transform: translateY(-2px);
   }
 
-  /* On desktop, buttons take full width of their container */
   @media (min-width: 800px) {
     width: 100%;
-    flex-grow: 0; /* Reset flex-grow */
+    flex-grow: 0;
   }
 `;
 

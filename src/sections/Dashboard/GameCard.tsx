@@ -19,7 +19,7 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
 
   width: 100%;
   aspect-ratio: ${({ $small }) => ($small ? '1/.5' : '1/.6')};
-  background: ${({ $background }) => $background};
+  background: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
   background-size: cover;
   background-position: center;
   border-radius: 10px;
@@ -150,7 +150,7 @@ export function GameCard({
       />
       <div className="play">Play {game.meta.name}</div>
       {game.disabled && (
-        <div className="disabled-overlay">new game\ncoming soon!</div>
+        <div className="disabled-overlay">new game<br />coming soon!</div>
       )}
     </StyledGameCard>
   );

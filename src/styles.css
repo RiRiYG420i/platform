@@ -9,13 +9,13 @@
 
   --gamba-ui-border-radius: 10px;
 
-  --gamba-ui-button-default-background: #949087;
-  --gamba-ui-button-default-background-hover: #ddd906;
-  --gamba-ui-button-default-color: white;
+  --gamba-ui-button-default-background: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
+  --gamba-ui-button-default-background-hover: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
+  --gamba-ui-button-default-color: black;
 
-  --gamba-ui-button-main-background: #0ed8b6;
-  --gamba-ui-button-main-color: white;
-  --gamba-ui-button-main-background-hover: #cc119d;
+  --gamba-ui-button-main-background: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
+  --gamba-ui-button-main-color: black;
+  --gamba-ui-button-main-background-hover: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
 
   --gamba-ui-input-background: #1ed60e;
   --gamba-ui-input-color: #d80f0f;
