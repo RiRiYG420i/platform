@@ -92,7 +92,8 @@ export const GAMES: ExtendedGameBundle[] = [
         Plinko is played by dropping chips down a pegged board where they randomly fall into slots with varying win amounts.
       `,
     },
-    app: React.lazy(() => import('./Plinko')),
+  app: React.lazy(() => import('./Plinko')),
+  disabled: true,
   },
   {
     id: 'crash',

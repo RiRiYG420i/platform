@@ -139,7 +139,7 @@ export function GameCard({
       />
       <div className="play">Play {game.meta.name}</div>
       {game.disabled && (
-        <div className="disabled-overlay">Nicht verfügbar</div>
+        <div className="disabled-overlay">new game coming soon!</div>
       )}
     </StyledGameCard>
   );
