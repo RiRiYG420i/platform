@@ -9,13 +9,13 @@ const tileAnimation = keyframes`
   100% { background-position: 100px -100px; }
 `;
 
-const StyledGameCard = styled(NavLink)<{ $small: boolean; $background: string }>`
+const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disabled?: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  pointer-events: auto; /* if you need clicks */
+  pointer-events: ${({ $disabled }) => ($disabled ? 'none' : 'auto')};
 
   width: 100%;
   aspect-ratio: ${({ $small }) => ($small ? '1/.5' : '1/.6')};
@@ -68,6 +68,24 @@ const StyledGameCard = styled(NavLink)<{ $small: boolean; $background: string }>
     transition: opacity 0.2s ease;
   }
 
+  & > .disabled-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(128,128,128,0.5);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #fff;
+    pointer-events: none;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+  }
+
   &:hover {
     transform: scale(1.01);
     outline: 5px solid rgba(149, 100, 255, 0.2);
@@ -103,25 +121,30 @@ const Tag = styled.div`
 export function GameCard({
   game,
 }: {
-  game: GameBundle & { meta: { tag?: string; [key: string]: any } };
+  game: GameBundle & { meta: { tag?: string; [key: string]: any }, disabled?: boolean };
 }) {
   const small = useLocation().pathname !== '/';
 
-  return (
+  const CardContent = (
     <StyledGameCard
-      to={`/${game.id}`}
       $small={small}
       $background={game.meta.background}
+      $disabled={game.disabled}
     >
-      {/* render the VS badge if present */}
       {game.meta.tag && <Tag>{game.meta.tag}</Tag>}
-
       <div className="background" />
       <div
         className="image"
         style={{ backgroundImage: `url(${game.meta.image})` }}
       />
       <div className="play">Play {game.meta.name}</div>
+      {game.disabled && (
+        <div className="disabled-overlay">Nicht verfügbar</div>
+      )}
     </StyledGameCard>
+  );
+
+  return game.disabled ? CardContent : (
+    <NavLink to={`/${game.id}`}>{CardContent}</NavLink>
   );
 }
