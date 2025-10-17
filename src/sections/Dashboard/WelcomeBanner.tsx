@@ -18,9 +18,11 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background: linear-gradient(-45deg, #ffb07c, #ff3e88, #2969ff, #ef3cff, #ff3c87);
-  background-size: 300% 300%;
-  animation: welcome-fade-in 0.5s ease, backgroundGradient 30s ease infinite;
+  background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('/banner.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
   padding: 24px; /* Consistent padding */
   display: flex;
@@ -124,10 +126,7 @@ export function WelcomeBanner() {
           💸 Copy Invite
         </ActionButton>
         <ActionButton onClick={openLink('https://v2.gamba.so/')}>
-          🚀 Add Liquidity
-        </ActionButton>
-        <ActionButton onClick={openLink('https://discord.gg/HSTtFFwR')}>
-          💬 Discord
+          � How to
         </ActionButton>
       </ButtonGroup>
     </WelcomeWrapper>
