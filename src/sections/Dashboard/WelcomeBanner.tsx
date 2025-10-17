@@ -118,8 +118,8 @@ export function WelcomeBanner() {
   return (
     <WelcomeWrapper>
       <WelcomeContent>
-        <h1>Welcome to Gamba v2 👋</h1>
-        <p>A fair, simple and decentralized casino on Solana.</p>
+        <h1>Welcome to SOL-WIN👋</h1>
+        <p>A fair, simple and decentralized casino on Solana. Play </p>
       </WelcomeContent>
       <ButtonGroup>
         <ActionButton onClick={handleCopyInvite}>
