@@ -105,6 +105,7 @@ export const GAMES: ExtendedGameBundle[] = [
       `,
     },
     app: React.lazy(() => import('./CrashGame')),
+    disabled: true,
   },
   {
     id: 'hilo',
@@ -118,6 +119,7 @@ export const GAMES: ExtendedGameBundle[] = [
     },
     props: { logo: '/logo.svg' },
     app: React.lazy(() => import('./HiLo')),
+    disabled: true,
   },
   {
     id: 'jackpot',
@@ -131,6 +133,7 @@ export const GAMES: ExtendedGameBundle[] = [
       tag: 'Multiplayer',  
     },
     app: React.lazy(() => import('./Jackpot')),
+    disabled: true,
   },
   {
     id: 'plinkorace',
@@ -144,6 +147,7 @@ export const GAMES: ExtendedGameBundle[] = [
       tag: 'Multiplayer', 
     },
     app: React.lazy(() => import('./PlinkoRace')),
+    disabled: true,
   },
   {
     id: 'pvpflip',
@@ -157,5 +161,6 @@ export const GAMES: ExtendedGameBundle[] = [
       tag: 'Multiplayer',
     },
     app: React.lazy(() => import('./PvpFlip')),
+    disabled: true,
   },
 ];
