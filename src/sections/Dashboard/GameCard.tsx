@@ -84,6 +84,17 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
     pointer-events: none;
     border-radius: 10px;
     backdrop-filter: blur(2px);
+    text-align: center;
+    white-space: pre-line;
+    padding: 0 10px;
+  }
+
+  @media (max-width: 600px) {
+    & > .disabled-overlay {
+      font-size: 16px;
+      padding: 0 5px;
+      line-height: 1.3;
+    }
   }
 
   &:hover {
@@ -139,7 +150,7 @@ export function GameCard({
       />
       <div className="play">Play {game.meta.name}</div>
       {game.disabled && (
-        <div className="disabled-overlay">new game coming soon!</div>
+        <div className="disabled-overlay">new game\ncoming soon!</div>
       )}
     </StyledGameCard>
   );
