@@ -151,11 +151,7 @@ export default function Header() {
             position: 'relative',
           }}
         >
-          {pool.jackpotBalance > 0 && (
-            <Bonus onClick={() => setJackpotHelp(true)}>
-              💰 <TokenValue amount={pool.jackpotBalance} />
-            </Bonus>
-          )}
+          {/* Jackpot counter removed from header - now shown in WelcomeBanner */}
 
           {balance.bonusBalance > 0 && (
             <Bonus onClick={() => setBonusHelp(true)}>

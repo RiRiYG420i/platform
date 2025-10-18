@@ -63,7 +63,6 @@ export default function Dashboard() {
       <WelcomeBanner />
   <UnterBannerImg src={unterBannerImg} alt="Unter Banner" />
       <FeaturedInlineGame />
-      <h2 style={{ textAlign: 'center' }}>Games</h2>
       <GameGrid />
     </>
   )

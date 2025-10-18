@@ -4,6 +4,8 @@ import React from 'react';
 import styled from 'styled-components';
 const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
+import { TokenValue, usePool } from 'gamba-react-ui-v2';
+import { POOLS } from '../../constants';
 
 const WelcomeWrapper = styled.div`
   margin-top: 0;
@@ -80,15 +82,37 @@ const ButtonGroup = styled.div`
   gap: 12px;
   justify-content: center;
   align-items: flex-end;
-  margin-top: auto;
   width: 100%;
 
   @media (min-width: 800px) {
     flex-direction: row;
     justify-content: flex-end;
     align-items: flex-end;
-    margin-top: auto;
   }
+`;
+
+const BottomArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto; /* push to bottom of banner */
+  width: 100%;
+
+  @media (min-width: 800px) {
+    align-items: flex-end;
+  }
+`;
+
+const JackpotBar = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #ECD11E; /* match button yellow */
+  color: #121212;
+  font-weight: 700;
 `;
 
 const ActionButton = styled.button`
@@ -122,6 +146,9 @@ export function WelcomeBanner() {
   const wallet = useWallet();
   const walletModal = useWalletModal();
   const { set: setUserModal } = useUserStore(); // Destructure for cleaner access
+  // Always use SOL pool (second item in POOLS)
+  const SOL_POOL = POOLS[1];
+  const solPool = usePool(SOL_POOL.token, SOL_POOL.authority);
 
   const handleCopyInvite = () => {
     setUserModal({ userModal: true });
@@ -138,14 +165,19 @@ export function WelcomeBanner() {
         <h1>Welcome to SOL-WIN👋</h1>
         <p>A fair, simple and decentralized casino on Solana. Play </p>
       </WelcomeContent>
-      <ButtonGroup>
-        <ActionButton onClick={handleCopyInvite}>
-          💸 Copy Invite
-        </ActionButton>
-        <ActionButton onClick={openLink('https://v2.gamba.so/')}>
-          � How to
-        </ActionButton>
-      </ButtonGroup>
+      <BottomArea>
+        <JackpotBar title="Jackpot (SOL)">
+          💰 <TokenValue mint={SOL_POOL.token} amount={solPool?.jackpotBalance ?? 0} />
+        </JackpotBar>
+        <ButtonGroup>
+          <ActionButton onClick={handleCopyInvite}>
+            💸 Copy Invite
+          </ActionButton>
+          <ActionButton onClick={openLink('https://v2.gamba.so/')}>
+            � How to
+          </ActionButton>
+        </ButtonGroup>
+      </BottomArea>
     </WelcomeWrapper>
   );
 }
