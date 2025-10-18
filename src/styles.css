@@ -33,7 +33,10 @@ h1, h2 {
 
 body {
   background: var(--background-color);
-  background-image: url('/bg-desktop.png');
+  background-image: image-set(
+    url('/bg-desktop.png') 1x,
+    url('/bg-desktop.png') 2x
+  );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -46,10 +49,16 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Use mobile background on smaller screens and portrait orientation to avoid stretching/pixelation */
-@media (max-width: 1200px), (orientation: portrait) {
+/* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */
+@media (max-width: 1200px), 
+       (orientation: portrait), 
+       (pointer: coarse),
+       (max-aspect-ratio: 1/1) {
   body {
-    background-image: url('/bg-mobile.png') !important;
+    background-image: image-set(
+      url('/bg-mobile.png') 1x,
+      url('/bg-mobile.png') 2x
+    ) !important;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
