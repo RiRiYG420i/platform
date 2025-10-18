@@ -1,3 +1,6 @@
+export function WelcomeBanner() {
+  // ...existing code...
+}
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
