@@ -20,9 +20,10 @@ const WelcomeWrapper = styled.div`
 
   /* Styling */
   background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${bannerImg});
-  background-size: cover;
+  background-size: contain; /* Show the entire image */
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #000; /* Fill letterbox areas when using contain */
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
@@ -32,6 +33,7 @@ const WelcomeWrapper = styled.div`
   gap: 24px; /* Consistent gap */
   text-align: center;
   filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
+  min-height: 360px; /* Taller on mobile to reveal more of the image */
 
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
@@ -41,6 +43,7 @@ const WelcomeWrapper = styled.div`
     text-align: left;
     padding: 40px;
     gap: 40px;
+    min-height: 560px; /* Even taller on desktop */
   }
 `;
 
