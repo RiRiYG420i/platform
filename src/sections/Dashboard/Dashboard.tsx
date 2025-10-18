@@ -12,7 +12,7 @@ import FeaturedInlineGame from './FeaturedInlineGame'
 export function GameSlider() {
   return (
     <SlideSection>
-      {GAMES.map((game) => (
+      {GAMES.filter((game) => !game.disabled).map((game) => (
         <div key={game.id} style={{ width: '160px', display: 'flex' }}>
           <GameCard game={game} />
         </div>
@@ -39,7 +39,7 @@ const Grid = styled.div`
 export function GameGrid() {
   return (
     <Grid>
-      {GAMES.map((game) => (
+      {GAMES.filter((game) => !game.disabled).map((game) => (
         <GameCard key={game.id} game={game} />
       ))}
     </Grid>

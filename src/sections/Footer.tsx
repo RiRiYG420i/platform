@@ -8,7 +8,7 @@ const StyledFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px;
+  padding: 20px 30px;
   background: #646464b7;
   backdrop-filter: blur(20px);
   position: relative;
@@ -19,26 +19,29 @@ const StyledFooter = styled.div`
 `
 
 const Logo = styled(NavLink)`
-  height: 35px;
-  margin: 0 15px;
+  height: 30px;
+  margin: 0 25px 0 0;
   & > img {
-    height: 120%;
+    height: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
   }
 `
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 10px;
   align-items: center;
-  margin: 0 15px;
+  margin: 0 0 0 25px;
 `
 
 const SocialIcon = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  height: 35px;
+  width: 24px;
+  height: 24px;
   transition: transform 0.2s ease, opacity 0.2s ease;
   opacity: 0.9;
 
@@ -46,6 +49,9 @@ const SocialIcon = styled.a`
     width: 100%;
     height: 100%;
     object-fit: contain;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
   }
 
   &:hover {

@@ -7,6 +7,8 @@ export interface ExtendedGameBundle extends GameBundle {
     /** optional badge/tag to show on the card */
     tag?: string;
   };
+  /** whether this game is disabled and hidden from the UI */
+  disabled?: boolean;
 }
 
 export const GAMES: ExtendedGameBundle[] = [
