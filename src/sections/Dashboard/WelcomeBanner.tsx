@@ -21,19 +21,24 @@ const WelcomeWrapper = styled.div`
   /* Styling */
   background-color: #252C37;
   background-image: url(${bannerImg});
-  background-size: contain; /* Show the entire image */
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
-  padding: 24px; /* Consistent padding */
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Consistent gap */
+  gap: 24px;
   text-align: center;
   filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
-  min-height: 360px; /* Taller on mobile to reveal more of the image */
+  aspect-ratio: 16/6;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
 
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
@@ -43,7 +48,12 @@ const WelcomeWrapper = styled.div`
     text-align: left;
     padding: 40px;
     gap: 40px;
-    min-height: 560px; /* Even taller on desktop */
+    aspect-ratio: 16/6;
+    min-width: 0;
+    min-height: 0;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
   }
 `;
 
@@ -129,15 +139,15 @@ export function WelcomeBanner() {
       <WelcomeContent>
         <h1>Welcome to SOL-WIN👋</h1>
         <p>A fair, simple and decentralized casino on Solana. Play </p>
+        <ButtonGroup>
+          <ActionButton onClick={handleCopyInvite}>
+            💸 Copy Invite
+          </ActionButton>
+          <ActionButton onClick={openLink('https://v2.gamba.so/')}>
+            � How to
+          </ActionButton>
+        </ButtonGroup>
       </WelcomeContent>
-      <ButtonGroup>
-        <ActionButton onClick={handleCopyInvite}>
-          💸 Copy Invite
-        </ActionButton>
-        <ActionButton onClick={openLink('https://v2.gamba.so/')}>
-          � How to
-        </ActionButton>
-      </ButtonGroup>
     </WelcomeWrapper>
   );
 }
