@@ -142,23 +142,13 @@ const ActionButton = styled.button`
   }
 `;
 
-import { GambaUi, TokenValue, useCurrentPool, useGambaPlatformContext, usePool, useCurrentToken } from 'gamba-react-ui-v2';
-import { PublicKey } from '@solana/web3.js';
+import { GambaUi, TokenValue, useCurrentPool, useGambaPlatformContext } from 'gamba-react-ui-v2';
 import { PLATFORM_JACKPOT_FEE } from '../../constants';
 export function WelcomeBanner() {
   const wallet = useWallet();
   const walletModal = useWalletModal();
   const pool = useCurrentPool();
   const context = useGambaPlatformContext();
-  const currentToken = useCurrentToken();
-  const solMint = React.useMemo(() => new PublicKey('So11111111111111111111111111111111111111112'), []);
-  const solPool = usePool(solMint);
-  const jackpotAmount = (pool?.jackpotBalance && pool.jackpotBalance > 0)
-    ? pool.jackpotBalance
-    : solPool?.jackpotBalance;
-  const jackpotMint = (pool?.jackpotBalance && pool.jackpotBalance > 0)
-    ? currentToken?.mint
-    : solMint;
   const { set: setUserModal } = useUserStore(); // Destructure for cleaner access
   const [jackpotHelp, setJackpotHelp] = React.useState(false);
 
@@ -178,7 +168,10 @@ export function WelcomeBanner() {
         <p>A fair, simple and decentralized casino on Solana. Play </p>
       </WelcomeContent>
       <BottomArea>
-        {jackpotAmount && jackpotAmount > 0 && (
+        {(
+          // Always show: if current jackpot is 0, still render using amount 0
+          true
+        ) && (
           <JackpotBadge
             onClick={() => setJackpotHelp(true)}
             role="button"
@@ -187,7 +180,7 @@ export function WelcomeBanner() {
             aria-label="Show jackpot details"
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { if (e.key === 'Enter' || e.key === ' ') setJackpotHelp(true) }}
           >
-            Jackpot: <TokenValue amount={jackpotAmount} mint={jackpotMint} />
+            Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
           </JackpotBadge>
         )}
         <ButtonGroup>
@@ -203,7 +196,7 @@ export function WelcomeBanner() {
         <Modal onClose={() => setJackpotHelp(false)}>
           <h1>Jackpot 💰</h1>
           <p style={{ fontWeight: 'bold' }}>
-            There&apos;s <TokenValue amount={jackpotAmount ?? 0} mint={jackpotMint} /> in the
+            There&apos;s <TokenValue amount={pool.jackpotBalance} /> in the
             Jackpot.
           </p>
           <p>
