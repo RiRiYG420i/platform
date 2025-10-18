@@ -123,7 +123,7 @@ const ActionButton = styled.button`
   padding: 12px 16px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: #ECD11E;
+  background: rgba(236, 209, 30, 0.66); /* #ECD11E at 66% opacity */
   color: #121212;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
@@ -133,7 +133,7 @@ const ActionButton = styled.button`
   text-align: center;
 
   &:hover {
-    background: #e6c000;
+    background: rgba(230, 192, 0, 0.66); /* #e6c000 at 66% opacity */
     transform: translateY(-2px);
   }
 
@@ -148,12 +148,10 @@ export function WelcomeBanner() {
   const wallet = useWallet();
   const walletModal = useWalletModal();
   const { set: setUserModal } = useUserStore();
-  // Use the private SOL pool (fifth item in POOLS)
-  const SOL_POOL = POOLS[4];
   const context = useGambaPlatformContext();
-  const solPool = context.pools?.find(
-    p => p.token.equals(SOL_POOL.token) && (!SOL_POOL.authority || p.authority?.equals(SOL_POOL.authority))
-  );
+  // Find the SOL pool with the highest jackpot
+  const solPools = context.pools?.filter(p => p.token.toBase58() === 'So11111111111111111111111111111111111111112') || [];
+  const solPool = solPools.reduce((max, p) => (p.jackpotBalance > (max?.jackpotBalance ?? 0) ? p : max), solPools[0]);
   const [jackpotModal, setJackpotModal] = React.useState(false);
 
   const handleCopyInvite = () => {
@@ -175,29 +173,38 @@ export function WelcomeBanner() {
         <JackpotBar title="Jackpot (SOL)" onClick={() => setJackpotModal(true)} style={{ cursor: 'pointer' }}>
           💰 <TokenValue mint={SOL_POOL.token} amount={solPool?.jackpotBalance ?? 0} />
         </JackpotBar>
-        <ButtonGroup>
-          <ActionButton onClick={handleCopyInvite}>
-            💸 Copy Invite
-          </ActionButton>
-          <ActionButton onClick={openLink('https://v2.gamba.so/')}> 
-            � How to
-          </ActionButton>
-        </ButtonGroup>
-      </BottomArea>
-      {jackpotModal && (
-        <Modal onClose={() => setJackpotModal(false)}>
-          <h1>Jackpot 💰</h1>
-          <p style={{ fontWeight: 'bold' }}>
-            Es gibt <TokenValue mint={SOL_POOL.token} amount={solPool?.jackpotBalance ?? 0} /> im Jackpot.
-          </p>
-          <p>
-            Der Jackpot ist ein Preispool, der mit jedem Einsatz wächst. Je größer der Pool, desto höher die Gewinnchance. Nach einem Gewinn wird der Pool zurückgesetzt und wächst erneut.
-          </p>
-          <p>
-            Du zahlst maximal <b>0.1%</b> jedes Einsatzes für die Chance auf den Jackpot.
-          </p>
-        </Modal>
-      )}
-    </WelcomeWrapper>
-  );
-}
+        return (
+          <WelcomeWrapper>
+            <WelcomeContent>
+              <h1>Welcome to SOL-WIN👋</h1>
+              <p>A fair, simple and decentralized casino on Solana. Play </p>
+            </WelcomeContent>
+            <BottomArea>
+              <JackpotBar title="Jackpot (SOL)" onClick={() => setJackpotModal(true)} style={{ cursor: 'pointer' }}>
+                💰 <TokenValue mint={solPool?.token} amount={solPool?.jackpotBalance ?? 0} />
+              </JackpotBar>
+            </BottomArea>
+            <ButtonGroup style={{ marginTop: 'auto' }}>
+              <ActionButton onClick={handleCopyInvite}>
+                💸 Copy Invite
+              </ActionButton>
+              <ActionButton onClick={openLink('https://v2.gamba.so/')}> 
+                � How to
+              </ActionButton>
+            </ButtonGroup>
+            {jackpotModal && (
+              <Modal onClose={() => setJackpotModal(false)}>
+                <h1>Jackpot 💰</h1>
+                <p style={{ fontWeight: 'bold' }}>
+                  Es gibt <TokenValue mint={solPool?.token} amount={solPool?.jackpotBalance ?? 0} /> im Jackpot.
+                </p>
+                <p>
+                  Der Jackpot ist ein Preispool, der mit jedem Einsatz wächst. Je größer der Pool, desto höher die Gewinnchance. Nach einem Gewinn wird der Pool zurückgesetzt und wächst erneut.
+                </p>
+                <p>
+                  Du zahlst maximal <b>0.1%</b> jedes Einsatzes für die Chance auf den Jackpot.
+                </p>
+              </Modal>
+            )}
+          </WelcomeWrapper>
+        );
