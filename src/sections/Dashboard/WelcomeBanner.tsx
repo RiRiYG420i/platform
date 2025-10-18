@@ -48,18 +48,19 @@ const WelcomeWrapper = styled.div`
 `;
 
 const WelcomeContent = styled.div`
-  h1 {
-    font-size: 1.75rem; /* Responsive font size */
-    margin: 0 0 8px 0;
-    color: #ffffff;
+  h1, p {
+    color: transparent !important;
+    text-shadow: none !important;
   }
 
+  h1 {
+    font-size: 1.75rem;
+    margin: 0 0 8px 0;
+  }
   p {
     font-size: 1rem;
-    color: #ffffffd1;
     margin: 0;
   }
-
   @media (min-width: 800px) {
     h1 {
       font-size: 2.25rem;
@@ -85,23 +86,26 @@ const ButtonGroup = styled.div`
 const ActionButton = styled.button`
   border: none;
   border-radius: 10px;
-  padding: 12px 20px;
+  padding: 12px 16px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
-  color: black;
+  background: #ECD11E;
+  color: #121212;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
-  flex-grow: 1;
+  min-width: 120px;
+  max-width: 180px;
+  width: 100%;
   text-align: center;
 
   &:hover {
-    background: linear-gradient(90deg, #FFD700, #FFEFBA, #FFFFFF);
+    background: #e6c000;
     transform: translateY(-2px);
   }
 
   @media (min-width: 800px) {
     width: 100%;
+    max-width: 180px;
     flex-grow: 0;
   }
 `;
