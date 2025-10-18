@@ -184,7 +184,7 @@ export function WelcomeBanner() {
             aria-label="Show jackpot details"
             onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { if (e.key === 'Enter' || e.key === ' ') setJackpotHelp(true) }}
           >
-            Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
+            💰 Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
           </JackpotBadge>
         )}
         <ButtonGroup>

@@ -66,6 +66,21 @@ const StyledButton = styled.div`
   }
 `
 
+// Force only the main Token and Connect buttons to bright red in the header
+const RedButtonWrapper = styled.div`
+  /* Target the immediate GambaUi.Button rendered as a button, not dropdown items */
+  & > button,
+  & > div > button {
+    background: #ecd01e9c !important; /* bright red */
+    color: #ffffff !important;
+    border: none !important;
+  }
+  & > button:hover,
+  & > div > button:hover {
+    background: #e11313 !important; /* darker on hover */
+  }
+`
+
 export default function Header() {
   const pool = useCurrentPool()
   const balance = useUserBalance()
@@ -138,8 +153,12 @@ export default function Header() {
             </StyledButton>
           )}
 
-          <TokenSelect />
-          <UserButton />
+          <RedButtonWrapper>
+            <TokenSelect />
+          </RedButtonWrapper>
+          <RedButtonWrapper>
+            <UserButton />
+          </RedButtonWrapper>
         </div>
       </StyledHeader>
     </>
