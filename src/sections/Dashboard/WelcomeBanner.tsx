@@ -31,7 +31,8 @@ const WelcomeWrapper = styled.div`
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
-  padding: 20px 20px 4px; /* Even stronger reduction on mobile */
+  /* Add extra bottom space ~button height to grow banner downward on mobile */
+  padding: 20px 20px 56px;
   display: flex;
   flex-direction: column;
   gap: 8px; /* Tighter spacing on mobile */
@@ -43,7 +44,8 @@ const WelcomeWrapper = styled.div`
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
     margin-top: 72px;
-  padding: 40px; /* Restore desktop padding */
+  /* Add extra bottom space ~button height to grow banner downward on desktop */
+  padding: 40px 40px 56px;
     min-height: 600px;
     background-image:
       linear-gradient(to bottom, rgba(37,44,55,0) 85%, #252C37 100%),
@@ -188,7 +190,7 @@ export function WelcomeBanner() {
             💸 Copy Invite
           </ActionButton>
           <ActionButton onClick={openLink('https://v2.gamba.so/')}>
-            � How to
+            ❓ How to
           </ActionButton>
         </ButtonGroup>
       </BottomArea>

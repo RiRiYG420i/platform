@@ -10,14 +10,16 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 60px;
+  margin-top: 80px; /* Increased to create more space between fixed header and top content */
   @media (min-width: 600px) {
     padding: 20px;
     width: 1000px;
+    margin-top: 100px; /* Extra space on wider screens */
   }
   @media (min-width: 1280px) {
     padding: 20px;
     width: 1100px;
+    margin-top: 100px;
   }
 `
 
