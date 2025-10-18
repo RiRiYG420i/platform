@@ -34,17 +34,12 @@ const WelcomeWrapper = styled.div`
   text-align: center;
   filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
   position: relative;
-  min-height: 360px; /* Taller on mobile to reveal more of the image */
+  min-height: 420px; /* Even taller for more space at the bottom */
 
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    align-items: center;
-    text-align: left;
     padding: 40px;
-    gap: 40px;
-    min-height: 560px; /* Even taller on desktop */
+    min-height: 600px;
   }
 `;
 
@@ -74,14 +69,15 @@ const WelcomeContent = styled.div`
 
 const ButtonGroup = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   gap: 12px;
   justify-content: center;
+  align-items: flex-end;
   margin-top: auto;
   width: 100%;
 
   @media (min-width: 800px) {
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-end;
     align-items: flex-end;
     margin-top: auto;
