@@ -1,67 +1,40 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import React from 'react';
-import styled from 'styled-components';
-const bannerImg = new URL('../../../banner.png', import.meta.url).href;
-import { useUserStore } from '../../hooks/useUserStore';
-import { TokenValue, useGambaPlatformContext } from 'gamba-react-ui-v2';
-import { Modal } from '../../components/Modal';
-import { POOLS } from '../../constants';
-
-const WelcomeWrapper = styled.div`
-  margin-top: 0;
-  /* Animations */
-  @keyframes welcome-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes backgroundGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* Styling */
-  background-color: #252C37;
-  background-image:
-    linear-gradient(to bottom, rgba(37,44,55,0) 70%, #252C37 100%),
-    url(${bannerImg});
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
-  border: 4px solid #F8C61E; /* Match GameCard solid background color */
-  animation: welcome-fade-in 0.5s ease;
-  border-radius: 12px; /* Slightly larger radius for a modern look */
-  padding: 12px; /* Reduced padding */
-  display: flex;
-  flex-direction: column;
-  gap: 12px; /* Reduced gap */
-  text-align: center;
-  filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
-  position: relative;
-  min-height: 320px; /* Reduced min-height */
-
-  /* Desktop styles using a min-width media query */
-  @media (min-width: 800px) {
-    margin-top: 24px;
-    padding: 24px;
-    min-height: 400px;
-    background-image:
-      linear-gradient(to bottom, rgba(37,44,55,0) 85%, #252C37 100%),
-      url(${bannerImg});
-  }
-`;
-
-const WelcomeContent = styled.div`
-  h1, p {
-    color: transparent !important;
-    text-shadow: none !important;
-  }
-
-  h1 {
-    font-size: 1.75rem;
-    margin: 0 0 8px 0;
+  return (
+    <WelcomeWrapper>
+      <WelcomeContent>
+        <h1>Welcome to SOL-WIN👋</h1>
+        <p>A fair, simple and decentralized casino on Solana. Play </p>
+      </WelcomeContent>
+      <BottomArea>
+        <JackpotBar title="Jackpot (SOL)" onClick={() => setJackpotModal(true)} style={{ cursor: 'pointer' }}>
+          💰 <TokenValue mint={solPool?.token} amount={solPool?.jackpotBalance ?? 0} />
+        </JackpotBar>
+      </BottomArea>
+      <ButtonGroup style={{ marginTop: 'auto' }}>
+        <ActionButton onClick={handleCopyInvite}>
+          💸 Copy Invite
+        </ActionButton>
+        <ActionButton onClick={openLink('https://v2.gamba.so/')}> 
+          � How to
+        </ActionButton>
+      </ButtonGroup>
+      {jackpotModal && (
+        <Modal onClose={() => setJackpotModal(false)}>
+          <h1>Jackpot 💰</h1>
+          <p style={{ fontWeight: 'bold' }}>
+            Es gibt <TokenValue mint={solPool?.token} amount={solPool?.jackpotBalance ?? 0} /> im Jackpot.
+          </p>
+          <p>
+            Der Jackpot ist ein Preispool, der mit jedem Einsatz wächst. Je größer der Pool, desto höher die Gewinnchance. Nach einem Gewinn wird der Pool zurückgesetzt und wächst erneut.
+          </p>
+          <p>
+            Du zahlst maximal <b>0.1%</b> jedes Einsatzes für die Chance auf den Jackpot.
+          </p>
+        </Modal>
+      )}
+    </WelcomeWrapper>
+  );
   }
   p {
     font-size: 1rem;
