@@ -72,12 +72,12 @@ const RedButtonWrapper = styled.div`
   & > button,
   & > div > button {
     background: #ecd01e9c !important; /* bright red */
-    color: #ffffff !important;
+    color: #252C37!important;
     border: none !important;
   }
   & > button:hover,
   & > div > button:hover {
-    background: #e11313 !important; /* darker on hover */
+    background: #ECD11E !important; /* darker on hover */
   }
 `
 
