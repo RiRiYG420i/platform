@@ -33,14 +33,13 @@ h1, h2 {
 
 body {
   background: var(--background-color);
-  background-image: image-set(
-    url('/bg-desktop.png') 1x,
-    url('/bg-desktop.png') 2x
-  );
+  background-image: url('/bg-desktop.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 1;
+  background-attachment: fixed;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
   color: var(--text-color);
   cursor: default;
   margin: 0;
@@ -55,13 +54,11 @@ body {
        (pointer: coarse),
        (max-aspect-ratio: 1/1) {
   body {
-    background-image: image-set(
-      url('/bg-mobile.png') 1x,
-      url('/bg-mobile.png') 2x
-    ) !important;
+    background-image: url('/bg-mobile.png') !important;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
   }
 }
 
