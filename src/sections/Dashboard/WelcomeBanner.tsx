@@ -142,11 +142,13 @@ const ActionButton = styled.button`
   }
 `;
 
-import { TokenValue, useCurrentPool } from 'gamba-react-ui-v2';
+import { GambaUi, TokenValue, useCurrentPool, useGambaPlatformContext } from 'gamba-react-ui-v2';
+import { PLATFORM_JACKPOT_FEE } from '../../constants';
 export function WelcomeBanner() {
   const wallet = useWallet();
   const walletModal = useWalletModal();
   const pool = useCurrentPool();
+  const context = useGambaPlatformContext();
   const { set: setUserModal } = useUserStore(); // Destructure for cleaner access
   const [jackpotHelp, setJackpotHelp] = React.useState(false);
 
@@ -173,7 +175,7 @@ export function WelcomeBanner() {
             tabIndex={0}
             style={{ cursor: 'pointer' }}
             aria-label="Show jackpot details"
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setJackpotHelp(true) }}
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { if (e.key === 'Enter' || e.key === ' ') setJackpotHelp(true) }}
           >
             Jackpot: <TokenValue amount={pool.jackpotBalance} />
           </JackpotBadge>
@@ -190,28 +192,29 @@ export function WelcomeBanner() {
       {jackpotHelp && (
         <Modal onClose={() => setJackpotHelp(false)}>
           <h1>Jackpot 💰</h1>
-          <p style={{ fontWeight: 700 }}>
-            Aktueller Jackpot: <TokenValue amount={pool.jackpotBalance} />
+          <p style={{ fontWeight: 'bold' }}>
+            There&apos;s <TokenValue amount={pool.jackpotBalance} /> in the
+            Jackpot.
           </p>
           <p>
-            Der Jackpot wächst bei jedem Einsatz und kann jederzeit gewonnen werden.
+            The Jackpot is a prize pool that grows with every bet made. As it
+            grows, so does your chance of winning. Once a winner is selected,
+            the pool resets and grows again from there.
           </p>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button
-              onClick={() => setJackpotHelp(false)}
-              style={{
-                background: '#ECD11E',
-                color: '#121212',
-                border: 'none',
-                borderRadius: 10,
-                padding: '10px 14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              Schließen
-            </button>
-          </div>
+          <p>
+            You pay a maximum of{' '}
+            {(PLATFORM_JACKPOT_FEE * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })}
+            % of each wager for a chance to win.
+          </p>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {context.defaultJackpotFee === 0 ? 'DISABLED' : 'ENABLED'}
+            <GambaUi.Switch
+              checked={context.defaultJackpotFee > 0}
+              onChange={(checked) =>
+                context.setDefaultJackpotFee(checked ? PLATFORM_JACKPOT_FEE : 0)
+              }
+            />
+          </label>
         </Modal>
       )}
     </WelcomeWrapper>
