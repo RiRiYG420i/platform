@@ -32,13 +32,14 @@ const Bonus = styled.button`
   }
 `
 
-const StyledHeader = styled.div`
+const StyledHeader = styled.div<{ $scrolled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: 10px;
-  background: rgba(236, 209, 30, 0.5);
+  background: ${(props: { $scrolled: boolean }) => (props.$scrolled ? 'rgba(236, 209, 30, 0.5)' : '#ECD11E')};
+  transition: background 200ms ease;
   backdrop-filter: blur(20px);
   color: #121212;
   position: fixed;
@@ -74,6 +75,14 @@ export default function Header() {
   const [showLeaderboard, setShowLeaderboard] = React.useState(false)
   const [bonusHelp, setBonusHelp] = React.useState(false)
   const [jackpotHelp, setJackpotHelp] = React.useState(false)
+  const [scrolled, setScrolled] = React.useState(false)
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 5)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <>
@@ -127,7 +136,7 @@ export default function Header() {
         />
       )}
 
-      <StyledHeader>
+  <StyledHeader $scrolled={scrolled}>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Logo to="/">
             <img alt="Gamba logo" src="/logo.svg" />

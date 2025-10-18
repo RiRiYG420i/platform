@@ -2,6 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import React from 'react';
 import styled from 'styled-components';
+const bannerImg = new URL('../../../banner.jpeg', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 
 const WelcomeWrapper = styled.div`
@@ -18,10 +19,11 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('/banner.jpg');
+  background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${bannerImg});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
   padding: 24px; /* Consistent padding */
@@ -113,7 +115,7 @@ export function WelcomeBanner() {
     }
   };
 
-  const openLink = (url) => () => window.open(url, '_blank', 'noopener,noreferrer');
+  const openLink = (url: string) => () => window.open(url, '_blank', 'noopener,noreferrer');
 
   return (
     <WelcomeWrapper>
