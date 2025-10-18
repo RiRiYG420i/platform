@@ -38,7 +38,7 @@ const StyledHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 10px;
-  background: rgba(37, 44, 55, 0.6);
+  background: rgba(236, 209, 30, 0.5);
   backdrop-filter: blur(20px);
   color: #121212;
   position: fixed;
@@ -52,6 +52,17 @@ const Logo = styled(NavLink)`
   margin: 0 15px;
   & > img {
     height: 120%;
+  }
+`
+
+const StyledButton = styled.div`
+  button {
+    background: #252C37 !important;
+    color: #ffffff !important;
+    
+    &:hover {
+      background: #1a1f27 !important;
+    }
   }
 `
 
@@ -145,9 +156,11 @@ export default function Header() {
 
           {/* Leaderboard shows only on desktop */}
           {isDesktop && (
-            <GambaUi.Button onClick={() => setShowLeaderboard(true)}>
-              Leaderboard
-            </GambaUi.Button>
+            <StyledButton>
+              <GambaUi.Button onClick={() => setShowLeaderboard(true)}>
+                Leaderboard
+              </GambaUi.Button>
+            </StyledButton>
           )}
 
           <TokenSelect />
