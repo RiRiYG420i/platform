@@ -2,7 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import React from 'react';
 import styled from 'styled-components';
-const bannerImg = new URL('../../../banner.jpeg', import.meta.url).href;
+const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 
 const WelcomeWrapper = styled.div`
@@ -19,11 +19,11 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${bannerImg});
+  background-color: #252C37;
+  background-image: url(${bannerImg});
   background-size: contain; /* Show the entire image */
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #000; /* Fill letterbox areas when using contain */
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
