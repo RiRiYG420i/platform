@@ -38,20 +38,21 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 1;
-@media (max-width: 800px) {
-  body {
-    background-image: url('/bg-mobile.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-}
   color: var(--text-color);
   cursor: default;
   margin: 0;
   overflow-y: scroll;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 800px) {
+  body {
+    background-image: url('/bg-mobile.png') !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 a {
