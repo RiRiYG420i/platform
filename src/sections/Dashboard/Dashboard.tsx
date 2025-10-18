@@ -47,10 +47,21 @@ export function GameGrid() {
 }
 
 
+const unterBannerImg = new URL('../../../unter_banner.png', import.meta.url).href;
+const UnterBannerImg = styled.img`
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 40px auto 40px auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+`;
+
 export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
+  <UnterBannerImg src={unterBannerImg} alt="Unter Banner" />
       <FeaturedInlineGame />
       <h2 style={{ textAlign: 'center' }}>Games</h2>
       <GameGrid />
