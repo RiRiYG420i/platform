@@ -19,7 +19,7 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
 
   width: 100%;
   aspect-ratio: ${({ $small }) => ($small ? '1/.5' : '1/.6')};
-  background: linear-gradient(90deg, #FFEFBA, #FFFFFF, #FFD700);
+  background: #F8C61E;
   background-size: cover;
   background-position: center;
   border-radius: 10px;

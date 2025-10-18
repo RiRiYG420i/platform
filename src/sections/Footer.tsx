@@ -9,8 +9,9 @@ const StyledFooter = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 20px 30px;
-  background: #646464b7;
+  background: rgba(37, 44, 55, 0.6);
   backdrop-filter: blur(20px);
+  color: #121212;
   position: relative;
   bottom: 0;
   left: 0;
