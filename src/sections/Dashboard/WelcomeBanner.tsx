@@ -31,14 +31,14 @@ const WelcomeWrapper = styled.div`
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
-  padding: 24px 24px 8px; /* Stronger reduction on mobile */
+  padding: 20px 20px 4px; /* Even stronger reduction on mobile */
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Even tighter spacing on mobile */
+  gap: 8px; /* Tighter spacing on mobile */
   text-align: center;
   filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
   position: relative;
-  min-height: 420px;
+  min-height: 320px; /* Reduce mobile banner height to bring content closer */
 
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
@@ -94,7 +94,7 @@ const BottomArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   margin-top: auto; /* stick the whole area to bottom */
   width: 100%;
 
