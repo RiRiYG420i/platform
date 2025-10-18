@@ -80,15 +80,38 @@ const ButtonGroup = styled.div`
   gap: 12px;
   justify-content: center;
   align-items: flex-end;
-  margin-top: auto;
   width: 100%;
 
   @media (min-width: 800px) {
     flex-direction: row;
     justify-content: flex-end;
     align-items: flex-end;
-    margin-top: auto;
   }
+`;
+
+const BottomArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto; /* stick the whole area to bottom */
+  width: 100%;
+
+  @media (min-width: 800px) {
+    align-items: flex-end;
+  }
+`;
+
+const JackpotBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ECD11E;
+  color: #121212;
+  font-weight: 700;
+  font-size: 0.9rem; /* match button font-size */
+  border-radius: 10px;
+  padding: 8px 12px;
 `;
 
 const ActionButton = styled.button`
@@ -140,19 +163,21 @@ export function WelcomeBanner() {
         <h1>Welcome to SOL-WIN👋</h1>
         <p>A fair, simple and decentralized casino on Solana. Play </p>
       </WelcomeContent>
-      {pool?.jackpotBalance > 0 && (
-        <div style={{ color: '#ECD11E', fontWeight: 700, alignSelf: 'center' }}>
-          Jackpot: <TokenValue amount={pool.jackpotBalance} />
-        </div>
-      )}
-      <ButtonGroup>
-        <ActionButton onClick={handleCopyInvite}>
-          💸 Copy Invite
-        </ActionButton>
-        <ActionButton onClick={openLink('https://v2.gamba.so/')}>
-          � How to
-        </ActionButton>
-      </ButtonGroup>
+      <BottomArea>
+        {pool?.jackpotBalance > 0 && (
+          <JackpotBadge>
+            Jackpot: <TokenValue amount={pool.jackpotBalance} />
+          </JackpotBadge>
+        )}
+        <ButtonGroup>
+          <ActionButton onClick={handleCopyInvite}>
+            💸 Copy Invite
+          </ActionButton>
+          <ActionButton onClick={openLink('https://v2.gamba.so/')}>
+            � How to
+          </ActionButton>
+        </ButtonGroup>
+      </BottomArea>
     </WelcomeWrapper>
   );
 }
