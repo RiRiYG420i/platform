@@ -118,9 +118,11 @@ const ActionButton = styled.button`
   }
 `;
 
+import { TokenValue, useCurrentPool } from 'gamba-react-ui-v2';
 export function WelcomeBanner() {
   const wallet = useWallet();
   const walletModal = useWalletModal();
+  const pool = useCurrentPool();
   const { set: setUserModal } = useUserStore(); // Destructure for cleaner access
 
   const handleCopyInvite = () => {
@@ -138,6 +140,11 @@ export function WelcomeBanner() {
         <h1>Welcome to SOL-WIN👋</h1>
         <p>A fair, simple and decentralized casino on Solana. Play </p>
       </WelcomeContent>
+      {pool?.jackpotBalance > 0 && (
+        <div style={{ color: '#ECD11E', fontWeight: 700, alignSelf: 'center' }}>
+          Jackpot: <TokenValue amount={pool.jackpotBalance} />
+        </div>
+      )}
       <ButtonGroup>
         <ActionButton onClick={handleCopyInvite}>
           💸 Copy Invite

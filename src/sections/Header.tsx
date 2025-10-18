@@ -3,7 +3,6 @@ import {
   GambaUi,
   TokenValue,
   useCurrentPool,
-  useGambaPlatformContext,
   useUserBalance,
 } from 'gamba-react-ui-v2'
 import React from 'react'
@@ -11,7 +10,7 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Modal } from '../components/Modal'
 import LeaderboardsModal from '../sections/LeaderBoard/LeaderboardsModal'
-import { PLATFORM_JACKPOT_FEE, PLATFORM_CREATOR_ADDRESS } from '../constants'
+import { PLATFORM_CREATOR_ADDRESS } from '../constants'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import TokenSelect from './TokenSelect'
 import { UserButton } from './UserButton'
@@ -69,12 +68,10 @@ const StyledButton = styled.div`
 
 export default function Header() {
   const pool = useCurrentPool()
-  const context = useGambaPlatformContext()
   const balance = useUserBalance()
   const isDesktop = useMediaQuery('lg') 
   const [showLeaderboard, setShowLeaderboard] = React.useState(false)
   const [bonusHelp, setBonusHelp] = React.useState(false)
-  const [jackpotHelp, setJackpotHelp] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
 
   React.useEffect(() => {
@@ -100,34 +97,7 @@ export default function Header() {
         </Modal>
       )}
 
-      {jackpotHelp && (
-        <Modal onClose={() => setJackpotHelp(false)}>
-          <h1>Jackpot 💰</h1>
-          <p style={{ fontWeight: 'bold' }}>
-            There&apos;s <TokenValue amount={pool.jackpotBalance} /> in the
-            Jackpot.
-          </p>
-          <p>
-            The Jackpot is a prize pool that grows with every bet made. As it
-            grows, so does your chance of winning. Once a winner is selected,
-            the pool resets and grows again from there.
-          </p>
-          <p>
-            You pay a maximum of{' '}
-            {(PLATFORM_JACKPOT_FEE * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })}
-            % of each wager for a chance to win.
-          </p>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            {context.defaultJackpotFee === 0 ? 'DISABLED' : 'ENABLED'}
-            <GambaUi.Switch
-              checked={context.defaultJackpotFee > 0}
-              onChange={(checked) =>
-                context.setDefaultJackpotFee(checked ? PLATFORM_JACKPOT_FEE : 0)
-              }
-            />
-          </label>
-        </Modal>
-      )}
+      
 
       {ENABLE_LEADERBOARD && showLeaderboard && (
         <LeaderboardsModal
@@ -151,11 +121,7 @@ export default function Header() {
             position: 'relative',
           }}
         >
-          {pool.jackpotBalance > 0 && (
-            <Bonus onClick={() => setJackpotHelp(true)}>
-              💰 <TokenValue amount={pool.jackpotBalance} />
-            </Bonus>
-          )}
+          {/* Jackpot indicator moved to WelcomeBanner */}
 
           {balance.bonusBalance > 0 && (
             <Bonus onClick={() => setBonusHelp(true)}>
