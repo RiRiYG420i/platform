@@ -46,7 +46,8 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (max-width: 800px) {
+/* Use mobile background on smaller screens and portrait orientation to avoid stretching/pixelation */
+@media (max-width: 1200px), (orientation: portrait) {
   body {
     background-image: url('/bg-mobile.png') !important;
     background-size: cover;
