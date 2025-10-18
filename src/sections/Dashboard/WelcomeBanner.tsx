@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
-import { TokenValue, usePool } from 'gamba-react-ui-v2';
+import { TokenValue, useGambaPlatformContext } from 'gamba-react-ui-v2';
 import { POOLS } from '../../constants';
 
 const WelcomeWrapper = styled.div`
@@ -148,7 +148,10 @@ export function WelcomeBanner() {
   const { set: setUserModal } = useUserStore(); // Destructure for cleaner access
   // Always use SOL pool (second item in POOLS)
   const SOL_POOL = POOLS[1];
-  const solPool = usePool(SOL_POOL.token, SOL_POOL.authority);
+  const context = useGambaPlatformContext();
+  const solPool = context.pools?.find(
+    p => p.token.equals(SOL_POOL.token) && (!SOL_POOL.authority || p.authority?.equals(SOL_POOL.authority))
+  );
 
   const handleCopyInvite = () => {
     setUserModal({ userModal: true });
