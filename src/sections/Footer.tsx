@@ -20,10 +20,16 @@ const StyledFooter = styled.div`
 `
 
 const Logo = styled(NavLink)`
+  display: inline-flex;
+  align-items: center;
   height: 30px;
   margin: 0 25px 0 0;
+  background: #ECD11E; /* Yellow background behind the logo */
+  border-radius: 8px;
+  padding: 4px 8px;
   & > img {
     height: 100%;
+    display: block;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
     image-rendering: -moz-crisp-edges;
