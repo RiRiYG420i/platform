@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
+import { Modal } from '../../components/Modal';
 
 const WelcomeWrapper = styled.div`
   margin-top: 0;
@@ -147,6 +148,7 @@ export function WelcomeBanner() {
   const walletModal = useWalletModal();
   const pool = useCurrentPool();
   const { set: setUserModal } = useUserStore(); // Destructure for cleaner access
+  const [jackpotHelp, setJackpotHelp] = React.useState(false);
 
   const handleCopyInvite = () => {
     setUserModal({ userModal: true });
@@ -165,7 +167,14 @@ export function WelcomeBanner() {
       </WelcomeContent>
       <BottomArea>
         {pool?.jackpotBalance > 0 && (
-          <JackpotBadge>
+          <JackpotBadge
+            onClick={() => setJackpotHelp(true)}
+            role="button"
+            tabIndex={0}
+            style={{ cursor: 'pointer' }}
+            aria-label="Show jackpot details"
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setJackpotHelp(true) }}
+          >
             Jackpot: <TokenValue amount={pool.jackpotBalance} />
           </JackpotBadge>
         )}
@@ -178,6 +187,33 @@ export function WelcomeBanner() {
           </ActionButton>
         </ButtonGroup>
       </BottomArea>
+      {jackpotHelp && (
+        <Modal onClose={() => setJackpotHelp(false)}>
+          <h1>Jackpot 💰</h1>
+          <p style={{ fontWeight: 700 }}>
+            Aktueller Jackpot: <TokenValue amount={pool.jackpotBalance} />
+          </p>
+          <p>
+            Der Jackpot wächst bei jedem Einsatz und kann jederzeit gewonnen werden.
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button
+              onClick={() => setJackpotHelp(false)}
+              style={{
+                background: '#ECD11E',
+                color: '#121212',
+                border: 'none',
+                borderRadius: 10,
+                padding: '10px 14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Schließen
+            </button>
+          </div>
+        </Modal>
+      )}
     </WelcomeWrapper>
   );
 }
