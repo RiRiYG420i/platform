@@ -6,6 +6,7 @@ const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 
 const WelcomeWrapper = styled.div`
+  margin-top: 48px;
   /* Animations */
   @keyframes welcome-fade-in {
     from { opacity: 0; }
