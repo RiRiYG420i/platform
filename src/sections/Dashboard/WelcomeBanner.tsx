@@ -6,7 +6,7 @@ const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 
 const WelcomeWrapper = styled.div`
-  margin-top: 48px;
+  margin-top: 0;
   /* Animations */
   @keyframes welcome-fade-in {
     from { opacity: 0; }
@@ -21,9 +21,11 @@ const WelcomeWrapper = styled.div`
 
   /* Styling */
   background-color: #252C37;
-  background-image: url(${bannerImg});
-  background-size: contain; /* Show the entire image */
-  background-position: center;
+  background-image:
+    linear-gradient(to bottom, rgba(37,44,55,0) 70%, #252C37 100%),
+    url(${bannerImg});
+  background-size: contain;
+  background-position: top center;
   background-repeat: no-repeat;
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
@@ -35,12 +37,16 @@ const WelcomeWrapper = styled.div`
   text-align: center;
   filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
   position: relative;
-  min-height: 420px; /* Even taller for more space at the bottom */
+  min-height: 420px;
 
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
+    margin-top: 48px;
     padding: 40px;
     min-height: 600px;
+    background-image:
+      linear-gradient(to bottom, rgba(37,44,55,0) 85%, #252C37 100%),
+      url(${bannerImg});
   }
 `;
 

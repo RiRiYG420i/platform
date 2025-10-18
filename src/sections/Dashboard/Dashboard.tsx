@@ -52,7 +52,7 @@ const UnterBannerImg = styled.img`
   display: block;
   max-width: 100%;
   height: auto;
-  margin: 40px auto 40px auto;
+  margin: 16px auto 16px auto;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.10);
 `;
