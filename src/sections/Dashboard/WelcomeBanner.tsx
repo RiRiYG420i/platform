@@ -31,22 +31,24 @@ const WelcomeWrapper = styled.div`
   border: 4px solid #F8C61E; /* Match GameCard solid background color */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
-  /* Add extra bottom space ~button height to grow banner downward on mobile */
-  padding: 20px 20px 56px;
+  /* Compact bottom padding; height increase handled via min-height */
+  padding: 20px 20px 4px;
   display: flex;
   flex-direction: column;
   gap: 8px; /* Tighter spacing on mobile */
   text-align: center;
   filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
   position: relative;
-  min-height: 320px; /* Reduce mobile banner height to bring content closer */
+  /* Increase banner height downward by ~one button height on mobile */
+  min-height: 376px;
 
   /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
     margin-top: 72px;
-  /* Add extra bottom space ~button height to grow banner downward on desktop */
-  padding: 40px 40px 56px;
-    min-height: 600px;
+    /* Restore compact padding; increase height via min-height */
+    padding: 40px;
+    /* Increase banner height downward by ~one button height on desktop */
+    min-height: 656px;
     background-image:
       linear-gradient(to bottom, rgba(37,44,55,0) 85%, #252C37 100%),
       url(${bannerImg});
