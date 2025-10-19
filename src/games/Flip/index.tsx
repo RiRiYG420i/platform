@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber'
+import styled from 'styled-components'
 import { GambaUi, useSound } from 'gamba-react-ui-v2'
 import { ControlsInline } from '../../sections/Game/Game.styles'
 import { useGamba } from 'gamba-react-v2'
@@ -69,6 +70,7 @@ function Flip() {
   return (
     <>
       <GambaUi.Portal target="screen">
+        <ScreenGrid>
         <Canvas
           linear
           flat
@@ -100,9 +102,6 @@ function Flip() {
             groundColor="#6666fe"
           />
         </Canvas>
-      </GambaUi.Portal>
-      {/* Render inline controls below the game using the inline portal */}
-      <GambaUi.Portal target="inline">
         <ControlsInline>
           <GambaUi.WagerInput
             options={WAGER_OPTIONS}
@@ -119,9 +118,20 @@ function Flip() {
             Flip
           </GambaUi.Button>
         </ControlsInline>
+        </ScreenGrid>
       </GambaUi.Portal>
+
+      
     </>
   )
 }
 
 export default Flip
+
+const ScreenGrid = styled.div`
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: stretch;
+  min-height: 0;
+`

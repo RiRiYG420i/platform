@@ -5,78 +5,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Chip } from './Chip'
 import { StyledResults } from './Roulette.styles'
-import { Table } from './Table'
-import { ControlsInline } from '../../sections/Game/Game.styles'
-import { CHIPS, SOUND_LOSE, SOUND_PLAY, SOUND_WIN } from './constants'
-import { addResult, bet, clearChips, results, selectedChip, totalChipValue } from './signals'
-
-const Wrapper = styled.div`
-  display: grid;
-  gap: 20px;
-  align-items: center;
-  user-select: none;
-  -webkit-user-select: none;
-  color: white;
-`
-function Results() {
-  const _results = computed(() => [...results.value].reverse())
-  return (
-    <StyledResults>
-      {_results.value.map((index, i) => {
-        return (
-          <div key={i}>
-            {index + 1}
-          </div>
-        )
-      })}
-    </StyledResults>
-  )
-}
-
-function Stats() {
-  const pool = useCurrentPool()
-  const token = useCurrentToken()
-  const balance = useUserBalance()
-  const wager = totalChipValue.value * token.baseWager / 10_000
-
-  const multiplier = Math.max(...bet.value)
-  const maxPayout = multiplier * wager
-  const maxPayoutExceeded = maxPayout > pool.maxPayout
-  const balanceExceeded = wager > (balance.balance + balance.bonusBalance)
-
-  return (
-    <div style={{ textAlign: 'center', display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-      <div>
-        {balanceExceeded ? (
-          <span style={{ color: '#ff0066' }}>
-            TOO HIGH
-          </span>
-        ) : (
-          <>
-            <TokenValue amount={wager} />
-          </>
-        )}
-        <div>Wager</div>
-      </div>
-      <div>
-        <div>
-          {maxPayoutExceeded ? (
-            <span style={{ color: '#ff0066' }}>
-              TOO HIGH
-            </span>
-          ) : (
-            <>
-              <TokenValue amount={maxPayout} />
-              ({multiplier.toFixed(2)}x)
-            </>
-          )}
-        </div>
-        <div>Potential win</div>
-      </div>
-    </div>
-  )
-}
-
 export default function Roulette() {
   const game = GambaUi.useGame()
   const token = useCurrentToken()
@@ -115,30 +43,114 @@ export default function Roulette() {
   return (
     <>
       <GambaUi.Portal target="screen">
-        <GambaUi.Responsive>
-          <Wrapper onContextMenu={(e) => e.preventDefault()}>
-            <Stats />
-            <Results />
-            <Table />
-          </Wrapper>
-        </GambaUi.Responsive>
+        <ScreenGrid>
+          <GambaUi.Responsive>
+            <Wrapper onContextMenu={(e) => e.preventDefault()}>
+              <Stats />
+              <Results />
+              <Table />
+            </Wrapper>
+          </GambaUi.Responsive>
+          <ControlsInline>
+            <GambaUi.Select
+              options={CHIPS}
+              value={selectedChip.value}
+              onChange={(value: number) => selectedChip.value = value}
+              label={(value: number) => (
+                <>
+                  <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
+                </>
+              )}
+            />
+            <GambaUi.Button
+              disabled={!wager || gamba.isPlaying}
+              onClick={clearChips}
+            >
+              Clear
+            </GambaUi.Button>
+            <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
+              Spin
+            </GambaUi.Button>
+          </ControlsInline>
+        </ScreenGrid>
       </GambaUi.Portal>
-      {/* Render inline controls below the game using the inline portal */}
-      <GambaUi.Portal target="inline">
-        <ControlsInline>
-          <GambaUi.Select
-            options={CHIPS}
-            value={selectedChip.value}
-            onChange={(value: number) => selectedChip.value = value}
-            label={(value: number) => (
-              <>
-                <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
-              </>
+    </>
+  )
+}
+
+const ScreenGrid = styled.div`
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: stretch;
+  min-height: 0;
+`
+  const pool = useCurrentPool()
+  const balance = useUserBalance()
+  const gamba = useGamba()
+
+  const sounds = useSound({
+    win: SOUND_WIN,
+    lose: SOUND_LOSE,
+    play: SOUND_PLAY,
+  })
+
+  const wager = totalChipValue.value * token.baseWager / 10_000
+
+  const multiplier = Math.max(...bet.value)
+  const maxPayout = multiplier * wager
+  const maxPayoutExceeded = maxPayout > pool.maxPayout
+  const balanceExceeded = wager > (balance.balance + balance.bonusBalance)
+
+  const play = async () => {
+    await game.play({
+      bet: bet.value,
+      wager,
+          <GambaUi.Portal target="screen">
+            <ScreenGrid>
+              <GambaUi.Responsive>
+                <Wrapper onContextMenu={(e) => e.preventDefault()}>
+                  <Stats />
+                  <Results />
+                  <Table />
+                </Wrapper>
+              </GambaUi.Responsive>
+              <ControlsInline>
+                <GambaUi.Select
+                  options={CHIPS}
+                  value={selectedChip.value}
+                  onChange={(value: number) => selectedChip.value = value}
+                  label={(value: number) => (
+                    <>
+                      <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
+                    </>
+                  )}
+                />
+                <GambaUi.Button
+                  disabled={!wager || gamba.isPlaying}
+                  onClick={clearChips}
+                >
+                  Clear
+                </GambaUi.Button>
+                <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
+                  Spin
+                </GambaUi.Button>
+              </ControlsInline>
+            </ScreenGrid>
+          </GambaUi.Portal>
             )}
           />
           <GambaUi.Button
             disabled={!wager || gamba.isPlaying}
             onClick={clearChips}
+
+    const ScreenGrid = styled.div`
+      height: 100%;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      align-items: stretch;
+      min-height: 0;
+    `
           >
             Clear
           </GambaUi.Button>
