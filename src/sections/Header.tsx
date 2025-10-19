@@ -60,8 +60,7 @@ const Logo = styled(NavLink)`
 const StyledButton = styled.div`
   button {
   background: #E0B41B !important; /* darker yellow */
-  color: #252C37 !important;
-    border: none !important;
+    color: #252C37 !important;
     &:hover { background: #C9A019 !important; }
   }
 `
@@ -72,8 +71,7 @@ const RedButtonWrapper = styled.div`
   & > button,
   & > div > button {
   background: #E0B41B !important;
-  color: #252C37 !important;
-    border: none !important;
+    color: #252C37 !important;
   }
   & > button:hover,
   & > div > button:hover {
