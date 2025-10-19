@@ -1,4 +1,5 @@
 import { GambaUi, TokenValue, useCurrentPool, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { MAX_CARD_SHOWN, RANKS, RANK_SYMBOLS, SOUND_CARD, SOUND_FINISH, SOUND_LOSE, SOUND_PLAY, SOUND_WIN } from './constants'
@@ -200,7 +201,7 @@ export default function HiLo(props: HiLoConfig) {
       <ControlsInline>
         {!profit ? (
           <>
-            <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
+            <WagerInputPatched value={initialWager} onChange={setInitialWager} />
             <GambaUi.Button main disabled={!option || initialWager > maxWagerForBet} onClick={play}>
               Deal card
             </GambaUi.Button>

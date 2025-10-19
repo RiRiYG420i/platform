@@ -1,5 +1,6 @@
 import { BPS_PER_WHOLE } from 'gamba-core-v2'
 import { GambaUi, TokenValue, useCurrentPool, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import Slider from './Slider'
@@ -128,7 +129,7 @@ export default function Dice() {
             {/* Inline controls directly under the stats/banner, lowered slightly for aesthetics */}
             <ControlsRow>
               <ControlsInline>
-                <GambaUi.WagerInput value={wager} onChange={setWager} />
+                <WagerInputPatched value={wager} onChange={setWager} />
                 <GambaUi.Button main onClick={play}>Roll</GambaUi.Button>
               </ControlsInline>
             </ControlsRow>

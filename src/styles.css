@@ -62,6 +62,11 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
   text-overflow: ellipsis;
 }
 
+/* Style for patched wager multiplier buttons */
+.wager-multiplier-patched {
+  border: 2px solid #252C37 !important;
+}
+
 /* Mobile: strictly enforce single-line in Gamba UI controls */
 @media (max-width: 600px) {
   .gamba-ui-input,

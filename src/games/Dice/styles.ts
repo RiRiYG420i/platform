@@ -80,8 +80,8 @@ export const Result = styled.div`
 `
 
 export const ControlsRow = styled.div`
-  margin-top: 18px;
+  margin-top: 64px; /* push controls further down to avoid overlap */
   @media (min-width: 700px) {
-    margin-top: 24px;
+    margin-top: 80px;
   }
 `

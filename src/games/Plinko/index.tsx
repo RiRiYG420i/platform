@@ -1,4 +1,5 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { PEG_RADIUS, PLINKO_RAIUS, Plinko as PlinkoGame, PlinkoProps, barrierHeight, barrierWidth, bucketHeight } from './game'
@@ -202,7 +203,7 @@ export default function Plinko() {
       </GambaUi.Portal>
       {/* Inline all controls under the canvas */}
       <ControlsInline>
-        <GambaUi.WagerInput value={wager} onChange={setWager} />
+  <WagerInputPatched value={wager} onChange={setWager} />
         <div>Degen:</div>
         <GambaUi.Switch disabled={gamba.isPlaying} checked={degen} onChange={setDegen} />
         {window.location.origin.includes('localhost') && (

@@ -1,4 +1,5 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import React from 'react'
 import CustomSlider from './Slider'
 import CRASH_SOUND from './crash.mp3'
@@ -108,7 +109,7 @@ export default function CrashGame() {
       </GambaUi.Portal>
       {/* Inline primary controls under the screen */}
       <ControlsInline>
-        <GambaUi.WagerInput value={wager} onChange={setWager} />
+  <WagerInputPatched value={wager} onChange={setWager} />
         <CustomSlider value={multiplierTarget} onChange={setMultiplierTarget} />
         <GambaUi.Button main onClick={play}>Play</GambaUi.Button>
       </ControlsInline>

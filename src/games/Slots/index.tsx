@@ -1,5 +1,6 @@
 import { GameResult } from 'gamba-core-v2'
 import { EffectTest, GambaUi, TokenValue, useCurrentPool, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import React, { useEffect, useRef } from 'react'
 import { ItemPreview } from './ItemPreview'
 import { Slot } from './Slot'
@@ -201,7 +202,7 @@ export default function Slots() {
               </div>
               {/* Controls moved directly under the banner/result */}
               <div className="controls-inline">
-                <GambaUi.WagerInput value={wager} onChange={setWager} />
+                <WagerInputPatched value={wager} onChange={setWager} />
                 <GambaUi.Button main disabled={!isValid || spinning} onClick={play}>
                   Spin
                 </GambaUi.Button>

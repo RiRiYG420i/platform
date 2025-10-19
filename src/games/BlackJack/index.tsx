@@ -1,4 +1,5 @@
 import { GambaUi, TokenValue, useCurrentPool, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { CARD_VALUES, RANKS, RANK_SYMBOLS, SUIT_COLORS, SUIT_SYMBOLS, SUITS, SOUND_CARD, SOUND_LOSE, SOUND_PLAY, SOUND_WIN, SOUND_JACKPOT } from './constants'
@@ -231,7 +232,7 @@ export default function Blackjack(props: BlackjackConfig) {
           </Container>
           {/* Inline controls directly under the hands/banner */}
           <ControlsInline>
-            <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
+            <WagerInputPatched value={initialWager} onChange={setInitialWager} />
             <GambaUi.Button main onClick={play}>Deal Cards</GambaUi.Button>
           </ControlsInline>
         </GambaUi.Responsive>

@@ -1,5 +1,6 @@
 import { BPS_PER_WHOLE } from 'gamba-core-v2'
 import { GambaUi, TokenValue, useCurrentPool, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { WagerInputPatched } from '../../components/WagerInputPatched'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { GRID_SIZE, MINE_SELECT, PITCH_INCREASE_FACTOR, SOUND_EXPLODE, SOUND_FINISH, SOUND_STEP, SOUND_TICK, SOUND_WIN } from './constants'
@@ -188,7 +189,7 @@ function Mines() {
           <ControlsInline>
             {!started ? (
               <>
-                <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
+                <WagerInputPatched value={initialWager} onChange={setInitialWager} />
                 <GambaUi.Select
                   options={MINE_SELECT}
                   value={mines}
