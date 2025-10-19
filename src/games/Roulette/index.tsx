@@ -122,13 +122,15 @@ export default function Roulette() {
             <Table />
           </Wrapper>
         </GambaUi.Responsive>
-        {/* Inline primary controls under the table/results, inside screen */}
+      </GambaUi.Portal>
+      {/* Render inline controls below the game using the controls portal */}
+      <GambaUi.Portal target="controls">
         <ControlsInline>
           <GambaUi.Select
             options={CHIPS}
             value={selectedChip.value}
-            onChange={(value) => selectedChip.value = value}
-            label={(value) => (
+            onChange={(value: number) => selectedChip.value = value}
+            label={(value: number) => (
               <>
                 <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
               </>

@@ -100,22 +100,24 @@ function Flip() {
             groundColor="#6666fe"
           />
         </Canvas>
-        {/* Inline all controls below the canvas, inside screen */}
+      </GambaUi.Portal>
+      {/* Render inline controls below the game using the controls portal */}
+      <GambaUi.Portal target="controls">
         <ControlsInline>
-        <GambaUi.WagerInput
-          options={WAGER_OPTIONS}
-          value={wager}
-          onChange={setWager}
-        />
-        <GambaUi.Button disabled={gamba.isPlaying} onClick={() => setSide(side === 'heads' ? 'tails' : 'heads')}>
-          <div style={{ display: 'flex' }}>
-            <img height="20px" src={side === 'heads' ? TEXTURE_HEADS : TEXTURE_TAILS} />
-            {side === 'heads' ? 'Heads' : 'Tails' }
-          </div>
-        </GambaUi.Button>
-        <GambaUi.Button main onClick={play}>
-          Flip
-        </GambaUi.Button>
+          <GambaUi.WagerInput
+            options={WAGER_OPTIONS}
+            value={wager}
+            onChange={setWager}
+          />
+          <GambaUi.Button disabled={gamba.isPlaying} onClick={() => setSide(side === 'heads' ? 'tails' : 'heads')}>
+            <div style={{ display: 'flex' }}>
+              <img height="20px" src={side === 'heads' ? TEXTURE_HEADS : TEXTURE_TAILS} />
+              {side === 'heads' ? 'Heads' : 'Tails' }
+            </div>
+          </GambaUi.Button>
+          <GambaUi.Button main onClick={play}>
+            Flip
+          </GambaUi.Button>
         </ControlsInline>
       </GambaUi.Portal>
     </>

@@ -107,16 +107,24 @@ const BottomArea = styled.div`
   }
 `;
 
-const JackpotBadge = styled.div`
+const JackpotBadge = styled.button`
+  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: #ECD11E;
   color: #121212;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.9rem; /* match button font-size */
   border-radius: 10px;
-  padding: 8px 12px;
+  padding: 12px 16px; /* match ActionButton padding */
+  min-width: 120px;
+  max-width: 180px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  &:hover { background: #e6c000; transform: translateY(-2px); }
 `;
 
 const ActionButton = styled.button`
@@ -178,11 +186,7 @@ export function WelcomeBanner() {
         ) && (
           <JackpotBadge
             onClick={() => setJackpotHelp(true)}
-            role="button"
-            tabIndex={0}
-            style={{ cursor: 'pointer' }}
             aria-label="Show jackpot details"
-            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => { if (e.key === 'Enter' || e.key === ' ') setJackpotHelp(true) }}
           >
             💰 Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
           </JackpotBadge>

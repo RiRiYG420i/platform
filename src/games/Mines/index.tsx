@@ -183,26 +183,28 @@ function Mines() {
             </Container>
           </GambaUi.Responsive>
         </Container2>
-        {/* Inline primary controls directly under the grid/banner, inside screen */}
+      </GambaUi.Portal>
+      {/* Render inline controls below the game using the controls portal to avoid clipping */}
+      <GambaUi.Portal target="controls">
         <ControlsInline>
-        {!started ? (
-          <>
-            <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
-            <GambaUi.Select
-              options={MINE_SELECT}
-              value={mines}
-              onChange={setMines}
-              label={(mines) => (
-                <>{mines} Mines</>
-              )}
-            />
-            <GambaUi.Button main onClick={start}>Start</GambaUi.Button>
-          </>
-        ) : (
-          <GambaUi.Button onClick={endGame}>
-            {totalGain > 0 ? 'Finish' : 'Reset'}
-          </GambaUi.Button>
-        )}
+          {!started ? (
+            <>
+              <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
+              <GambaUi.Select
+                options={MINE_SELECT}
+                value={mines}
+                onChange={setMines}
+                label={(mines: number) => (
+                  <>{mines} Mines</>
+                )}
+              />
+              <GambaUi.Button main onClick={start}>Start</GambaUi.Button>
+            </>
+          ) : (
+            <GambaUi.Button onClick={endGame}>
+              {totalGain > 0 ? 'Finish' : 'Reset'}
+            </GambaUi.Button>
+          )}
         </ControlsInline>
       </GambaUi.Portal>
     </>
