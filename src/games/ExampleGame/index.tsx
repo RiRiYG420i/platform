@@ -1,4 +1,5 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 import React from 'react'
 import SOUND from './test.mp3'
 
@@ -62,14 +63,18 @@ export default function ExampleGame() {
           }}
         />
       </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
+      {/* Inline primary controls under the canvas */}
+      <ControlsInline>
         <GambaUi.WagerInput value={wager} onChange={setWager} />
+        <GambaUi.Button main onClick={play}>
+          Double Or nothing
+        </GambaUi.Button>
+      </ControlsInline>
+      {/* Keep extra/demo controls in the portal if desired */}
+      <GambaUi.Portal target="controls">
         <GambaUi.Button onClick={click}>
           Useless button
         </GambaUi.Button>
-        <GambaUi.PlayButton onClick={play}>
-          Double Or nothing
-        </GambaUi.PlayButton>
       </GambaUi.Portal>
     </>
   )

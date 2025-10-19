@@ -124,6 +124,28 @@ export const MetaControls = styled.div`
   z-index: 6;
 `
 
+// Shared inline controls container to place under each game's banner/result area
+export const ControlsInline = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: stretch;
+  margin-top: 10px;
+
+  & > * {
+    flex: 0 1 auto;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    & > * {
+      width: 100%;
+      max-width: 360px;
+    }
+  }
+`
+
 export const spinnerAnimation = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }

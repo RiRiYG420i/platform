@@ -3,6 +3,7 @@ import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { MAX_CARD_SHOWN, RANKS, RANK_SYMBOLS, SOUND_CARD, SOUND_FINISH, SOUND_LOSE, SOUND_PLAY, SOUND_WIN } from './constants'
 import { Card, CardContainer, CardPreview, CardsContainer, Container, Option, Options, Profit } from './styles'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 
 const BPS_PER_WHOLE = 10000
 
@@ -195,34 +196,34 @@ export default function HiLo(props: HiLoConfig) {
           </Container>
         </GambaUi.Responsive>
       </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
+      {/* Inline primary controls under the content/banner */}
+      <ControlsInline>
         {!profit ? (
           <>
-            <GambaUi.WagerInput
-              value={initialWager}
-              onChange={setInitialWager}
-            />
-            <GambaUi.PlayButton disabled={!option || initialWager > maxWagerForBet} onClick={play}>
+            <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
+            <GambaUi.Button main disabled={!option || initialWager > maxWagerForBet} onClick={play}>
               Deal card
-            </GambaUi.PlayButton>
-            {initialWager > maxWagerForBet && (
-              <GambaUi.Button onClick={() => setInitialWager(maxWagerForBet)}>
-                Set max
-              </GambaUi.Button>
-            )}
+            </GambaUi.Button>
           </>
         ) : (
           <>
-            <TokenValue amount={wager} />
             <GambaUi.Button disabled={gamba.isPlaying} onClick={resetGame}>
               Finish
             </GambaUi.Button>
-            <GambaUi.PlayButton disabled={!option} onClick={play}>
+            <GambaUi.Button main disabled={!option} onClick={play}>
               Deal card
-            </GambaUi.PlayButton>
+            </GambaUi.Button>
           </>
         )}
-      </GambaUi.Portal>
+      </ControlsInline>
+      {/* Keep secondary helpers in controls portal if desired */}
+      {initialWager > maxWagerForBet && (
+        <GambaUi.Portal target="controls">
+          <GambaUi.Button onClick={() => setInitialWager(maxWagerForBet)}>
+            Set max
+          </GambaUi.Button>
+        </GambaUi.Portal>
+      )}
     </>
   )
 }

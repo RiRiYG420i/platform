@@ -2,6 +2,7 @@ import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { PEG_RADIUS, PLINKO_RAIUS, Plinko as PlinkoGame, PlinkoProps, barrierHeight, barrierWidth, bucketHeight } from './game'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 
 import BUMP from './bump.mp3'
 import FALL from './fall.mp3'
@@ -199,14 +200,17 @@ export default function Plinko() {
           }}
         />
       </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
+      {/* Inline primary controls under the canvas */}
+      <ControlsInline>
         <GambaUi.WagerInput value={wager} onChange={setWager} />
+        <GambaUi.Button main onClick={() => play()}>
+          Play
+        </GambaUi.Button>
+      </ControlsInline>
+      {/* Keep debug/degen switches in controls portal */}
+      <GambaUi.Portal target="controls">
         <div>Degen:</div>
-        <GambaUi.Switch
-          disabled={gamba.isPlaying}
-          checked={degen}
-          onChange={setDegen}
-        />
+        <GambaUi.Switch disabled={gamba.isPlaying} checked={degen} onChange={setDegen} />
         {window.location.origin.includes('localhost') && (
           <>
             <GambaUi.Switch checked={debug} onChange={setDebug}  />
@@ -218,9 +222,6 @@ export default function Plinko() {
             </GambaUi.Button>
           </>
         )}
-        <GambaUi.PlayButton onClick={() => play()}>
-          Play
-        </GambaUi.PlayButton>
       </GambaUi.Portal>
     </>
   )

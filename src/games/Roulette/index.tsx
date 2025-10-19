@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Chip } from './Chip'
 import { StyledResults } from './Roulette.styles'
 import { Table } from './Table'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 import { CHIPS, SOUND_LOSE, SOUND_PLAY, SOUND_WIN } from './constants'
 import { addResult, bet, clearChips, results, selectedChip, totalChipValue } from './signals'
 
@@ -122,6 +123,19 @@ export default function Roulette() {
           </Wrapper>
         </GambaUi.Responsive>
       </GambaUi.Portal>
+      {/* Inline primary controls under the table/results */}
+      <ControlsInline>
+        <GambaUi.Button
+          disabled={!wager || gamba.isPlaying}
+          onClick={clearChips}
+        >
+          Clear
+        </GambaUi.Button>
+        <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
+          Spin
+        </GambaUi.Button>
+      </ControlsInline>
+      {/* Keep chip selection in controls portal as secondary control */}
       <GambaUi.Portal target="controls">
         <GambaUi.Select
           options={CHIPS}
@@ -133,15 +147,6 @@ export default function Roulette() {
             </>
           )}
         />
-        <GambaUi.Button
-          disabled={!wager || gamba.isPlaying}
-          onClick={clearChips}
-        >
-          Clear
-        </GambaUi.Button>
-        <GambaUi.PlayButton disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
-          Spin
-        </GambaUi.PlayButton>
       </GambaUi.Portal>
     </>
   )

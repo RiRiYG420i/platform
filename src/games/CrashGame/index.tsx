@@ -4,6 +4,7 @@ import CustomSlider from './Slider'
 import CRASH_SOUND from './crash.mp3'
 import SOUND from './music.mp3'
 import { LineLayer1, LineLayer2, LineLayer3, MultiplierText, Rocket, ScreenWrapper, StarsLayer1, StarsLayer2, StarsLayer3 } from './styles'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 import { calculateBetArray } from './utils'
 import WIN_SOUND from './win.mp3'
 
@@ -105,15 +106,14 @@ export default function CrashGame() {
           <Rocket style={getRocketStyle()} />
         </ScreenWrapper>
       </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
+      {/* Inline primary controls under the screen */}
+      <ControlsInline>
         <GambaUi.WagerInput value={wager} onChange={setWager} />
-        <CustomSlider
-          value={multiplierTarget}
-          onChange={setMultiplierTarget}
-        />
-        <GambaUi.PlayButton onClick={play}>
-          Play
-        </GambaUi.PlayButton>
+        <GambaUi.Button main onClick={play}>Play</GambaUi.Button>
+      </ControlsInline>
+      {/* Keep multiplier slider in portal as a secondary control */}
+      <GambaUi.Portal target="controls">
+        <CustomSlider value={multiplierTarget} onChange={setMultiplierTarget} />
       </GambaUi.Portal>
     </>
   )

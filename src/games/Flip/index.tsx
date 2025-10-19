@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { GambaUi, useSound } from 'gamba-react-ui-v2'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { Coin, TEXTURE_HEADS, TEXTURE_TAILS } from './Coin'
@@ -100,21 +101,25 @@ function Flip() {
           />
         </Canvas>
       </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
+      {/* Inline primary controls below the canvas */}
+      <ControlsInline>
         <GambaUi.WagerInput
           options={WAGER_OPTIONS}
           value={wager}
           onChange={setWager}
         />
+        <GambaUi.Button main onClick={play}>
+          Flip
+        </GambaUi.Button>
+      </ControlsInline>
+      {/* Keep secondary controls (side toggle) in the controls portal if needed */}
+      <GambaUi.Portal target="controls">
         <GambaUi.Button disabled={gamba.isPlaying} onClick={() => setSide(side === 'heads' ? 'tails' : 'heads')}>
           <div style={{ display: 'flex' }}>
             <img height="20px" src={side === 'heads' ? TEXTURE_HEADS : TEXTURE_TAILS} />
             {side === 'heads' ? 'Heads' : 'Tails' }
           </div>
         </GambaUi.Button>
-        <GambaUi.PlayButton onClick={play}>
-          Flip
-        </GambaUi.PlayButton>
       </GambaUi.Portal>
     </>
   )

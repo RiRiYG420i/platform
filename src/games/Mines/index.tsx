@@ -4,6 +4,7 @@ import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import { GRID_SIZE, MINE_SELECT, PITCH_INCREASE_FACTOR, SOUND_EXPLODE, SOUND_FINISH, SOUND_STEP, SOUND_TICK, SOUND_WIN } from './constants'
 import { CellButton, Container, Container2, Grid, Level, Levels, StatusBar } from './styles'
+import { ControlsInline } from '../../sections/Game/Game.styles'
 import { generateGrid, revealAllMines, revealGold } from './utils'
 
 function Mines() {
@@ -183,27 +184,29 @@ function Mines() {
           </GambaUi.Responsive>
         </Container2>
       </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
+      {/* Inline primary controls directly under the grid/banner */}
+      <ControlsInline>
         {!started ? (
           <>
             <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
-            <GambaUi.Select
-              options={MINE_SELECT}
-              value={mines}
-              onChange={setMines}
-              label={(mines) => (
-                <>{mines} Mines</>
-              )}
-            />
-            <GambaUi.PlayButton onClick={start}>
-              Start
-            </GambaUi.PlayButton>
+            <GambaUi.Button main onClick={start}>Start</GambaUi.Button>
           </>
         ) : (
           <GambaUi.Button onClick={endGame}>
             {totalGain > 0 ? 'Finish' : 'Reset'}
           </GambaUi.Button>
         )}
+      </ControlsInline>
+      {/* Keep mines selector in the controls portal as a secondary control */}
+      <GambaUi.Portal target="controls">
+        <GambaUi.Select
+          options={MINE_SELECT}
+          value={mines}
+          onChange={setMines}
+          label={(mines) => (
+            <>{mines} Mines</>
+          )}
+        />
       </GambaUi.Portal>
     </>
   )
