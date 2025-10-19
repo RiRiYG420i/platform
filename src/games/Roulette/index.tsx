@@ -123,8 +123,8 @@ export default function Roulette() {
           </Wrapper>
         </GambaUi.Responsive>
       </GambaUi.Portal>
-      {/* Render inline controls below the game using the controls portal */}
-      <GambaUi.Portal target="controls">
+      {/* Render inline controls below the game using the inline portal */}
+      <GambaUi.Portal target="inline">
         <ControlsInline>
           <GambaUi.Select
             options={CHIPS}

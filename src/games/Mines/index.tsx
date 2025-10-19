@@ -184,8 +184,9 @@ function Mines() {
           </GambaUi.Responsive>
         </Container2>
       </GambaUi.Portal>
-      {/* Render inline controls below the game using the controls portal to avoid clipping */}
-      <GambaUi.Portal target="controls">
+
+      {/* Inline controls directly under the game screen */}
+      <GambaUi.Portal target="inline">
         <ControlsInline>
           {!started ? (
             <>

@@ -9,7 +9,7 @@ import { Modal } from '../../components/Modal'
 import { GAMES } from '../../games'
 import { useUserStore } from '../../hooks/useUserStore'
 import { GameSlider } from '../Dashboard/Dashboard'
-import { Container, Controls, IconButton, MetaControls, Screen, Spinner, Splash } from './Game.styles'
+import { Container, Controls, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
 import { LoadingBar, useLoadingState } from './LoadingBar'
 import { ProvablyFairModal } from './ProvablyFairModal'
 import { TransactionModal } from './TransactionModal'
@@ -87,6 +87,11 @@ function CustomRenderer() {
         </Screen>
 
         <LoadingBar />
+
+        {/* Inline controls host directly under the screen */}
+        <InlineControlsArea>
+          <GambaUi.PortalTarget target="inline" />
+        </InlineControlsArea>
 
         {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
         <Controls>

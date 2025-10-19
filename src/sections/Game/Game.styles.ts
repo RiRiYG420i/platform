@@ -146,6 +146,15 @@ export const ControlsInline = styled.div`
   }
 `
 
+// Host for inline controls under the screen, without the Controls bar styling
+export const InlineControlsArea = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+`
+
 export const spinnerAnimation = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }

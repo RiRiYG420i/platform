@@ -101,8 +101,8 @@ function Flip() {
           />
         </Canvas>
       </GambaUi.Portal>
-      {/* Render inline controls below the game using the controls portal */}
-      <GambaUi.Portal target="controls">
+      {/* Render inline controls below the game using the inline portal */}
+      <GambaUi.Portal target="inline">
         <ControlsInline>
           <GambaUi.WagerInput
             options={WAGER_OPTIONS}
