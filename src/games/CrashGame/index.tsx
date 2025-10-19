@@ -109,12 +109,9 @@ export default function CrashGame() {
       {/* Inline primary controls under the screen */}
       <ControlsInline>
         <GambaUi.WagerInput value={wager} onChange={setWager} />
+        <CustomSlider value={multiplierTarget} onChange={setMultiplierTarget} />
         <GambaUi.Button main onClick={play}>Play</GambaUi.Button>
       </ControlsInline>
-      {/* Keep multiplier slider in portal as a secondary control */}
-      <GambaUi.Portal target="controls">
-        <CustomSlider value={multiplierTarget} onChange={setMultiplierTarget} />
-      </GambaUi.Portal>
     </>
   )
 }

@@ -204,6 +204,11 @@ export default function HiLo(props: HiLoConfig) {
             <GambaUi.Button main disabled={!option || initialWager > maxWagerForBet} onClick={play}>
               Deal card
             </GambaUi.Button>
+            {initialWager > maxWagerForBet && (
+              <GambaUi.Button onClick={() => setInitialWager(maxWagerForBet)}>
+                Set max
+              </GambaUi.Button>
+            )}
           </>
         ) : (
           <>
@@ -216,14 +221,7 @@ export default function HiLo(props: HiLoConfig) {
           </>
         )}
       </ControlsInline>
-      {/* Keep secondary helpers in controls portal if desired */}
-      {initialWager > maxWagerForBet && (
-        <GambaUi.Portal target="controls">
-          <GambaUi.Button onClick={() => setInitialWager(maxWagerForBet)}>
-            Set max
-          </GambaUi.Button>
-        </GambaUi.Portal>
-      )}
+      {/* Removed controls portal; all controls now inline */}
     </>
   )
 }

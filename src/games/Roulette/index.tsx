@@ -125,18 +125,6 @@ export default function Roulette() {
       </GambaUi.Portal>
       {/* Inline primary controls under the table/results */}
       <ControlsInline>
-        <GambaUi.Button
-          disabled={!wager || gamba.isPlaying}
-          onClick={clearChips}
-        >
-          Clear
-        </GambaUi.Button>
-        <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
-          Spin
-        </GambaUi.Button>
-      </ControlsInline>
-      {/* Keep chip selection in controls portal as secondary control */}
-      <GambaUi.Portal target="controls">
         <GambaUi.Select
           options={CHIPS}
           value={selectedChip.value}
@@ -147,7 +135,16 @@ export default function Roulette() {
             </>
           )}
         />
-      </GambaUi.Portal>
+        <GambaUi.Button
+          disabled={!wager || gamba.isPlaying}
+          onClick={clearChips}
+        >
+          Clear
+        </GambaUi.Button>
+        <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
+          Spin
+        </GambaUi.Button>
+      </ControlsInline>
     </>
   )
 }

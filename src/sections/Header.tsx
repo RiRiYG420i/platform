@@ -25,10 +25,10 @@ const Bonus = styled.button`
   font-size: 12px;
   text-transform: uppercase;
   font-weight: bold;
-  background: #F8C61E;
+  background: #E0B41B; /* slightly darker than header background */
   transition: background-color 0.2s, transform 0.2s ease;
   &:hover {
-    background: #e0b41b;
+  background: #C9A019;
     transform: translateY(-1px);
   }
 `
@@ -59,28 +59,25 @@ const Logo = styled(NavLink)`
 
 const StyledButton = styled.div`
   button {
-    background: #F8C61E !important;
+    background: #E0B41B !important; /* darker yellow */
     color: #121212 !important;
     border: none !important;
-    
-    &:hover {
-      background: #e0b41b !important;
-    }
+    &:hover { background: #C9A019 !important; }
   }
 `
 
-// Force only the main Token and Connect buttons in the header to #F8C61E
+// Force the main Token and Connect buttons in the header to darker yellow
 const RedButtonWrapper = styled.div`
   /* Target the immediate GambaUi.Button rendered as a button, not dropdown items */
   & > button,
   & > div > button {
-    background: #F8C61E !important;
+    background: #E0B41B !important;
     color: #121212 !important;
     border: none !important;
   }
   & > button:hover,
   & > div > button:hover {
-    background: #e0b41b !important;
+    background: #C9A019 !important;
   }
 `
 

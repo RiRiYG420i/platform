@@ -200,15 +200,9 @@ export default function Plinko() {
           }}
         />
       </GambaUi.Portal>
-      {/* Inline primary controls under the canvas */}
+      {/* Inline all controls under the canvas */}
       <ControlsInline>
         <GambaUi.WagerInput value={wager} onChange={setWager} />
-        <GambaUi.Button main onClick={() => play()}>
-          Play
-        </GambaUi.Button>
-      </ControlsInline>
-      {/* Keep debug/degen switches in controls portal */}
-      <GambaUi.Portal target="controls">
         <div>Degen:</div>
         <GambaUi.Switch disabled={gamba.isPlaying} checked={degen} onChange={setDegen} />
         {window.location.origin.includes('localhost') && (
@@ -222,7 +216,10 @@ export default function Plinko() {
             </GambaUi.Button>
           </>
         )}
-      </GambaUi.Portal>
+        <GambaUi.Button main onClick={() => play()}>
+          Play
+        </GambaUi.Button>
+      </ControlsInline>
     </>
   )
 }

@@ -189,6 +189,14 @@ function Mines() {
         {!started ? (
           <>
             <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
+            <GambaUi.Select
+              options={MINE_SELECT}
+              value={mines}
+              onChange={setMines}
+              label={(mines) => (
+                <>{mines} Mines</>
+              )}
+            />
             <GambaUi.Button main onClick={start}>Start</GambaUi.Button>
           </>
         ) : (
@@ -197,17 +205,7 @@ function Mines() {
           </GambaUi.Button>
         )}
       </ControlsInline>
-      {/* Keep mines selector in the controls portal as a secondary control */}
-      <GambaUi.Portal target="controls">
-        <GambaUi.Select
-          options={MINE_SELECT}
-          value={mines}
-          onChange={setMines}
-          label={(mines) => (
-            <>{mines} Mines</>
-          )}
-        />
-      </GambaUi.Portal>
+      {/* Removed controls portal; all controls now inline */}
     </>
   )
 }

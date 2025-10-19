@@ -154,7 +154,11 @@ export default function Slots() {
   return (
     <>
       <GambaUi.Portal target="screen">
-        {good && <EffectTest src={combination[0].image} />}
+        {good && (
+          <div style={{ pointerEvents: 'none' }}>
+            <EffectTest src={combination[0].image} />
+          </div>
+        )}
         <GambaUi.Responsive>
           <StyledSlots>
             <div>
