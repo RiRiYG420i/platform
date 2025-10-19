@@ -10,6 +10,8 @@ export const StyledItemPreview = styled.div`
     aspect-ratio: 1/1.5;
     border-radius: 5px;
     border: 1px solid #2d2d57;
+    background: #ECD11E; /* Match button yellow */
+    overflow: hidden;
   }
 
   & > div.hidden {
@@ -32,8 +34,8 @@ export const StyledItemPreview = styled.div`
     right: 0;
     top: 0;
     transform: translate(50%, -50%);
-    color: black;
-    background: #ffec63;
+    color: #121212;
+    background: #e6c000; /* hover-like darker yellow for contrast */
     z-index: 10;
     padding: 0 2px;
     border-radius: 2px;

@@ -135,6 +135,12 @@ export const ControlsInline = styled.div`
   margin-top: 10px;
   position: relative;
   z-index: 7; /* above MetaControls (6) and overlays inside screen */
+  flex-wrap: nowrap; /* keep items in one row when there is room */
+
+  /* Prevent text wrapping inside immediate children (buttons, selects, inputs) */
+  & > * {
+    white-space: nowrap;
+  }
 
   & > * {
     flex: 0 1 auto;
@@ -146,6 +152,7 @@ export const ControlsInline = styled.div`
     & > * {
       width: 100%;
       max-width: 360px;
+      white-space: normal; /* allow wrapping on stacked mobile layout */
     }
   }
 `

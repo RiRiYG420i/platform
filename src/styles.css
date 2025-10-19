@@ -17,6 +17,9 @@
   --gamba-ui-button-main-color: #121212;
   --gamba-ui-button-main-background-hover: #ECD11E;
 
+  /* Keep button content on a single line in wide layouts */
+  --gamba-ui-button-text-wrap: nowrap;
+
   /* Make inputs (e.g., WagerInput) match button theme */
   --gamba-ui-input-background: #ECD11E;
   --gamba-ui-input-color: #121212;
@@ -26,6 +29,11 @@
 body, input, button, textarea, pre {
   font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px;
+}
+
+/* Defensive: ensure GambaUi buttons/inputs avoid wrapping in wide layouts */
+button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
+  white-space: var(--gamba-ui-button-text-wrap, nowrap);
 }
 
 h1, h2 {
