@@ -3,7 +3,7 @@
 }
 
 :root {
-  --background-color: #252C37;
+  --background-color: #0C0C11;
   --text-color: #ffffff;
   --gamba-ui-primary-color: #778630;
 
@@ -103,7 +103,12 @@ h1, h2 {
 }
 
 body {
-  background: var(--background-color);
+  background: var(--background-color) !important;
+  background-image: none !important;
+  background-size: auto;
+  background-position: initial;
+  background-repeat: repeat;
+  background-attachment: scroll;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   color: var(--text-color);
@@ -112,6 +117,21 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */
+@media (max-width: 1200px), 
+       (orientation: portrait), 
+       (pointer: coarse),
+       (max-aspect-ratio: 1/1) {
+  body {
+    background: var(--background-color) !important;
+    background-image: none !important;
+    background-size: auto;
+    background-position: initial;
+    background-repeat: repeat;
+    background-attachment: scroll;
+  }
 }
 
 a {
