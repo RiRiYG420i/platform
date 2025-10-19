@@ -4,7 +4,7 @@ import { useGamba } from 'gamba-react-v2'
 import React from 'react'
 import Slider from './Slider'
 import { SOUND_LOSE, SOUND_PLAY, SOUND_TICK, SOUND_WIN } from './constants'
-import { Container, Result, RollUnder, Stats } from './styles'
+import { Container, Result, RollUnder, Stats, ControlsRow } from './styles'
 import { ControlsInline } from '../../sections/Game/Game.styles'
 
 const calculateArraySize = (odds: number): number => {
@@ -125,11 +125,13 @@ export default function Dice() {
                 }}
               />
             </div>
-            {/* Inline controls directly under the stats/banner */}
-            <ControlsInline>
-              <GambaUi.WagerInput value={wager} onChange={setWager} />
-              <GambaUi.Button main onClick={play}>Roll</GambaUi.Button>
-            </ControlsInline>
+            {/* Inline controls directly under the stats/banner, lowered slightly for aesthetics */}
+            <ControlsRow>
+              <ControlsInline>
+                <GambaUi.WagerInput value={wager} onChange={setWager} />
+                <GambaUi.Button main onClick={play}>Roll</GambaUi.Button>
+              </ControlsInline>
+            </ControlsRow>
           </Container>
         </GambaUi.Responsive>
       </GambaUi.Portal>

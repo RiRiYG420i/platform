@@ -4,7 +4,7 @@ import { BPS_PER_WHOLE, GambaTransaction } from 'gamba-core-v2'
 import { GambaUi, TokenValue, useTokenMeta } from 'gamba-react-ui-v2'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { extractMetadata } from '../../utils'
-import { EXPLORER_URL, PLATFORM_CREATOR_ADDRESS } from '../../constants'
+import { EXPLORER_URL, PLATFORM_CREATOR_ADDRESS, SHOW_EXPLORER_BUTTON } from '../../constants'
 import { Container, Jackpot, Profit, Recent, Skeleton } from './RecentPlays.styles'
 import { ShareModal } from './ShareModal'
 import { useRecentPlays } from './useRecentPlays'
@@ -73,14 +73,16 @@ export default function RecentPlays() {
           <TimeDiff time={tx.time} suffix={md ? 'ago' : ''} />
         </Recent>
       ))}
-      <GambaUi.Button
-        main
-        onClick={() =>
-          window.open(`${EXPLORER_URL}/platform/${PLATFORM_CREATOR_ADDRESS.toString()}`)
-        }
-      >
-        🚀 Explorer
-      </GambaUi.Button>
+      {SHOW_EXPLORER_BUTTON && (
+        <GambaUi.Button
+          main
+          onClick={() =>
+            window.open(`${EXPLORER_URL}/platform/${PLATFORM_CREATOR_ADDRESS.toString()}`)
+          }
+        >
+          🚀 Explorer
+        </GambaUi.Button>
+      )}
     </Container>
   )
 }

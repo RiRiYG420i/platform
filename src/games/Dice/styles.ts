@@ -78,3 +78,10 @@ export const Result = styled.div`
   }
 
 `
+
+export const ControlsRow = styled.div`
+  margin-top: 18px;
+  @media (min-width: 700px) {
+    margin-top: 24px;
+  }
+`

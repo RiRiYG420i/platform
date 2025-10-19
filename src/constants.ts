@@ -12,6 +12,9 @@ export const PLATFORM_CREATOR_ADDRESS = new PublicKey(
 // Gamba explorer URL - Appears in RecentPlays
 export const EXPLORER_URL = 'https://explorer.gamba.so'
 
+// Feature flag: Toggle visibility/availability of the Explorer button in UI
+export const SHOW_EXPLORER_BUTTON = false
+
 // Platform URL - Appears in ShareModal
 export const PLATFORM_SHARABLE_URL = 'play.gamba.so'
 
