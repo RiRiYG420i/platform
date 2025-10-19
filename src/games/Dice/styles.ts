@@ -63,7 +63,7 @@ export const Result = styled.div`
     font-weight: bold;
     width: 50px;
     text-align: center;
-    color: black;
+  color: #252C37;
   }
 
   & > div::after {

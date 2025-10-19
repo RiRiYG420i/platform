@@ -35,7 +35,7 @@ export const StyledItemPreview = styled.div`
     right: 0;
     top: 0;
     transform: translate(50%, -50%);
-    color: #121212;
+  color: #252C37;
     background: #e6c000; /* hover-like darker yellow for contrast */
     z-index: 20; /* ensure it stays above the tile */
     padding: 0 2px;

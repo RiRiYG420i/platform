@@ -43,7 +43,7 @@ const StyledToast = styled.div`
     100% { opacity: 1; --fade-in: 0%; }
   }
   background: #fffffff0;
-  color: black;
+  color: #252C37;
   border-radius: 10px;
   display: flex;
   flex-direction: column;

@@ -11,7 +11,7 @@ const StyledFooter = styled.div`
   padding: 20px 30px;
   background: rgba(37, 44, 55, 0.6);
   backdrop-filter: blur(20px);
-  color: #121212;
+  color: #252C37;
   position: relative;
   bottom: 0;
   left: 0;

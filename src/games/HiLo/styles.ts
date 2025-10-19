@@ -147,7 +147,7 @@ export const WarningMessage = styled.div`
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   font-size: 14px;
-  color: black;
+  color: #252C37;
   white-space: nowrap;
   pointer-events: none;
 `

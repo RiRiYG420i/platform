@@ -47,7 +47,7 @@ export function GameGrid() {
 }
 
 
-const unterBannerImg = new URL('../../../unter_banner.png', import.meta.url).href;
+const unterBannerImg = new URL('../../../unter_banner.gif', import.meta.url).href;
 const UnterBannerImg = styled.img`
   display: block;
   max-width: 100%;

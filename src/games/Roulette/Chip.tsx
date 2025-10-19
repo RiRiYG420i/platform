@@ -8,7 +8,7 @@ const StyledChip = styled.div<{$color: string}>`
   border-radius: 10px;
   background: var(--chip-color);
   border: 1px dashed var(--border-color);
-  color: black;
+  color: #252C37;
   font-size: 9px;
   font-weight: bold;
   color: var(--text-color);

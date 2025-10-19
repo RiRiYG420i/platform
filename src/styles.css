@@ -11,10 +11,10 @@
 
   --gamba-ui-button-default-background: #ECD11E;
   --gamba-ui-button-default-background-hover: #ECD11E;
-  --gamba-ui-button-default-color: #121212;
+  --gamba-ui-button-default-color: #252C37;
 
   --gamba-ui-button-main-background: #ECD11E;
-  --gamba-ui-button-main-color: #121212;
+  --gamba-ui-button-main-color: #252C37;
   --gamba-ui-button-main-background-hover: #ECD11E;
 
   /* Keep button content on a single line in wide layouts */
@@ -22,7 +22,7 @@
 
   /* Make inputs (e.g., WagerInput) match button theme */
   --gamba-ui-input-background: #ECD11E;
-  --gamba-ui-input-color: #121212;
+  --gamba-ui-input-color: #252C37;
   --gamba-ui-input-background-hover: #e6c000;
 }
 

@@ -58,7 +58,7 @@ export const Jackpot = styled.div`
   display: flex;
   gap: .5em;
   align-items: center;
-  color: black;
+  color: #252C37;
   border-radius: 10px;
   padding: 1px 5px;
 `

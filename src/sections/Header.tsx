@@ -19,7 +19,7 @@ import { ENABLE_LEADERBOARD } from '../constants'
 const Bonus = styled.button`
   all: unset;
   cursor: pointer;
-  color: #121212;
+  color: #252C37;
   border-radius: 10px;
   padding: 6px 12px;
   font-size: 12px;
@@ -59,8 +59,8 @@ const Logo = styled(NavLink)`
 
 const StyledButton = styled.div`
   button {
-    background: #E0B41B !important; /* darker yellow */
-    color: #121212 !important;
+  background: #E0B41B !important; /* darker yellow */
+  color: #252C37 !important;
     border: none !important;
     &:hover { background: #C9A019 !important; }
   }
@@ -71,8 +71,8 @@ const RedButtonWrapper = styled.div`
   /* Target the immediate GambaUi.Button rendered as a button, not dropdown items */
   & > button,
   & > div > button {
-    background: #E0B41B !important;
-    color: #121212 !important;
+  background: #E0B41B !important;
+  color: #252C37 !important;
     border: none !important;
   }
   & > button:hover,
