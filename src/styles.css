@@ -36,6 +36,32 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
   white-space: var(--gamba-ui-button-text-wrap, nowrap);
 }
 
+/* Enforce single-line layout inside wager inputs/buttons (amount + currency must never stack) */
+.gamba-ui-input,
+.gamba-ui-button {
+  display: inline-flex;
+  flex-direction: row !important;
+  align-items: center;
+  flex-wrap: nowrap !important;
+  gap: 8px;
+  overflow: hidden; /* allow inner text to ellipsis instead of wrapping */
+}
+
+.gamba-ui-input > *,
+.gamba-ui-button > * {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap !important;
+  min-width: 0; /* enable text-overflow on inner spans */
+}
+
+.gamba-ui-input span,
+.gamba-ui-button span {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 h1, h2 {
   margin: 0;
 }

@@ -11,7 +11,8 @@ export const StyledItemPreview = styled.div`
     border-radius: 5px;
     border: 1px solid #2d2d57;
     background: #ECD11E; /* Match button yellow */
-    overflow: hidden;
+    /* Allow multiplier badge to render outside the tile without being clipped */
+    overflow: visible;
   }
 
   & > div.hidden {
@@ -36,10 +37,9 @@ export const StyledItemPreview = styled.div`
     transform: translate(50%, -50%);
     color: #121212;
     background: #e6c000; /* hover-like darker yellow for contrast */
-    z-index: 10;
+    z-index: 20; /* ensure it stays above the tile */
     padding: 0 2px;
     border-radius: 2px;
-    z-index: 1;
   }
 
 `
