@@ -3,7 +3,7 @@
 }
 
 :root {
-  --background-color: #3a3a52;
+  --background-color: #252C37;
   --text-color: #ffffff;
   --gamba-ui-primary-color: #778630;
 
@@ -20,10 +20,10 @@
   /* Keep button content on a single line in wide layouts */
   --gamba-ui-button-text-wrap: nowrap;
 
-  /* Make inputs (e.g., WagerInput) match button theme */
-  --gamba-ui-input-background: #ECD11E;
+  /* Make inputs (e.g., WagerInput) match requested yellow */
+  --gamba-ui-input-background: #F8C61E;
   --gamba-ui-input-color: #252C37;
-  --gamba-ui-input-background-hover: #e6c000;
+  --gamba-ui-input-background-hover: #F8C61E;
 }
 
 body, input, button, textarea, pre {
@@ -65,6 +65,8 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
 /* Style for patched wager multiplier buttons */
 .wager-multiplier-patched {
   border: 2px solid #252C37 !important;
+  background: #F8C61E !important;
+  color: #252C37 !important;
 }
 
 /* Unified border for all buttons across the app */
@@ -102,11 +104,6 @@ h1, h2 {
 
 body {
   background: var(--background-color);
-  background-image: url('/bg-desktop.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   color: var(--text-color);
@@ -115,20 +112,6 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
-}
-
-/* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */
-@media (max-width: 1200px), 
-       (orientation: portrait), 
-       (pointer: coarse),
-       (max-aspect-ratio: 1/1) {
-  body {
-    background-image: url('/bg-mobile.png') !important;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
 }
 
 a {

@@ -173,4 +173,9 @@ const ControlsRow = styled.div`
   position: relative;
   z-index: 7;
   pointer-events: auto;
+  /* Lift controls upward to avoid overlap with bottom-left overlays (music, etc.) */
+  margin-bottom: 56px;
+  @media (min-width: 800px) {
+    margin-bottom: 80px;
+  }
 `
