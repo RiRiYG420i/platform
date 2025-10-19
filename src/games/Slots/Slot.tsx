@@ -34,7 +34,7 @@ const StyledSlot = styled.div<{$good: boolean}>`
   width: 100px;
   aspect-ratio: 1/1.5;
   position: relative;
-  background: #4444FF11;
+  background: #ECD11E;
   overflow: hidden;
   border-radius: 10px;
   border: 2px solid #2d2d57;
