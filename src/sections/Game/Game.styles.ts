@@ -152,7 +152,10 @@ export const ControlsInline = styled.div`
     & > * {
       width: 100%;
       max-width: 360px;
-      white-space: normal; /* allow wrapping on stacked mobile layout */
+    }
+    /* Allow wrapping for generic children, but keep Gamba UI controls strictly one-line */
+    & > *:not(.gamba-ui-input):not(.gamba-ui-button):not(.gamba-ui-select) {
+      white-space: normal;
     }
   }
 `

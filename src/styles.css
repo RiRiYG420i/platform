@@ -62,6 +62,26 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
   text-overflow: ellipsis;
 }
 
+/* Mobile: strictly enforce single-line in Gamba UI controls */
+@media (max-width: 600px) {
+  .gamba-ui-input,
+  .gamba-ui-button,
+  .gamba-ui-select {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    overflow: hidden;
+  }
+  .gamba-ui-input > *,
+  .gamba-ui-button > *,
+  .gamba-ui-select > * {
+    white-space: nowrap !important;
+    min-width: 0;
+  }
+}
+
 h1, h2 {
   margin: 0;
 }
