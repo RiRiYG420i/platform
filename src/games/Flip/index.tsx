@@ -100,9 +100,8 @@ function Flip() {
             groundColor="#6666fe"
           />
         </Canvas>
-      </GambaUi.Portal>
-      {/* Inline all controls below the canvas */}
-      <ControlsInline>
+        {/* Inline all controls below the canvas, inside screen */}
+        <ControlsInline>
         <GambaUi.WagerInput
           options={WAGER_OPTIONS}
           value={wager}
@@ -117,7 +116,8 @@ function Flip() {
         <GambaUi.Button main onClick={play}>
           Flip
         </GambaUi.Button>
-      </ControlsInline>
+        </ControlsInline>
+      </GambaUi.Portal>
     </>
   )
 }

@@ -183,9 +183,8 @@ function Mines() {
             </Container>
           </GambaUi.Responsive>
         </Container2>
-      </GambaUi.Portal>
-      {/* Inline primary controls directly under the grid/banner */}
-      <ControlsInline>
+        {/* Inline primary controls directly under the grid/banner, inside screen */}
+        <ControlsInline>
         {!started ? (
           <>
             <GambaUi.WagerInput value={initialWager} onChange={setInitialWager} />
@@ -204,8 +203,8 @@ function Mines() {
             {totalGain > 0 ? 'Finish' : 'Reset'}
           </GambaUi.Button>
         )}
-      </ControlsInline>
-      {/* Removed controls portal; all controls now inline */}
+        </ControlsInline>
+      </GambaUi.Portal>
     </>
   )
 }

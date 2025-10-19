@@ -122,29 +122,29 @@ export default function Roulette() {
             <Table />
           </Wrapper>
         </GambaUi.Responsive>
+        {/* Inline primary controls under the table/results, inside screen */}
+        <ControlsInline>
+          <GambaUi.Select
+            options={CHIPS}
+            value={selectedChip.value}
+            onChange={(value) => selectedChip.value = value}
+            label={(value) => (
+              <>
+                <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
+              </>
+            )}
+          />
+          <GambaUi.Button
+            disabled={!wager || gamba.isPlaying}
+            onClick={clearChips}
+          >
+            Clear
+          </GambaUi.Button>
+          <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
+            Spin
+          </GambaUi.Button>
+        </ControlsInline>
       </GambaUi.Portal>
-      {/* Inline primary controls under the table/results */}
-      <ControlsInline>
-        <GambaUi.Select
-          options={CHIPS}
-          value={selectedChip.value}
-          onChange={(value) => selectedChip.value = value}
-          label={(value) => (
-            <>
-              <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
-            </>
-          )}
-        />
-        <GambaUi.Button
-          disabled={!wager || gamba.isPlaying}
-          onClick={clearChips}
-        >
-          Clear
-        </GambaUi.Button>
-        <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
-          Spin
-        </GambaUi.Button>
-      </ControlsInline>
     </>
   )
 }
