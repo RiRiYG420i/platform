@@ -195,7 +195,7 @@ export function WelcomeBanner() {
           <ActionButton onClick={handleCopyInvite}>
             💸 Copy Invite
           </ActionButton>
-          <ActionButton onClick={openLink('https://v2.gamba.so/')}>
+          <ActionButton onClick={openLink('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view')}>
             ❓ How to
           </ActionButton>
         </ButtonGroup>
