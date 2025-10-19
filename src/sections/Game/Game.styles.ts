@@ -69,6 +69,7 @@ export const IconButton = styled.button`
   font-size: 16px;
   border-radius: 10px;
   color: white;
+  pointer-events: auto; /* Ensure clickable even if parent disables events */
   &:hover { background: #ffffff22; }
 `
 
@@ -122,6 +123,7 @@ export const MetaControls = styled.div`
   align-items: center;
   gap: 10px;
   z-index: 6;
+  pointer-events: none; /* Do not block clicks on underlying inline controls */
 `
 
 // Shared inline controls container to place under each game's banner/result area
@@ -131,6 +133,8 @@ export const ControlsInline = styled.div`
   justify-content: center;
   align-items: stretch;
   margin-top: 10px;
+  position: relative;
+  z-index: 7; /* above MetaControls (6) and overlays inside screen */
 
   & > * {
     flex: 0 1 auto;

@@ -71,6 +71,7 @@ function Flip() {
     <>
       <GambaUi.Portal target="screen">
         <ScreenGrid>
+        <CanvasArea>
         <Canvas
           linear
           flat
@@ -79,6 +80,7 @@ function Flip() {
             zoom: 80,
             position: [0, 0, 100],
           }}
+          style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'none' }}
         >
           <React.Suspense fallback={null}>
             <Coin result={resultIndex} flipping={flipping} />
@@ -102,6 +104,8 @@ function Flip() {
             groundColor="#6666fe"
           />
         </Canvas>
+        </CanvasArea>
+        <ControlsRow>
         <ControlsInline>
           <GambaUi.WagerInput
             options={WAGER_OPTIONS}
@@ -118,6 +122,7 @@ function Flip() {
             Flip
           </GambaUi.Button>
         </ControlsInline>
+        </ControlsRow>
         </ScreenGrid>
       </GambaUi.Portal>
 
@@ -134,4 +139,20 @@ const ScreenGrid = styled.div`
   grid-template-rows: minmax(0, 1fr) auto;
   align-items: stretch;
   min-height: 0;
+`
+
+const CanvasArea = styled.div`
+  grid-row: 1;
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+`
+
+const ControlsRow = styled.div`
+  grid-row: 2;
+  position: relative;
+  z-index: 7;
+  pointer-events: auto;
 `

@@ -17,9 +17,10 @@
   --gamba-ui-button-main-color: #121212;
   --gamba-ui-button-main-background-hover: #ECD11E;
 
-  --gamba-ui-input-background: #1ed60e;
-  --gamba-ui-input-color: #d80f0f;
-  --gamba-ui-input-background-hover: #373744;
+  /* Make inputs (e.g., WagerInput) match button theme */
+  --gamba-ui-input-background: #ECD11E;
+  --gamba-ui-input-color: #121212;
+  --gamba-ui-input-background-hover: #e6c000;
 }
 
 body, input, button, textarea, pre {

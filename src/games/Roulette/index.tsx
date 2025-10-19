@@ -117,31 +117,35 @@ export default function Roulette() {
     <>
       <GambaUi.Portal target="screen">
         <ScreenGrid>
-          <GambaUi.Responsive>
-            <Wrapper onContextMenu={(e) => e.preventDefault()}>
-              <Stats />
-              <Results />
-              <Table />
-            </Wrapper>
-          </GambaUi.Responsive>
-          <ControlsInline>
-            <GambaUi.Select
-              options={CHIPS}
-              value={selectedChip.value}
-              onChange={(value: number) => (selectedChip.value = value)}
-              label={(value: number) => (
-                <>
-                  <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
-                </>
-              )}
-            />
-            <GambaUi.Button disabled={!wager || gamba.isPlaying} onClick={clearChips}>
-              Clear
-            </GambaUi.Button>
-            <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
-              Spin
-            </GambaUi.Button>
-          </ControlsInline>
+          <ContentArea>
+            <GambaUi.Responsive>
+              <Wrapper onContextMenu={(e: React.MouseEvent) => e.preventDefault()}>
+                <Stats />
+                <Results />
+                <Table />
+              </Wrapper>
+            </GambaUi.Responsive>
+          </ContentArea>
+          <ControlsRow>
+            <ControlsInline>
+              <GambaUi.Select
+                options={CHIPS}
+                value={selectedChip.value}
+                onChange={(value: number) => (selectedChip.value = value)}
+                label={(value: number) => (
+                  <>
+                    <Chip value={value} /> = <TokenValue amount={token.baseWager * value} />
+                  </>
+                )}
+              />
+              <GambaUi.Button disabled={!wager || gamba.isPlaying} onClick={clearChips}>
+                Clear
+              </GambaUi.Button>
+              <GambaUi.Button main disabled={!wager || balanceExceeded || maxPayoutExceeded} onClick={play}>
+                Spin
+              </GambaUi.Button>
+            </ControlsInline>
+          </ControlsRow>
         </ScreenGrid>
       </GambaUi.Portal>
     </>
@@ -154,4 +158,19 @@ const ScreenGrid = styled.div`
   grid-template-rows: minmax(0, 1fr) auto;
   align-items: stretch;
   min-height: 0;
+`
+
+const ContentArea = styled.div`
+  grid-row: 1;
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  z-index: 1;
+`
+
+const ControlsRow = styled.div`
+  grid-row: 2;
+  position: relative;
+  z-index: 7;
+  pointer-events: auto;
 `
