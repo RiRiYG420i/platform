@@ -86,12 +86,12 @@ function CustomRenderer() {
           </MetaControls>
         </Screen>
 
-        <LoadingBar />
-
         {/* Inline controls host directly under the screen */}
         <InlineControlsArea>
           <GambaUi.PortalTarget target="inline" />
         </InlineControlsArea>
+
+        <LoadingBar />
 
         {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
         <Controls>
