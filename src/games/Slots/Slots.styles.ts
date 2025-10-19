@@ -113,4 +113,28 @@ export const StyledSlots = styled.div`
     max-width: 100%;
     max-height: 100%;
   }
+
+  /* Inline controls directly under the banner/result */
+  .controls-inline {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: stretch;
+    margin-top: 10px;
+  }
+
+  .controls-inline > * {
+    flex: 0 1 auto;
+  }
+
+  @media (max-width: 600px) {
+    .controls-inline {
+      flex-direction: column;
+      align-items: center;
+    }
+    .controls-inline > * {
+      width: 100%;
+      max-width: 360px;
+    }
+  }
 `

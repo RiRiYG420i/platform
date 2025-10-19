@@ -195,15 +195,16 @@ export default function Slots() {
                   </>
                 )}
               </div>
+              {/* Controls moved directly under the banner/result */}
+              <div className="controls-inline">
+                <GambaUi.WagerInput value={wager} onChange={setWager} />
+                <GambaUi.PlayButton disabled={!isValid} onClick={play}>
+                  Spin
+                </GambaUi.PlayButton>
+              </div>
             </div>
           </StyledSlots>
         </GambaUi.Responsive>
-      </GambaUi.Portal>
-      <GambaUi.Portal target="controls">
-        <GambaUi.WagerInput value={wager} onChange={setWager} />
-        <GambaUi.PlayButton disabled={!isValid} onClick={play}>
-          Spin
-        </GambaUi.PlayButton>
       </GambaUi.Portal>
     </>
   )
