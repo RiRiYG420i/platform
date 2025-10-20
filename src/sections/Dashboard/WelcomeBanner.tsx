@@ -2,7 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import React from 'react';
 import styled from 'styled-components';
-const bannerImg = new URL('../../../banner.gif', import.meta.url).href;
+const bannerVideo = new URL('../../../banner.mp4', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 import { Modal } from '../../components/Modal';
 
@@ -21,13 +21,7 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background-color: #F8C61E;
-  background-image:
-    linear-gradient(to bottom, rgba(248,198,30,0) 98%, #F8C61E 100%),
-    url(${bannerImg});
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
+  background-color: #F8C61E; /* Solid fallback */
   border: 12px solid #F8C61E; /* much thicker frame as requested */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
@@ -49,9 +43,31 @@ const WelcomeWrapper = styled.div`
     padding: 40px;
     /* Increase banner height downward by ~one button height on desktop */
     min-height: 656px;
-    background-image:
-      linear-gradient(to bottom, rgba(248,198,30,0) 85%, #F8C61E 100%),
-      url(${bannerImg});
+    /* Background color remains; video + overlay handle visuals */
+  }
+`;
+
+const VideoBg = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* match previous background-size: contain */
+  object-position: top center;
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 0;
+`;
+
+const GradientOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(248,198,30,0) 98%, #F8C61E 100%);
+  @media (min-width: 800px) {
+    background: linear-gradient(to bottom, rgba(248,198,30,0) 85%, #F8C61E 100%);
   }
 `;
 
@@ -175,6 +191,9 @@ export function WelcomeBanner() {
 
   return (
     <WelcomeWrapper>
+      {/* Video background replacing banner.gif; muted/autoplay/loop for silent background */}
+      <VideoBg src={bannerVideo} autoPlay loop muted playsInline />
+      <GradientOverlay />
       <WelcomeContent>
         <h1>Welcome to SOL-WIN👋</h1>
         <p>A fair, simple and decentralized casino on Solana. Play </p>
