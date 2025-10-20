@@ -21,14 +21,14 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background-color: #ECD11E;
+  background-color: #F8C61E;
   background-image:
-    linear-gradient(to bottom, rgba(236,209,30,0) 98%, #ECD11E 100%),
+    linear-gradient(to bottom, rgba(248,198,30,0) 98%, #F8C61E 100%),
     url(${bannerImg});
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
-  border: 4px solid #F8C61E; /* Match GameCard solid background color */
+  border: 12px solid #F8C61E; /* much thicker frame as requested */
   animation: welcome-fade-in 0.5s ease;
   border-radius: 12px; /* Slightly larger radius for a modern look */
   /* Compact bottom padding; height increase handled via min-height */
@@ -50,7 +50,7 @@ const WelcomeWrapper = styled.div`
     /* Increase banner height downward by ~one button height on desktop */
     min-height: 656px;
     background-image:
-      linear-gradient(to bottom, rgba(236,209,30,0) 85%, #ECD11E 100%),
+      linear-gradient(to bottom, rgba(248,198,30,0) 85%, #F8C61E 100%),
       url(${bannerImg});
   }
 `;
