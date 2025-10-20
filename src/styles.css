@@ -45,6 +45,7 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
   flex-wrap: nowrap !important;
   gap: 8px;
   overflow: hidden; /* allow inner text to ellipsis instead of wrapping */
+  min-width: 0;
 }
 
 .gamba-ui-input > *,
@@ -60,6 +61,20 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
   white-space: nowrap !important;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Stronger: prevent any nested element from stacking into multiple rows */
+.gamba-ui-input *,
+.gamba-ui-button * {
+  white-space: nowrap !important;
+  flex-wrap: nowrap !important;
+  min-width: 0;
+}
+
+/* If the library injects line breaks, hide them to keep one line */
+.gamba-ui-input br,
+.gamba-ui-button br {
+  display: none !important;
 }
 
 /* Style for patched wager multiplier buttons */
