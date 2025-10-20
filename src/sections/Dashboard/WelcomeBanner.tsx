@@ -2,7 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import React from 'react';
 import styled from 'styled-components';
-const bannerImg = new URL('../../../banner.png', import.meta.url).href;
+const bannerImg = new URL('../../../banner.gif', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 import { Modal } from '../../components/Modal';
 
@@ -21,9 +21,9 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background-color: #252C37;
+  background-color: #ECD11E;
   background-image:
-    linear-gradient(to bottom, rgba(37,44,55,0) 98%, #252C37 100%),
+    linear-gradient(to bottom, rgba(236,209,30,0) 98%, #ECD11E 100%),
     url(${bannerImg});
   background-size: contain;
   background-position: top center;
@@ -50,7 +50,7 @@ const WelcomeWrapper = styled.div`
     /* Increase banner height downward by ~one button height on desktop */
     min-height: 656px;
     background-image:
-      linear-gradient(to bottom, rgba(37,44,55,0) 85%, #252C37 100%),
+      linear-gradient(to bottom, rgba(236,209,30,0) 85%, #ECD11E 100%),
       url(${bannerImg});
   }
 `;
