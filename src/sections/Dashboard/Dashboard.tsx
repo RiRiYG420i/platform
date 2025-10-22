@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { SlideSection } from '../../components/Slider'
-import { VCardCarousel } from '../../components/VCardCarousel'
 import { GAMES } from '../../games'
 import { GameCard } from './GameCard'
 import { WelcomeBanner } from './WelcomeBanner'
+import VCardCarousel from '../../components/VCardCarousel'
 // src/sections/Dashboard/Dashboard.tsx
 import FeaturedInlineGame from './FeaturedInlineGame'
 
@@ -13,8 +13,8 @@ import FeaturedInlineGame from './FeaturedInlineGame'
 export function GameSlider() {
   return (
     <SlideSection>
-      {GAMES.filter((game) => !game.disabled).map((game) => (
-        <div key={game.id} style={{ width: '160px', display: 'flex' }}>
+      {GAMES.filter((game) => !game.disabled).map((game, i) => (
+        <div key={i} style={{ width: '160px', display: 'flex' }}>
           <GameCard game={game} />
         </div>
       ))}
@@ -40,8 +40,10 @@ const Grid = styled.div`
 export function GameGrid() {
   return (
     <Grid>
-      {GAMES.filter((game) => !game.disabled).map((game) => (
-        <GameCard key={game.id} game={game} />
+      {GAMES.filter((game) => !game.disabled).map((game, i) => (
+        <div key={i}>
+          <GameCard game={game} />
+        </div>
       ))}
     </Grid>
   )
@@ -62,20 +64,8 @@ export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
+      <VCardCarousel autoplay interval={4000} />
   <UnterBannerImg src={unterBannerImg} alt="Unter Banner" />
-      {/* Futuristic V-shaped Card Carousel (fan layout) */}
-      <div style={{ margin: '10px 0 20px 0' }}>
-        <VCardCarousel
-          items={GAMES.filter(g => !g.disabled).map(g => ({
-            id: g.id,
-            title: g.meta.name,
-            image: g.meta.image,
-            tag: g.meta.tag,
-          }))}
-          autoplay
-          autoplayInterval={2600}
-        />
-      </div>
       <FeaturedInlineGame />
       <GameGrid />
     </>

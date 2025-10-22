@@ -1,417 +1,211 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { GAMES, type ExtendedGameBundle } from '../games'
+import { GameCard } from '../sections/Dashboard/GameCard'
 
-/*
-Modern techniques used (2025) — rationale and sources:
-- GPU-accelerated transforms only (translate/rotate/scale), opacity: Recommended by web.dev “High-performance animations”. Avoids layout/paint jank; use will-change only while animating.
-- FLIP mindset for layout moves (transform-only) as described by David Khourshid (CSS‑Tricks FLIP). We never animate top/left.
-- True 3D using perspective on the container + transform-style: preserve-3d with rotateY/rotateZ and translateZ depth.
-- Framer Motion springs for interruptible, buttery transitions; physics tuned for UI feel. Drag gestures map to index changes; autoplay is frame-safe and pauses on interaction.
-- Container queries for responsiveness; CSS custom properties expose spacing/angles so designers can tune without code changes.
-- Neon/glow frame via layered box-shadow and an ::after border-fade; shadows use drop-shadow to keep composition on the GPU.
-- A11y: keyboard arrows and Enter to activate; large hit target and focus ring.
-*/
+// A responsive, center-mode carousel inspired by OwlCarousel2 "center" demo.
+// - Centers the active card
+// - Shows partial side cards via stage padding
+// - Optional autoplay
 
-// Small value contract
-// Inputs: items (id, title, optional tag/color). Optional onSelect.
-// Outputs: navigates to /:id on click by default, calls onSelect(id).
-// Error modes: empty items → renders nothing; out-of-range selection guarded.
-// Success: smooth 60fps transforms; responsive angles; highlighted center card.
-
-export interface CarouselItem {
-  id: string
-  title: string
-  image?: string // optional small icon to render on top; background is fixed asset
-  tag?: string
-  color?: string
+type Breakpoints = {
+	items: number
+	stagePadding: number
 }
+
+function useResponsive(): Breakpoints {
+	const [bp, setBp] = React.useState<Breakpoints>(() => {
+		const w = typeof window !== 'undefined' ? window.innerWidth : 1200
+		if (w < 600) return { items: 1, stagePadding: 32 }
+		if (w < 900) return { items: 3, stagePadding: 48 }
+		return { items: 5, stagePadding: 72 }
+	})
+
+	React.useEffect(() => {
+		const onResize = () => {
+			const w = window.innerWidth
+			if (w < 600) setBp({ items: 1, stagePadding: 32 })
+			else if (w < 900) setBp({ items: 3, stagePadding: 48 })
+			else setBp({ items: 5, stagePadding: 72 })
+		}
+		window.addEventListener('resize', onResize)
+		return () => window.removeEventListener('resize', onResize)
+	}, [])
+
+	return bp
+}
+
+const CarouselRoot = styled.div<{ stagePadding: number }>`
+	position: relative;
+	width: 100%;
+	padding-left: ${(p: { stagePadding: number }) => p.stagePadding}px;
+	padding-right: ${(p: { stagePadding: number }) => p.stagePadding}px;
+	box-sizing: border-box;
+	overflow: hidden;
+`
+
+const Track = styled.div<{ x: number }>`
+	display: flex;
+	align-items: stretch;
+	gap: 16px;
+	will-change: transform;
+	transition: transform 450ms ease;
+	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
+`
+
+const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean }>`
+	flex: 0 0 ${(p: { width: number }) => p.width}px;
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	transform-origin: center bottom;
+	${css`
+		transition: transform 300ms ease, filter 300ms ease; 
+	`}
+
+	${(p: { active?: boolean; neighbor?: boolean }) =>
+		p.active
+			? css`
+					transform: scale(1.06);
+					z-index: 2;
+					filter: none;
+				`
+			: p.neighbor
+			? css`
+					transform: scale(0.98);
+					z-index: 1;
+					filter: brightness(0.98) saturate(0.98);
+				`
+			: css`
+					transform: scale(0.94);
+					filter: brightness(0.9) saturate(0.95);
+				`}
+`
+
+const Arrow = styled.button<{ side: 'left' | 'right' }>`
+	all: unset;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	${(p: { side: 'left' | 'right' }) => (p.side === 'left' ? 'left: 0;' : 'right: 0;')}
+	display: grid;
+	place-items: center;
+	width: 44px;
+	background: linear-gradient(
+		to ${(p: { side: 'left' | 'right' }) => (p.side === 'left' ? 'right' : 'left')},
+		rgba(0,0,0,0.35),
+		rgba(0,0,0,0.0)
+	);
+	cursor: pointer;
+	color: white;
+	opacity: 0.6;
+	transition: opacity 150ms ease;
+	&:hover { opacity: 1; }
+	z-index: 3;
+`
+
+const Dots = styled.div`
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 12px;
+`
+
+const Dot = styled.button<{ active?: boolean }>`
+	all: unset;
+	width: 8px;
+	height: 8px;
+	border-radius: 999px;
+	background: ${(p: { active?: boolean }) => (p.active ? 'white' : 'rgba(255,255,255,0.4)')};
+	box-shadow: 0 0 0 2px rgba(255,255,255,0.15) inset;
+	cursor: pointer;
+`
 
 export interface VCardCarouselProps {
-  items: CarouselItem[]
-  initialIndex?: number
-  onSelect?: (id: string) => void
-  // visual tuning (can be overridden via CSS variables on parent)
-  maxVisible?: number // max cards rendered around center (per side)
-  autoplay?: boolean
-  autoplayInterval?: number // ms
+	autoplay?: boolean
+	interval?: number
 }
 
-const Wrapper = styled.div`
-  --card-w: 180px;
-  --card-h: 240px;
-  --gap: 28px;          /* base X spacing between cards */
-  --angle: 12deg;       /* rotateZ for side cards */
-  --yaw: 10deg;         /* rotateY to give a fan depth */
-  --lift-z: 24px;       /* translateZ lift for center */
-  --depth: 80px;        /* side cards recede per step */
-  --scale-side: 0.92;   /* side card scale */
-  --scale-far: 0.86;    /* far side scale */
-  --shadow: 0 10px 30px rgba(0,0,0,0.35);
-  --glow: 0 0 0px rgba(0, 255, 200, 0.0);
-  --perspective: 1200px;
-  --radius: 18px;
+export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCardCarouselProps) {
+	const { items, stagePadding } = useResponsive()
+	const rootRef = React.useRef<HTMLDivElement>(null)
+	const [current, setCurrent] = React.useState(0)
+	const count = React.useMemo(() => GAMES.filter((g) => !g.disabled).length, [])
 
-  position: relative;
-  container-type: inline-size; /* enable container queries */
-  perspective: var(--perspective);
-  width: 100%;
-  display: grid;
-  place-items: center;
-  padding: 12px 0 24px;
+	// Measurements
+	const [slideWidth, setSlideWidth] = React.useState(280)
+	const gap = 16
 
-  @container (min-width: 520px) {
-    --card-w: 200px;
-    --card-h: 270px;
-    --gap: 34px;
-    --angle: 13deg;
-    --yaw: 12deg;
-    --depth: 90px;
-  }
-  @container (min-width: 760px) {
-    --card-w: 220px;
-    --card-h: 300px;
-    --gap: 40px;
-    --angle: 14deg;
-    --yaw: 13deg;
-    --depth: 100px;
-  }
-  @container (min-width: 1024px) {
-    --card-w: 240px;
-    --card-h: 320px;
-    --gap: 46px;
-    --angle: 15deg;
-    --yaw: 14deg;
-    --depth: 110px;
-  }
-`
+	const recalc = React.useCallback(() => {
+		const el = rootRef.current
+		if (!el) return
+		const viewport = el.clientWidth
+		const inner = viewport - stagePadding * 2
+		const width = Math.max(160, Math.floor((inner - gap * (items - 1)) / items))
+		setSlideWidth(width)
+	}, [items, stagePadding])
 
-const Stage = styled.div`
-  position: relative;
-  width: min(100%, calc(var(--card-w) * 3 + var(--gap) * 6));
-  height: calc(var(--card-h) + 64px);
-  transform-style: preserve-3d;
-  perspective-origin: 50% 40%;
-`
+	React.useEffect(() => {
+		recalc()
+	}, [recalc])
 
-const Row = styled(motion.div)`
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none; /* children handle it */
-`
+	React.useEffect(() => {
+		const onResize = () => recalc()
+		window.addEventListener('resize', onResize)
+		return () => window.removeEventListener('resize', onResize)
+	}, [recalc])
 
-const CardBase = styled(motion.button)<{ $isCenter?: boolean }>`
-  all: unset;
-  box-sizing: border-box;
-  width: var(--card-w);
-  height: var(--card-h);
-  border-radius: var(--radius);
-  background-color: #10131b;
-  background-image:
-    url('/assets/images/background-gamecard.png'),
-    radial-gradient(120% 80% at 50% 0%, rgba(20,220,220,0.12), rgba(16,19,27,0.0) 60%),
-    linear-gradient(180deg, rgba(16,19,27,0.0), rgba(16,19,27,0.7));
-  background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: center, center, center;
-  background-size: cover, cover, cover;
-  /* Glow edge frame */
-  box-shadow: var(--shadow), var(--glow);
-  position: absolute;
-  top: 50%; left: 50%;
-  transform-style: preserve-3d;
-  pointer-events: auto;
-  cursor: pointer;
-  will-change: transform, filter;
-  outline: none;
+	// Autoplay
+		React.useEffect(() => {
+			if (!autoplay) return
+			const id = setInterval(() => setCurrent((i: number) => (i + 1) % count), interval)
+		return () => clearInterval(id)
+	}, [autoplay, interval, count])
 
-  display: grid;
-  grid-template-rows: 1fr auto;
-  padding: 12px;
-  color: #e6f7ff;
-  text-align: left;
-  transform-origin: 50% 70%;
+	// Compute x-offset so that current slide center aligns to viewport center
+	const centerOffset = React.useMemo(() => {
+		const viewport = rootRef.current?.clientWidth ?? 0
+		const leftOfCurrent = current * (slideWidth + gap) + stagePadding
+		const centerOfCurrent = leftOfCurrent + slideWidth / 2
+		const viewportCenter = viewport / 2
+		const x = Math.max(0, centerOfCurrent - viewportCenter)
+		return x
+	}, [current, gap, slideWidth, stagePadding])
 
-  /* subtle frosted overlay for text legibility */
-  &:before {
-    content: '';
-    position: absolute; inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgba(10,12,18,0.35), rgba(10,12,18,0.15));
-    pointer-events: none;
-  }
+		const games = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
 
-  /* neon edge frame */
-  &:after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    border: 1px solid rgba(0,255,200,0.28);
-    box-shadow:
-      0 0 18px rgba(0,255,200,0.18),
-      0 0 36px rgba(0,255,200,0.12) inset;
-    pointer-events: none;
-  }
+		const prev = () => setCurrent((i: number) => (i - 1 + count) % count)
+		const next = () => setCurrent((i: number) => (i + 1) % count)
 
-  /* focus-visible ring */
-  &:focus-visible {
-    box-shadow: 0 0 0 2px rgba(0,255,200,0.6), var(--shadow);
-  }
-
-  ${(props: { $isCenter?: boolean }) => props.$isCenter && css`
-    filter: drop-shadow(0 10px 22px rgba(0, 255, 200, 0.18));
-  `}
-`
-
-const Title = styled.div`
-  font-size: 14px;
-  letter-spacing: .2px;
-  font-weight: 600;
-  margin-top: auto;
-  z-index: 2;
-  text-shadow: 0 2px 6px rgba(0,0,0,.6);
-`
-
-const Tag = styled.span`
-  display: inline-block;
-  font-size: 11px;
-  line-height: 1;
-  padding: 6px 8px;
-  border-radius: 999px;
-  background: rgba(0, 255, 200, 0.1);
-  color: #7cffc8;
-  border: 1px solid rgba(124, 255, 200, 0.25);
-  backdrop-filter: blur(2px);
-  margin-bottom: 8px;
-  z-index: 2;
-`
-
-const Thumb = styled.div<{ $src?: string }>`
-  position: absolute;
-  inset: 12px 12px auto auto;
-  width: 72px; height: 72px;
-  border-radius: 12px;
-  background: ${(p: { $src?: string }) => p.$src ? css`url(${p.$src}) center/cover` : css`linear-gradient(135deg, #0ef, #70f)`};
-  opacity: .9;
-  mix-blend-mode: screen;
-  box-shadow: 0 8px 22px rgba(0,0,0,.35);
-  z-index: 2;
-`
-
-const Controls = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
-`
-
-const ControlBtn = styled.button`
-  all: unset;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: rgba(255,255,255,.05);
-  color: #cfe9ff;
-  border: 1px solid rgba(255,255,255,.08);
-  transition: background .2s ease;
-  &:hover { background: rgba(255,255,255,.12); }
-`
-
-function useSwipe(onLeft: () => void, onRight: () => void) {
-  const startX = React.useRef<number | null>(null)
-  const threshold = 24
-  const onPointerDown = (e: React.PointerEvent) => {
-    startX.current = e.clientX
-  }
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (startX.current == null) return
-    const dx = e.clientX - startX.current
-    if (dx > threshold) onRight()
-    else if (dx < -threshold) onLeft()
-    startX.current = null
-  }
-  return { onPointerDown, onPointerUp }
+	return (
+		<div>
+			<CarouselRoot ref={rootRef} stagePadding={stagePadding}>
+				<Arrow side="left" aria-label="Previous" onClick={prev}>
+					‹
+				</Arrow>
+				<Track x={centerOffset}>
+					  {games.map((game: ExtendedGameBundle, i: number) => {
+						const active = i === current
+						const neighbor = i === (current - 1 + count) % count || i === (current + 1) % count
+						return (
+											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor}>
+								<div style={{ width: '100%', maxWidth: slideWidth }}>
+									<GameCard game={game} />
+								</div>
+							</Slide>
+						)
+					})}
+				</Track>
+				<Arrow side="right" aria-label="Next" onClick={next}>
+					›
+				</Arrow>
+			</CarouselRoot>
+					<Dots>
+							{games.map((game: ExtendedGameBundle, i: number) => (
+								<Dot key={i} active={i === current} onClick={() => setCurrent(i)} />
+						))}
+					</Dots>
+		</div>
+	)
 }
 
-export const VCardCarousel = ({
-  items,
-  initialIndex = 0,
-  onSelect,
-  maxVisible = 4,
-  autoplay = false,
-  autoplayInterval = 2800,
-}: VCardCarouselProps) => {
-  const navigate = useNavigate()
-  const [index, setIndex] = React.useState(() => Math.min(Math.max(initialIndex, 0), Math.max(items.length - 1, 0)))
-  const [isInteracting, setInteracting] = React.useState(false)
-  const wrapperRef = React.useRef<HTMLDivElement | null>(null)
-
-  // Read responsive CSS custom properties from the container so JS uses the same values
-  const [vars, setVars] = React.useState({ gap: 36, depth: 90, lift: 24 })
-  React.useLayoutEffect(() => {
-    const el = wrapperRef.current
-    if (!el) return
-    const read = () => {
-      const cs = getComputedStyle(el)
-      const gap = parseFloat(cs.getPropertyValue('--gap')) || 36
-      const depth = parseFloat(cs.getPropertyValue('--depth')) || 90
-      const lift = parseFloat(cs.getPropertyValue('--lift-z')) || 24
-      setVars({ gap, depth, lift })
-    }
-    read()
-    const ro = new ResizeObserver(read)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
-
-  const clamp = React.useCallback((i: number) => {
-    if (items.length === 0) return 0
-    return Math.max(0, Math.min(i, items.length - 1))
-  }, [items.length])
-
-  const select = React.useCallback((i: number) => {
-    const ni = clamp(i)
-    setIndex(ni)
-  }, [clamp])
-
-  const handleActivate = React.useCallback((id: string) => {
-    onSelect?.(id)
-    // Navigate to game route by default
-    navigate('/' + id)
-  }, [navigate, onSelect])
-
-  // keyboard support
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); select(index - 1) }
-      if (e.key === 'ArrowRight') { e.preventDefault(); select(index + 1) }
-      if (e.key === 'Enter') {
-        const current = items[index]
-        if (current) handleActivate(current.id)
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [index, items, select, handleActivate])
-
-  const { onPointerDown, onPointerUp } = useSwipe(
-    () => select(index + 1),
-    () => select(index - 1),
-  )
-
-  // Framer drag handling on the row (click-drag / touch-drag)
-  const dragX = React.useRef(0)
-  const onDragStart = () => {
-    setInteracting(true)
-    dragX.current = 0
-  }
-  const onDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: { delta: { x: number } }) => {
-    dragX.current += info.delta.x
-  }
-  const onDragEnd = () => {
-    const threshold = 60
-    if (dragX.current > threshold) select(index - 1)
-    else if (dragX.current < -threshold) select(index + 1)
-    setInteracting(false)
-    dragX.current = 0
-  }
-
-  // Autoplay (pauses while interacting / when window not focused)
-  React.useEffect(() => {
-    if (!autoplay || isInteracting || items.length === 0) return
-    const id = setInterval(() => {
-      setIndex((i: number) => (i + 1) % items.length)
-    }, Math.max(800, autoplayInterval))
-    return () => clearInterval(id)
-  }, [autoplay, autoplayInterval, isInteracting, items.length])
-
-  // Compute transform for each card based on its offset from center
-  const visible = items.map((it: CarouselItem, i: number) => ({
-    item: it,
-    offset: i - index,
-  })).filter(({ offset }: { offset: number }) => Math.abs(offset) <= maxVisible)
-
-  return (
-    <Wrapper ref={wrapperRef}>
-      <Stage>
-        <Row
-          onPointerDown={(e: any) => { setInteracting(true); onPointerDown(e) }}
-          onPointerUp={(e: any) => { onPointerUp(e); setInteracting(false) }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          onDragStart={onDragStart}
-          onDrag={onDrag as any}
-          onDragEnd={onDragEnd}
-        >
-          <AnimatePresence initial={false}>
-            {visible.map(({ item, offset }: { item: CarouselItem, offset: number }) => {
-              const side = Math.sign(offset) // -1 left, 0 center, 1 right
-              const abs = Math.abs(offset)
-              // Positioning math (V shape & depth)
-              const x = offset * 1
-              const isCenter = abs === 0
-
-              // stacking: center on top, then closer sides
-              const zIndex = (items.length + 10) - abs
-
-              // Precompute pixel-based spacing using measured CSS vars
-              const dx = offset * vars.gap
-              const dz = isCenter ? vars.lift : -Math.abs(offset) * vars.depth
-              const dy = -3 * Math.abs(offset)
-
-              return (
-                <CardBase
-                  key={item.id}
-                  $isCenter={isCenter}
-                  style={{ zIndex, ['--dx' as any]: `${dx}px`, ['--dz' as any]: `${dz}px`, ['--dy' as any]: `${dy}px` }}
-                  initial={false}
-                  whileHover={{
-                    scale: isCenter ? 1.04 : 1.02,
-                    filter: 'drop-shadow(0 12px 28px rgba(0, 255, 200, 0.25))',
-                    transition: { type: 'spring', stiffness: 300, damping: 24 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => isCenter ? handleActivate(item.id) : select(index + offset)}
-                  aria-label={item.title}
-                  onFocus={() => setInteracting(true)}
-                  onBlur={() => setInteracting(false)}
-                  animate={{
-                    x: 0, // we compose spacing manually via CSS vars to avoid calc() quirks
-                    rotateZ: side * (10 + Math.min(12, abs * 4)),
-                    rotateY: side * (12 + Math.min(14, (abs - 1) * 6)),
-                    rotateX: abs === 0 ? 0 : -6, // slight backward tilt
-                    scale: abs === 0 ? 1 : abs === 1 ? 0.92 : abs === 2 ? 0.88 : 0.84,
-                    opacity: abs === 0 ? 1 : abs === 1 ? 0.85 : abs === 2 ? 0.72 : 0.6,
-                    transition: { type: 'spring', stiffness: 180, damping: 22 }
-                  }}
-                  transformTemplate={(transform: string, generated: string) => {
-                    // Compose our own to inject spacing with translateX
-                    const rz = /rotateZ\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
-                    const ry = /rotateY\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
-                    const rx = /rotateX\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
-                    const sc = /scale\(([^)]+)\)/.exec(generated)?.[1] ?? '1'
-
-                    // Spacing & depth via inline CSS variables set per card
-                    const spacing = `translateX(var(--dx)) translateY(var(--dy)) translateZ(var(--dz))`
-                    return `${spacing} rotateY(${ry}) rotateZ(${rz}) rotateX(${rx}) scale(${sc})`
-                  }}
-                >
-                  {item.tag && <Tag>{item.tag}</Tag>}
-                  <Title>{item.title}</Title>
-                  {item.image && <Thumb aria-hidden $src={item.image} />}
-                </CardBase>
-              )
-            })}
-          </AnimatePresence>
-        </Row>
-      </Stage>
-      <Controls>
-        <ControlBtn onClick={() => select(index - 1)}>◀</ControlBtn>
-        <ControlBtn onClick={() => select(index + 1)}>▶</ControlBtn>
-      </Controls>
-    </Wrapper>
-  )
-}
