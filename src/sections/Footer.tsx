@@ -77,7 +77,7 @@ export default function Footer() {
   return (
     <StyledFooter>
       <Logo to="/">
-        <img alt="SOL-WIN logo" src="/logo.svg" />
+        <img alt="SOL-WIN logo" src="/logo.png" />
       </Logo>
 
       <SocialLinks>

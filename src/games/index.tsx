@@ -120,7 +120,7 @@ export const GAMES: ExtendedGameBundle[] = [
         HiLo is a game of foresight and luck, challenging players to guess whether the next card will be higher or lower. Make consecutive correct guesses to increase your winnings, and decide when to cash out for maximum rewards.
       `,
     },
-    props: { logo: '/logo.svg' },
+    props: { logo: '/logo.png' },
     app: React.lazy(() => import('./HiLo')),
     disabled: true,
   },
