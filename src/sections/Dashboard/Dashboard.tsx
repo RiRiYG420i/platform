@@ -72,6 +72,8 @@ export default function Dashboard() {
             image: g.meta.image,
             tag: g.meta.tag,
           }))}
+          autoplay
+          autoplayInterval={2600}
         />
       </div>
       <FeaturedInlineGame />

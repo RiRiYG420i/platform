@@ -45,6 +45,7 @@ const Wrapper = styled.div`
   --angle: 12deg;       /* rotateZ for side cards */
   --yaw: 10deg;         /* rotateY to give a fan depth */
   --lift-z: 24px;       /* translateZ lift for center */
+  --depth: 80px;        /* side cards recede per step */
   --scale-side: 0.92;   /* side card scale */
   --scale-far: 0.86;    /* far side scale */
   --shadow: 0 10px 30px rgba(0,0,0,0.35);
@@ -66,6 +67,7 @@ const Wrapper = styled.div`
     --gap: 34px;
     --angle: 13deg;
     --yaw: 12deg;
+    --depth: 90px;
   }
   @container (min-width: 760px) {
     --card-w: 220px;
@@ -73,6 +75,7 @@ const Wrapper = styled.div`
     --gap: 40px;
     --angle: 14deg;
     --yaw: 13deg;
+    --depth: 100px;
   }
   @container (min-width: 1024px) {
     --card-w: 240px;
@@ -80,6 +83,7 @@ const Wrapper = styled.div`
     --gap: 46px;
     --angle: 15deg;
     --yaw: 14deg;
+    --depth: 110px;
   }
 `
 
@@ -88,6 +92,7 @@ const Stage = styled.div`
   width: min(100%, calc(var(--card-w) * 3 + var(--gap) * 6));
   height: calc(var(--card-h) + 64px);
   transform-style: preserve-3d;
+  perspective-origin: 50% 40%;
 `
 
 const Row = styled(motion.div)`
@@ -127,6 +132,7 @@ const CardBase = styled(motion.button)<{ $isCenter?: boolean }>`
   padding: 12px;
   color: #e6f7ff;
   text-align: left;
+  transform-origin: 50% 70%;
 
   /* subtle frosted overlay for text legibility */
   &:before {
@@ -298,7 +304,7 @@ export const VCardCarousel = ({
   React.useEffect(() => {
     if (!autoplay || isInteracting || items.length === 0) return
     const id = setInterval(() => {
-      setIndex((i) => (i + 1) % items.length)
+      setIndex((i: number) => (i + 1) % items.length)
     }, Math.max(800, autoplayInterval))
     return () => clearInterval(id)
   }, [autoplay, autoplayInterval, isInteracting, items.length])
@@ -326,8 +332,7 @@ export const VCardCarousel = ({
               const side = Math.sign(offset) // -1 left, 0 center, 1 right
               const abs = Math.abs(offset)
               // Positioning math (V shape & depth)
-              const x = offset * 1 // base step (actual spacing in animation prop below)
-              // Note: rotateZ actual per-card computed in variants using abs
+              const x = offset * 1
               const isCenter = abs === 0
 
               // stacking: center on top, then closer sides
@@ -351,25 +356,25 @@ export const VCardCarousel = ({
                   onBlur={() => setInteracting(false)}
                   animate={{
                     x: offset *  (/* spacing */ 1) , // computed in transformTemplate
-                    rotateZ: side * Math.min(16, 8 + abs * 3),
-                    rotateY: side * Math.min(16, 6 + abs * 3),
-                    scale: abs === 0 ? 1 : abs === 1 ? 0.94 : abs === 2 ? 0.9 : 0.86,
-                    opacity: abs > maxVisible ? 0 : 1,
+                    rotateZ: side * (10 + Math.min(12, abs * 4)),
+                    rotateY: side * (12 + Math.min(14, (abs - 1) * 6)),
+                    rotateX: abs === 0 ? 0 : -6, // slight backward tilt
+                    scale: abs === 0 ? 1 : abs === 1 ? 0.92 : abs === 2 ? 0.88 : 0.84,
+                    opacity: abs === 0 ? 1 : abs === 1 ? 0.85 : abs === 2 ? 0.72 : 0.6,
                     transition: { type: 'spring', stiffness: 180, damping: 22 }
                   }}
                   transformTemplate={(transform: string, generated: string) => {
                     // Compose our own to inject spacing with translateX
-                    // parse rotate/scale from transform string
-                    // But simpler: we rebuild with the known keys we animate
-                    const rx = /rotateZ\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
+                    const rz = /rotateZ\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
                     const ry = /rotateY\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
+                    const rx = /rotateX\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
                     const sc = /scale\(([^)]+)\)/.exec(generated)?.[1] ?? '1'
 
-                    // Spacing grows with abs offset
-                    // Cards are horizontally separated by gap and lifted slightly to form V
-                    // We also move up a little for far cards to emphasize the fan
-                    const spacing = `translateX(calc(${offset} * var(--gap))) translateY(calc(${Math.abs(offset)} * -2px)) translateZ(${abs === 0 ? 'var(--lift-z)' : '0px'})`
-                    return `${spacing} rotateY(${ry}) rotateZ(${rx}) scale(${sc})`
+                    // Spacing & depth
+                    // Center card pops forward (lift-z), side cards recede by depth per step
+                    const depth = `translateZ(calc(${abs === 0 ? 'var(--lift-z)' : `calc(-1 * ${Math.abs(offset)} * (var(--depth, 80px)))`}))`
+                    const spacing = `translateX(calc(${offset} * var(--gap))) translateY(calc(${Math.abs(offset)} * -3px))`
+                    return `${spacing} ${depth} rotateY(${ry}) rotateZ(${rz}) rotateX(${rx}) scale(${sc})`
                   }}
                 >
                   {item.tag && <Tag>{item.tag}</Tag>}
