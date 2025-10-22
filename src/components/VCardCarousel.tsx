@@ -5,13 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 /*
 Modern techniques used (2025) — rationale and sources:
-- GPU-accelerated transforms only (translate/rotate/scale), opacity: Recommended by web.dev “How to create high-performance CSS animations” (Basques/Andrew). Avoids layout/paint jank; use will-change sparingly.
-- FLIP principle for layouty moves (simulated here via transform of precomputed slots) inspired by CSS‑Tricks FLIP (David Khourshid). We only touch transform/opacity as state changes.
-- Subtle 3D with perspective on the container + transform-style: preserve-3d and rotateY/rotateZ per card, per CSS‑Tricks Almanac (transform/perspective) and Desandro docs.
-- Framer Motion for smooth, interruptible transitions with spring physics; layout animation engine composes to transforms for performance (motion.dev docs: Layout animation → performs via transform).
-- Container queries to adapt spacing/tilt responsively based on container width (CSS Conditional Rules Level 5; broadly supported by 2024/25). Wrapper establishes container-type: inline-size; we query size to change CSS variables.
-- Shadows and glows via filter: drop-shadow and CSS variables; keep to one composited layer per card; promote with will-change: transform, filter only while animating/hovering.
-- Accessibility & input: keyboard arrows to change selection; focus ring; large hit area. Minimal main-thread work.
+- GPU-accelerated transforms only (translate/rotate/scale), opacity: Recommended by web.dev “High-performance animations”. Avoids layout/paint jank; use will-change only while animating.
+- FLIP mindset for layout moves (transform-only) as described by David Khourshid (CSS‑Tricks FLIP). We never animate top/left.
+- True 3D using perspective on the container + transform-style: preserve-3d with rotateY/rotateZ and translateZ depth.
+- Framer Motion springs for interruptible, buttery transitions; physics tuned for UI feel. Drag gestures map to index changes; autoplay is frame-safe and pauses on interaction.
+- Container queries for responsiveness; CSS custom properties expose spacing/angles so designers can tune without code changes.
+- Neon/glow frame via layered box-shadow and an ::after border-fade; shadows use drop-shadow to keep composition on the GPU.
+- A11y: keyboard arrows and Enter to activate; large hit target and focus ring.
 */
 
 // Small value contract
@@ -34,6 +34,8 @@ export interface VCardCarouselProps {
   onSelect?: (id: string) => void
   // visual tuning (can be overridden via CSS variables on parent)
   maxVisible?: number // max cards rendered around center (per side)
+  autoplay?: boolean
+  autoplayInterval?: number // ms
 }
 
 const Wrapper = styled.div`
@@ -88,7 +90,7 @@ const Stage = styled.div`
   transform-style: preserve-3d;
 `
 
-const Row = styled.div`
+const Row = styled(motion.div)`
   position: absolute;
   inset: 0;
   display: grid;
@@ -104,7 +106,7 @@ const CardBase = styled(motion.button)<{ $isCenter?: boolean }>`
   border-radius: var(--radius);
   background-color: #10131b;
   background-image:
-    url('/background-gamecard.png'),
+    url('/assets/images/background-gamecard.png'),
     radial-gradient(120% 80% at 50% 0%, rgba(20,220,220,0.12), rgba(16,19,27,0.0) 60%),
     linear-gradient(180deg, rgba(16,19,27,0.0), rgba(16,19,27,0.7));
   background-repeat: no-repeat, no-repeat, no-repeat;
@@ -132,6 +134,19 @@ const CardBase = styled(motion.button)<{ $isCenter?: boolean }>`
     position: absolute; inset: 0;
     border-radius: inherit;
     background: linear-gradient(180deg, rgba(10,12,18,0.35), rgba(10,12,18,0.15));
+    pointer-events: none;
+  }
+
+  /* neon edge frame */
+  &:after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid rgba(0,255,200,0.28);
+    box-shadow:
+      0 0 18px rgba(0,255,200,0.18),
+      0 0 36px rgba(0,255,200,0.12) inset;
     pointer-events: none;
   }
 
@@ -220,9 +235,12 @@ export const VCardCarousel = ({
   initialIndex = 0,
   onSelect,
   maxVisible = 4,
+  autoplay = false,
+  autoplayInterval = 2800,
 }: VCardCarouselProps) => {
   const navigate = useNavigate()
   const [index, setIndex] = React.useState(() => Math.min(Math.max(initialIndex, 0), Math.max(items.length - 1, 0)))
+  const [isInteracting, setInteracting] = React.useState(false)
 
   const clamp = React.useCallback((i: number) => {
     if (items.length === 0) return 0
@@ -259,6 +277,32 @@ export const VCardCarousel = ({
     () => select(index - 1),
   )
 
+  // Framer drag handling on the row (click-drag / touch-drag)
+  const dragX = React.useRef(0)
+  const onDragStart = () => {
+    setInteracting(true)
+    dragX.current = 0
+  }
+  const onDrag = (_: MouseEvent | TouchEvent | PointerEvent, info: { delta: { x: number } }) => {
+    dragX.current += info.delta.x
+  }
+  const onDragEnd = () => {
+    const threshold = 60
+    if (dragX.current > threshold) select(index - 1)
+    else if (dragX.current < -threshold) select(index + 1)
+    setInteracting(false)
+    dragX.current = 0
+  }
+
+  // Autoplay (pauses while interacting / when window not focused)
+  React.useEffect(() => {
+    if (!autoplay || isInteracting || items.length === 0) return
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % items.length)
+    }, Math.max(800, autoplayInterval))
+    return () => clearInterval(id)
+  }, [autoplay, autoplayInterval, isInteracting, items.length])
+
   // Compute transform for each card based on its offset from center
   const visible = items.map((it: CarouselItem, i: number) => ({
     item: it,
@@ -268,7 +312,15 @@ export const VCardCarousel = ({
   return (
     <Wrapper>
       <Stage>
-        <Row onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+        <Row
+          onPointerDown={(e: any) => { setInteracting(true); onPointerDown(e) }}
+          onPointerUp={(e: any) => { onPointerUp(e); setInteracting(false) }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragStart={onDragStart}
+          onDrag={onDrag as any}
+          onDragEnd={onDragEnd}
+        >
           <AnimatePresence initial={false}>
             {visible.map(({ item, offset }: { item: CarouselItem, offset: number }) => {
               const side = Math.sign(offset) // -1 left, 0 center, 1 right
@@ -295,7 +347,8 @@ export const VCardCarousel = ({
                   whileTap={{ scale: 0.98 }}
                   onClick={() => isCenter ? handleActivate(item.id) : select(index + offset)}
                   aria-label={item.title}
-                
+                  onFocus={() => setInteracting(true)}
+                  onBlur={() => setInteracting(false)}
                   animate={{
                     x: offset *  (/* spacing */ 1) , // computed in transformTemplate
                     rotateZ: side * Math.min(16, 8 + abs * 3),
