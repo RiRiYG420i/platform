@@ -247,6 +247,25 @@ export const VCardCarousel = ({
   const navigate = useNavigate()
   const [index, setIndex] = React.useState(() => Math.min(Math.max(initialIndex, 0), Math.max(items.length - 1, 0)))
   const [isInteracting, setInteracting] = React.useState(false)
+  const wrapperRef = React.useRef<HTMLDivElement | null>(null)
+
+  // Read responsive CSS custom properties from the container so JS uses the same values
+  const [vars, setVars] = React.useState({ gap: 36, depth: 90, lift: 24 })
+  React.useLayoutEffect(() => {
+    const el = wrapperRef.current
+    if (!el) return
+    const read = () => {
+      const cs = getComputedStyle(el)
+      const gap = parseFloat(cs.getPropertyValue('--gap')) || 36
+      const depth = parseFloat(cs.getPropertyValue('--depth')) || 90
+      const lift = parseFloat(cs.getPropertyValue('--lift-z')) || 24
+      setVars({ gap, depth, lift })
+    }
+    read()
+    const ro = new ResizeObserver(read)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   const clamp = React.useCallback((i: number) => {
     if (items.length === 0) return 0
@@ -316,7 +335,7 @@ export const VCardCarousel = ({
   })).filter(({ offset }: { offset: number }) => Math.abs(offset) <= maxVisible)
 
   return (
-    <Wrapper>
+    <Wrapper ref={wrapperRef}>
       <Stage>
         <Row
           onPointerDown={(e: any) => { setInteracting(true); onPointerDown(e) }}
@@ -338,11 +357,16 @@ export const VCardCarousel = ({
               // stacking: center on top, then closer sides
               const zIndex = (items.length + 10) - abs
 
+              // Precompute pixel-based spacing using measured CSS vars
+              const dx = offset * vars.gap
+              const dz = isCenter ? vars.lift : -Math.abs(offset) * vars.depth
+              const dy = -3 * Math.abs(offset)
+
               return (
                 <CardBase
                   key={item.id}
                   $isCenter={isCenter}
-                  style={{ zIndex }}
+                  style={{ zIndex, ['--dx' as any]: `${dx}px`, ['--dz' as any]: `${dz}px`, ['--dy' as any]: `${dy}px` }}
                   initial={false}
                   whileHover={{
                     scale: isCenter ? 1.04 : 1.02,
@@ -355,7 +379,7 @@ export const VCardCarousel = ({
                   onFocus={() => setInteracting(true)}
                   onBlur={() => setInteracting(false)}
                   animate={{
-                    x: offset *  (/* spacing */ 1) , // computed in transformTemplate
+                    x: 0, // we compose spacing manually via CSS vars to avoid calc() quirks
                     rotateZ: side * (10 + Math.min(12, abs * 4)),
                     rotateY: side * (12 + Math.min(14, (abs - 1) * 6)),
                     rotateX: abs === 0 ? 0 : -6, // slight backward tilt
@@ -370,11 +394,9 @@ export const VCardCarousel = ({
                     const rx = /rotateX\(([^)]+)\)/.exec(generated)?.[1] ?? '0deg'
                     const sc = /scale\(([^)]+)\)/.exec(generated)?.[1] ?? '1'
 
-                    // Spacing & depth
-                    // Center card pops forward (lift-z), side cards recede by depth per step
-                    const depth = `translateZ(calc(${abs === 0 ? 'var(--lift-z)' : `calc(-1 * ${Math.abs(offset)} * (var(--depth, 80px)))`}))`
-                    const spacing = `translateX(calc(${offset} * var(--gap))) translateY(calc(${Math.abs(offset)} * -3px))`
-                    return `${spacing} ${depth} rotateY(${ry}) rotateZ(${rz}) rotateX(${rx}) scale(${sc})`
+                    // Spacing & depth via inline CSS variables set per card
+                    const spacing = `translateX(var(--dx)) translateY(var(--dy)) translateZ(var(--dz))`
+                    return `${spacing} rotateY(${ry}) rotateZ(${rz}) rotateX(${rx}) scale(${sc})`
                   }}
                 >
                   {item.tag && <Tag>{item.tag}</Tag>}
