@@ -46,12 +46,12 @@ const CarouselRoot = styled.div<{ stagePadding: number }>`
 		touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipes */
 `
 
-const Track = styled.div<{ x: number }>`
+const Track = styled.div<{ x: number; noTransition?: boolean }>`
 	display: flex;
 	align-items: stretch;
 	gap: 16px;
 	will-change: transform;
-	transition: transform 450ms ease;
+	transition: ${(p: { noTransition?: boolean }) => (p.noTransition ? 'none' : 'transform 450ms ease')};
 	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
 `
 
@@ -131,8 +131,12 @@ export interface VCardCarouselProps {
 export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCardCarouselProps) {
 	const { items, stagePadding } = useResponsive()
 	const rootRef = React.useRef<HTMLDivElement>(null)
-	const [current, setCurrent] = React.useState(0)
-	const count = React.useMemo(() => GAMES.filter((g) => !g.disabled).length, [])
+	const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
+	const base = baseGames.length
+	const games = React.useMemo<ExtendedGameBundle[]>(() => [...baseGames, ...baseGames, ...baseGames], [baseGames])
+	const [currentIdx, setCurrentIdx] = React.useState(base) // start centered block
+	const [noTransition, setNoTransition] = React.useState(false)
+  // baseGames/games control how many we render; base is original length
 
 	// Measurements
 	const [slideWidth, setSlideWidth] = React.useState(280)
@@ -160,27 +164,26 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 	// Autoplay
 		React.useEffect(() => {
 			if (!autoplay) return
-			const id = setInterval(() => setCurrent((i: number) => (i + 1) % count), interval)
+			const id = setInterval(() => setCurrentIdx((i: number) => i + 1), interval)
 		return () => clearInterval(id)
-	}, [autoplay, interval, count])
+		}, [autoplay, interval])
 
 	// Compute x-offset so that current slide center aligns to viewport center
 		const centerOffset = React.useMemo(() => {
 			const viewport = rootRef.current?.clientWidth ?? 0
-			const total = count * (slideWidth + gap) - gap + stagePadding * 2
-			const leftOfCurrent = current * (slideWidth + gap) + stagePadding
+			const total = games.length * (slideWidth + gap) - gap + stagePadding * 2
+			const leftOfCurrent = currentIdx * (slideWidth + gap) + stagePadding
 			const centerOfCurrent = leftOfCurrent + slideWidth / 2
 			const viewportCenter = viewport / 2
 			const desired = centerOfCurrent - viewportCenter
 			const maxX = Math.max(0, total - viewport)
 			const x = Math.max(0, Math.min(desired, maxX))
 			return x
-		}, [current, gap, slideWidth, stagePadding, count])
+		}, [currentIdx, gap, slideWidth, stagePadding, games.length])
 
-		const games = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
 
-		const prev = () => setCurrent((i: number) => (i - 1 + count) % count)
-		const next = () => setCurrent((i: number) => (i + 1) % count)
+		const prev = () => setCurrentIdx((i: number) => i - 1)
+		const next = () => setCurrentIdx((i: number) => i + 1)
 
 			// Basic drag-to-snap interaction
 			const startX = React.useRef<number | null>(null)
@@ -228,10 +231,21 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				<Arrow side="left" aria-label="Previous" onClick={prev}>
 					‹
 				</Arrow>
-				<Track x={centerOffset}>
-					  {games.map((game: ExtendedGameBundle, i: number) => {
-						const active = i === current
-						const neighbor = i === (current - 1 + count) % count || i === (current + 1) % count
+				<Track x={centerOffset} noTransition={noTransition} onTransitionEnd={() => {
+						// Keep index within the middle block for seamless loop
+						if (currentIdx < base) {
+							setNoTransition(true)
+							setCurrentIdx(currentIdx + base)
+							requestAnimationFrame(() => setNoTransition(false))
+						} else if (currentIdx >= base * 2) {
+							setNoTransition(true)
+							setCurrentIdx(currentIdx - base)
+							requestAnimationFrame(() => setNoTransition(false))
+						}
+					}}>
+						{games.map((game: ExtendedGameBundle, i: number) => {
+							const active = i === currentIdx
+							const neighbor = i === (currentIdx - 1 + games.length) % games.length || i === (currentIdx + 1) % games.length
 						return (
 											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor}>
 												<div style={{ width: '100%', maxWidth: slideWidth }}>
@@ -246,8 +260,22 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				</Arrow>
 			</CarouselRoot>
 					<Dots>
-							{games.map((game: ExtendedGameBundle, i: number) => (
-								<Dot key={i} active={i === current} onClick={() => setCurrent(i)} />
+							{baseGames.map((_: ExtendedGameBundle, i: number) => (
+								<Dot
+									key={i}
+									active={(currentIdx % base + base) % base === i}
+									onClick={() => {
+										// Snap to nearest index with same modulo (i) to keep minimal motion
+										const candidates = [i, i + base, i + base * 2]
+										let best = candidates[0]
+										let bestDist = Math.abs(best - currentIdx)
+										for (const c of candidates) {
+											const d = Math.abs(c - currentIdx)
+											if (d < bestDist) { best = c; bestDist = d }
+										}
+										setCurrentIdx(best)
+									}}
+								/>
 						))}
 					</Dots>
 		</div>
