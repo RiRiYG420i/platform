@@ -8,31 +8,26 @@ import { GameCard } from '../sections/Dashboard/GameCard'
 // - Shows partial side cards via stage padding
 // - Optional autoplay
 
-type Breakpoints = {
-	items: number
-	stagePadding: number
-}
-
-function useResponsive(): Breakpoints {
-	const [bp, setBp] = React.useState<Breakpoints>(() => {
+// Always 3 items visible per request; stagePadding gives a little side air
+type Layout = { items: 3, stagePadding: number }
+function useResponsive(): Layout {
+	const [padding, setPadding] = React.useState<number>(() => {
 		const w = typeof window !== 'undefined' ? window.innerWidth : 1200
-		if (w < 600) return { items: 1, stagePadding: 32 }
-		if (w < 900) return { items: 3, stagePadding: 48 }
-		return { items: 5, stagePadding: 72 }
+		if (w < 600) return 16
+		if (w < 900) return 24
+		return 32
 	})
-
 	React.useEffect(() => {
 		const onResize = () => {
 			const w = window.innerWidth
-			if (w < 600) setBp({ items: 1, stagePadding: 32 })
-			else if (w < 900) setBp({ items: 3, stagePadding: 48 })
-			else setBp({ items: 5, stagePadding: 72 })
+			if (w < 600) setPadding(16)
+			else if (w < 900) setPadding(24)
+			else setPadding(32)
 		}
 		window.addEventListener('resize', onResize)
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
-
-	return bp
+	return { items: 3, stagePadding: padding }
 }
 
 const CarouselRoot = styled.div<{ stagePadding: number }>`
@@ -73,18 +68,18 @@ const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean }
 	${(p: { active?: boolean; neighbor?: boolean }) =>
 		p.active
 			? css`
-					transform: scale(1.06);
+					transform: scale(1.12);
 					z-index: 2;
 					filter: none;
 				`
 			: p.neighbor
 			? css`
-					transform: scale(0.98);
+					transform: scale(0.96);
 					z-index: 1;
 					filter: brightness(0.98) saturate(0.98);
 				`
 			: css`
-					transform: scale(0.94);
+					transform: scale(0.92);
 					filter: brightness(0.9) saturate(0.95);
 				`}
 `
@@ -239,9 +234,9 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 						const neighbor = i === (current - 1 + count) % count || i === (current + 1) % count
 						return (
 											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor}>
-								<div style={{ width: '100%', maxWidth: slideWidth }}>
-									<GameCard game={game} />
-								</div>
+												<div style={{ width: '100%', maxWidth: slideWidth }}>
+													<GameCard game={game} aspectRatio={'2/3'} />
+												</div>
 							</Slide>
 						)
 					})}

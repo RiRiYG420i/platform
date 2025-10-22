@@ -9,7 +9,7 @@ const tileAnimation = keyframes`
   100% { background-position: 100px -100px; }
 `;
 
-const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disabled?: boolean }>`
+const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disabled?: boolean; $aspectRatio?: string }>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -18,7 +18,7 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
   pointer-events: ${({ $disabled }) => ($disabled ? 'none' : 'auto')};
 
   width: 100%;
-  aspect-ratio: ${({ $small }) => ($small ? '1/.5' : '1/.6')};
+  aspect-ratio: ${({ $aspectRatio, $small }) => ($aspectRatio ? $aspectRatio : ($small ? '1/.5' : '1/.6'))};
   background: #F8C61E;
   background-size: cover;
   background-position: center;
@@ -131,8 +131,10 @@ const Tag = styled.div`
 
 export function GameCard({
   game,
+  aspectRatio,
 }: {
   game: GameBundle & { meta: { tag?: string; [key: string]: any }, disabled?: boolean };
+  aspectRatio?: string;
 }) {
   const small = useLocation().pathname !== '/';
 
@@ -141,6 +143,7 @@ export function GameCard({
       $small={small}
       $background={game.meta.background}
       $disabled={game.disabled}
+      $aspectRatio={aspectRatio}
     >
       {game.meta.tag && <Tag>{game.meta.tag}</Tag>}
       <div className="background" />
