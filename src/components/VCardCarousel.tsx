@@ -40,8 +40,15 @@ const CarouselRoot = styled.div<{ stagePadding: number }>`
 	width: 100%;
 	padding-left: ${(p: { stagePadding: number }) => p.stagePadding}px;
 	padding-right: ${(p: { stagePadding: number }) => p.stagePadding}px;
+		padding-top: 8px;
+		padding-bottom: 12px; /* extra room for scaled center and dots */
 	box-sizing: border-box;
 	overflow: hidden;
+	z-index: 1; /* ensure no accidental overlay blocks clicks */
+	margin: 8px 0; /* give a bit of breathing room */
+	cursor: grab;
+		pointer-events: auto;
+		touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipes */
 `
 
 const Track = styled.div<{ x: number }>`
@@ -163,23 +170,66 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 	}, [autoplay, interval, count])
 
 	// Compute x-offset so that current slide center aligns to viewport center
-	const centerOffset = React.useMemo(() => {
-		const viewport = rootRef.current?.clientWidth ?? 0
-		const leftOfCurrent = current * (slideWidth + gap) + stagePadding
-		const centerOfCurrent = leftOfCurrent + slideWidth / 2
-		const viewportCenter = viewport / 2
-		const x = Math.max(0, centerOfCurrent - viewportCenter)
-		return x
-	}, [current, gap, slideWidth, stagePadding])
+		const centerOffset = React.useMemo(() => {
+			const viewport = rootRef.current?.clientWidth ?? 0
+			const total = count * (slideWidth + gap) - gap + stagePadding * 2
+			const leftOfCurrent = current * (slideWidth + gap) + stagePadding
+			const centerOfCurrent = leftOfCurrent + slideWidth / 2
+			const viewportCenter = viewport / 2
+			const desired = centerOfCurrent - viewportCenter
+			const maxX = Math.max(0, total - viewport)
+			const x = Math.max(0, Math.min(desired, maxX))
+			return x
+		}, [current, gap, slideWidth, stagePadding, count])
 
 		const games = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
 
 		const prev = () => setCurrent((i: number) => (i - 1 + count) % count)
 		const next = () => setCurrent((i: number) => (i + 1) % count)
 
+			// Basic drag-to-snap interaction
+			const startX = React.useRef<number | null>(null)
+			const dragged = React.useRef(false)
+
+			const onPointerDown = (e: React.PointerEvent) => {
+				startX.current = e.clientX
+				dragged.current = false
+				;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+			}
+
+			const onPointerMove = (e: React.PointerEvent) => {
+				if (startX.current == null) return
+				const dx = e.clientX - startX.current
+				if (Math.abs(dx) > 10) dragged.current = true
+			}
+
+			const onPointerUp = (e: React.PointerEvent) => {
+				if (startX.current == null) return
+				const dx = e.clientX - startX.current
+				startX.current = null
+				if (Math.abs(dx) < 30) return
+				if (dx > 0) prev()
+				else next()
+			}
+
+			const onWheel = (e: React.WheelEvent) => {
+				if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+					e.preventDefault()
+					if (e.deltaX > 0) next()
+					else prev()
+				}
+			}
+
 	return (
 		<div>
-			<CarouselRoot ref={rootRef} stagePadding={stagePadding}>
+					<CarouselRoot
+						ref={rootRef}
+						stagePadding={stagePadding}
+						onPointerDown={onPointerDown}
+						onPointerMove={onPointerMove}
+						onPointerUp={onPointerUp}
+						onWheel={onWheel}
+					>
 				<Arrow side="left" aria-label="Previous" onClick={prev}>
 					‹
 				</Arrow>
