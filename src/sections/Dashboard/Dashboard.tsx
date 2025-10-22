@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { SlideSection } from '../../components/Slider'
+import { VCardCarousel } from '../../components/VCardCarousel'
 import { GAMES } from '../../games'
 import { GameCard } from './GameCard'
 import { WelcomeBanner } from './WelcomeBanner'
@@ -62,6 +63,17 @@ export default function Dashboard() {
     <>
       <WelcomeBanner />
   <UnterBannerImg src={unterBannerImg} alt="Unter Banner" />
+      {/* Futuristic V-shaped Card Carousel (fan layout) */}
+      <div style={{ margin: '10px 0 20px 0' }}>
+        <VCardCarousel
+          items={GAMES.filter(g => !g.disabled).map(g => ({
+            id: g.id,
+            title: g.meta.name,
+            image: g.meta.image,
+            tag: g.meta.tag,
+          }))}
+        />
+      </div>
       <FeaturedInlineGame />
       <GameGrid />
     </>
