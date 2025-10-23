@@ -271,16 +271,17 @@ export default function Header() {
         >
           <MobileScrim onClick={() => setMenuOpen(false)} />
           <MobileSheet
-            onPointerDown={onSheetPointerDown}
-            onPointerMove={onSheetPointerMove}
-            onPointerUp={onSheetPointerUp}
             style={{
               transform: `translateX(${dragX}px)`,
               transition: dragging ? 'none' : 'transform 220ms ease',
               touchAction: 'none',
             }}
           >
-            <SheetHandle />
+            <SheetHandle
+              onPointerDown={onSheetPointerDown}
+              onPointerMove={onSheetPointerMove}
+              onPointerUp={onSheetPointerUp}
+            />
             <SheetContent>
               {/* Drawer actions at the top */}
               <GambaUi.Button

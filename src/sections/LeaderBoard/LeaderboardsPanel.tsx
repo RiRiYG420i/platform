@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import { Modal } from '../../components/Modal'
+import styled from 'styled-components'
 import {
   useLeaderboardData,
   Period,
-  Player,           
-} from '../../hooks/useLeaderboardData' 
-
+  Player,
+} from '../../hooks/useLeaderboardData'
 import {
-  ModalContent,
+  ModalContent as BaseContent,
   HeaderSection,
   Title,
   Subtitle,
@@ -28,27 +27,32 @@ import {
   EmptyStateText,
 } from './LeaderboardsModal.styles'
 
-interface LeaderboardsModalProps {
-  onClose: () => void
+// Expand to the container width for embedded panel usage
+const PanelContent = styled(BaseContent)`
+  max-width: 100%;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+`
+
+const PanelWrapper = styled.div`
+  width: 100%;
+  margin: 16px auto;
+`
+
+interface LeaderboardsPanelProps {
   creator: string
+  defaultPeriod?: Period // defaults to 'monthly'
 }
 
-const LeaderboardsModal: React.FC<LeaderboardsModalProps> = ({
-  onClose,
-  creator,
-}) => {
-  const [period, setPeriod] = useState<Period>('monthly') // default changed to monthly
+const LeaderboardsPanel: React.FC<LeaderboardsPanelProps> = ({ creator, defaultPeriod = 'monthly' }) => {
+  const [period, setPeriod] = useState<Period>(defaultPeriod)
 
-  const {
-    data: leaderboard,
-    loading,
-    error,
-  } = useLeaderboardData(period, creator)
+  const { data: leaderboard, loading, error } = useLeaderboardData(period, creator)
 
   return (
-    <Modal onClose={onClose}>
-      <ModalContent>
-        {/* ────── header ────── */}
+    <PanelWrapper>
+      <PanelContent>
         <HeaderSection>
           <Title>Leaderboard</Title>
           <Subtitle>
@@ -57,7 +61,6 @@ const LeaderboardsModal: React.FC<LeaderboardsModalProps> = ({
           </Subtitle>
         </HeaderSection>
 
-        {/* ────── tabs ────── */}
         <TabRow>
           <TabButton
             $selected={period === 'weekly'}
@@ -102,9 +105,9 @@ const LeaderboardsModal: React.FC<LeaderboardsModalProps> = ({
         ) : (
           <EmptyStateText>No leaderboard data for this period.</EmptyStateText>
         )}
-      </ModalContent>
-    </Modal>
+      </PanelContent>
+    </PanelWrapper>
   )
 }
 
-export default LeaderboardsModal
+export default LeaderboardsPanel

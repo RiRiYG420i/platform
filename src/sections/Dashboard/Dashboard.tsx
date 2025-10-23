@@ -5,6 +5,8 @@ import { GAMES } from '../../games'
 import { GameCard } from './GameCard'
 import { WelcomeBanner } from './WelcomeBanner'
 import VCardCarousel from '../../components/VCardCarousel'
+import LeaderboardsPanel from '../LeaderBoard/LeaderboardsPanel'
+import { PLATFORM_CREATOR_ADDRESS } from '../../constants'
 // src/sections/Dashboard/Dashboard.tsx
 import FeaturedInlineGame from './FeaturedInlineGame'
 
@@ -50,22 +52,14 @@ export function GameGrid() {
 }
 
 
-const unterBannerImg = new URL('../../../unter_banner.gif', import.meta.url).href;
-const UnterBannerImg = styled.img`
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 16px auto 16px auto;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-`;
+// Removed unter_banner.gif image in favor of an always-visible Leaderboard panel
 
 export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
       <VCardCarousel autoplay interval={4000} />
-  <UnterBannerImg src={unterBannerImg} alt="Unter Banner" />
+      <LeaderboardsPanel creator={PLATFORM_CREATOR_ADDRESS.toBase58()} />
       <FeaturedInlineGame />
       <GameGrid />
     </>
