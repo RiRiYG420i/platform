@@ -38,6 +38,13 @@ const Bonus = styled.button`
   }
 `
 
+// Inline SVG data for a crisp hamburger icon
+const HAMBURGER_ICON_DATA =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'><line x1='8' y1='14' x2='40' y2='14'/><line x1='8' y1='24' x2='40' y2='24'/><line x1='8' y1='34' x2='40' y2='34'/></svg>"
+  )
+
 const StyledHeader = styled.div<{ $scrolled: boolean }>`
   display: flex;
   align-items: center;
@@ -58,13 +65,12 @@ const StyledHeader = styled.div<{ $scrolled: boolean }>`
 const Logo = styled(NavLink)`
   height: 35px;
   margin: 0 15px;
-  & > img {
-    height: 120%;
-  }
+  & > img { height: 120%; }
 `
 
+// Wrapper to apply the gradient style to any direct child button
 const StyledButton = styled.div`
-  button {
+  & > button {
     background: ${LANG_B_GRADIENT} !important;
     color: #252C37 !important;
   }
@@ -237,7 +243,7 @@ export default function Header() {
                 aria-controls="mobile-menu"
                 onClick={() => setMenuOpen((v) => !v)}
               >
-                <img src={littleB} alt="Menu" style={{ width: '72%', height: '72%', filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.9))', opacity: 0.98 }} />
+                <span className="icon" aria-hidden="true" />
               </HamburgerButton>
             </div>
           )}
@@ -315,7 +321,6 @@ export default function Header() {
 }
 
 /* ----------------------------- Mobile styles ----------------------------- */
-const littleB = new URL('../../buttons/little-b.svg', import.meta.url).href
 
 const HamburgerButton = styled.button`
   position: relative;
@@ -323,24 +328,23 @@ const HamburgerButton = styled.button`
   height: 44px;
   border-radius: 10px;
   border: none;
-  background: rgba(37, 44, 55, 0.7);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  background: ${LANG_B_GRADIENT};
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
+  transition: transform 0.2s ease, opacity 0.2s ease;
   &:hover { opacity: 0.9; }
   &:active { transform: scale(0.98); }
-  img {
+  .icon {
     display: block;
-    width: 76%;
-    height: 76%;
+    width: 74%;
+    height: 74%;
+    background-image: url(${HAMBURGER_ICON_DATA});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     pointer-events: none;
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.9));
-    -webkit-filter: drop-shadow(0 1px 1px rgba(0,0,0,0.9));
   }
 
   @media (prefers-reduced-motion: reduce) {

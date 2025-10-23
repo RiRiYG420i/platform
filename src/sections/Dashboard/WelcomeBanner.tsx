@@ -48,13 +48,16 @@ const BannerBottom = styled.div`
   border-bottom: 12px solid #252C37;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  padding: 12px 20px 16px;
+  /* Pull the background up slightly to meet the banner image */
+  margin-top: -8px;
+  padding: 20px 20px 16px; /* compensate for negative margin */
   display: flex;
   flex-direction: column;
   gap: 6px;
 
   @media (min-width: 800px) {
-    padding: 16px 40px 20px;
+    margin-top: -10px;
+    padding: 24px 40px 20px;
   }
 `;
 
