@@ -8,55 +8,55 @@ import { Modal } from '../../components/Modal';
 
 const WelcomeWrapper = styled.div`
   margin-top: 0;
-  /* Animations */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: center;
+  filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
+`;
+
+const BannerTop = styled.div`
+  /* Only the banner image, no surrounding background */
+  background-image: url(${bannerImg});
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+  animation: welcome-fade-in 0.5s ease;
+  padding: 20px 20px 4px;
+  min-height: 376px;
+
+  @media (min-width: 800px) {
+    margin-top: 72px;
+    padding: 40px 40px 8px;
+    min-height: 656px;
+    background-position: center top;
+  }
+
   @keyframes welcome-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
   }
+`;
 
-  @keyframes backgroundGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* Styling */
-  /* Match header tone */
-  background-color: #252C37;
-  background-image:
-    linear-gradient(to bottom, rgba(12,12,17,0) 98%, #252C37 100%),
-    url(${bannerImg});
-  background-size: contain, contain;
-  background-position: top center, top center;
-  background-repeat: no-repeat;
-  border: 12px solid #252C37; /* frame matches header color */
-  background-clip: padding-box; /* keep GIF inside rounded inner area */
-  overflow: hidden; /* visually round the GIF edges */
-  animation: welcome-fade-in 0.5s ease;
-  border-radius: 12px; /* Slightly larger radius for a modern look */
-  /* Compact bottom padding; height increase handled via min-height */
-  padding: 20px 20px 4px;
+const BannerBottom = styled.div`
+  /* Visible container only BELOW the banner */
+  background: #252C37; /* match header tone */
+  border-left: 12px solid #252C37;
+  border-right: 12px solid #252C37;
+  border-bottom: 12px solid #252C37;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 12px 20px 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Tighter spacing on mobile */
-  text-align: center;
-  filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06));
-  position: relative;
-  /* Increase banner height downward by ~one button height on mobile */
-  min-height: 376px;
+  gap: 6px;
 
-  /* Desktop styles using a min-width media query */
   @media (min-width: 800px) {
-    margin-top: 72px;
-    /* Restore compact padding; increase height via min-height */
-    padding: 40px;
-    /* Increase banner height downward by ~one button height on desktop */
-    min-height: 656px;
-    background-image:
-      linear-gradient(to bottom, rgba(12,12,17,0) 85%, #252C37 100%),
-      url(${bannerImg});
-    background-size: contain, contain;
-    background-position: center top, center top;
+    padding: 16px 40px 20px;
   }
 `;
 
@@ -190,31 +190,34 @@ export function WelcomeBanner() {
 
   return (
     <WelcomeWrapper>
-      <WelcomeContent>
-        <h1>Welcome to SOL-WIN👋</h1>
-        <p>A fair, simple and decentralized casino on Solana. Play </p>
-      </WelcomeContent>
-      <BottomArea>
-        {(
-          // Always show: if current jackpot is 0, still render using amount 0
-          true
-        ) && (
-          <JackpotBadge
-            onClick={() => setJackpotHelp(true)}
-            aria-label="Show jackpot details"
-          >
-            💰 Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
-          </JackpotBadge>
-        )}
-        <ButtonGroup>
-          <ActionButton onClick={handleCopyInvite}>
-            💸 Copy Invite
-          </ActionButton>
-          <ActionButton onClick={openLink('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view')}>
-            ❓ How to
-          </ActionButton>
-        </ButtonGroup>
-      </BottomArea>
+      <BannerTop>
+        <WelcomeContent>
+          <h1>Welcome to SOL-WIN👋</h1>
+          <p>A fair, simple and decentralized casino on Solana. Play </p>
+        </WelcomeContent>
+      </BannerTop>
+      <BannerBottom>
+        <BottomArea>
+          {(
+            true
+          ) && (
+            <JackpotBadge
+              onClick={() => setJackpotHelp(true)}
+              aria-label="Show jackpot details"
+            >
+              💰 Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
+            </JackpotBadge>
+          )}
+          <ButtonGroup>
+            <ActionButton onClick={handleCopyInvite}>
+              💸 Copy Invite
+            </ActionButton>
+            <ActionButton onClick={openLink('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view')}>
+              ❓ How to
+            </ActionButton>
+          </ButtonGroup>
+        </BottomArea>
+      </BannerBottom>
       {jackpotHelp && (
         <Modal onClose={() => setJackpotHelp(false)}>
           <h1>Jackpot 💰</h1>
