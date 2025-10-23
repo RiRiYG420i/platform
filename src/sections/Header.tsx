@@ -85,9 +85,9 @@ export default function Header() {
   const [scrolled, setScrolled] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
   // Swipe-to-dismiss state (mobile sheet)
-  const [dragY, setDragY] = React.useState(0)
+  const [dragX, setDragX] = React.useState(0)
   const [dragging, setDragging] = React.useState(false)
-  const startYRef = React.useRef<number | null>(null)
+  const startXRef = React.useRef<number | null>(null)
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 5)
@@ -96,30 +96,31 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Gesture handlers for the bottom sheet (mobile)
+  // Gesture handlers for the side sheet (mobile)
   const onSheetPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    startYRef.current = e.clientY
+    startXRef.current = e.clientX
     setDragging(true)
     ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   }
   const onSheetPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging || startYRef.current == null) return
-    const dy = e.clientY - startYRef.current
-    setDragY(Math.max(0, dy))
+    if (!dragging || startXRef.current == null) return
+    const dx = e.clientX - startXRef.current
+    // Only allow dragging towards the right (to dismiss)
+    setDragX(Math.max(0, dx))
   }
   const onSheetPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (startYRef.current == null) return
-    const dy = e.clientY - startYRef.current
-    startYRef.current = null
+    if (startXRef.current == null) return
+    const dx = e.clientX - startXRef.current
+    startXRef.current = null
     setDragging(false)
     const threshold = 80
-    if (dy > threshold) {
+    if (dx > threshold) {
       // Dismiss the sheet
       setMenuOpen(false)
-      setDragY(0)
+      setDragX(0)
     } else {
       // Snap back
-      setDragY(0)
+      setDragX(0)
     }
   }
 
@@ -224,8 +225,8 @@ export default function Header() {
             onPointerMove={onSheetPointerMove}
             onPointerUp={onSheetPointerUp}
             style={{
-              transform: `translateY(${dragY}px)`,
-              transition: dragging ? 'none' : 'transform 200ms ease',
+              transform: `translateX(${dragX}px)`,
+              transition: dragging ? 'none' : 'transform 220ms ease',
               touchAction: 'none',
             }}
           >
@@ -267,7 +268,9 @@ const HamburgerButton = styled.button`
   height: 44px;
   border-radius: 10px;
   border: none;
-  background: transparent;
+  background: rgba(37, 44, 55, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   background-image: url(${littleB});
   background-size: 70% auto;
   background-position: center;
@@ -276,7 +279,8 @@ const HamburgerButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
   &:hover { opacity: 0.9; }
   &:active { transform: scale(0.98); }
   span {
@@ -311,20 +315,21 @@ const MobileScrim = styled.button`
 
 const MobileSheet = styled.div`
   position: absolute;
-  left: 0; right: 0; bottom: 0;
+  top: 0; bottom: 0; right: 0; left: auto;
+  width: min(420px, 86vw);
   background: rgba(26, 26, 33, 0.7);
   -webkit-backdrop-filter: blur(18px) saturate(120%);
   backdrop-filter: blur(18px) saturate(120%);
   border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.35);
+  border-bottom-left-radius: 16px;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.35);
   padding-bottom: env(safe-area-inset-bottom);
-  animation: slideUp 220ms ease;
+  animation: slideIn 240ms ease;
   will-change: transform;
 
-  @keyframes slideUp {
-    from { transform: translateY(12%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  @keyframes slideIn {
+    from { transform: translateX(12%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -333,11 +338,11 @@ const MobileSheet = styled.div`
 `
 
 const SheetHandle = styled.div`
-  width: 40px;
+  width: 26px;
   height: 4px;
   background: #ffffff55;
   border-radius: 2px;
-  margin: 10px auto;
+  margin: 10px auto 6px 12px;
 `
 
 const SheetContent = styled.div`
