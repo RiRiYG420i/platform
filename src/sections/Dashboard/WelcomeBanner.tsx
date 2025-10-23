@@ -17,29 +17,27 @@ const WelcomeWrapper = styled.div`
 `;
 
 const BannerTop = styled.div`
-  /* Only the banner image, no surrounding background */
-  background-image: url(${bannerImg});
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
+  position: relative;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   overflow: hidden;
   animation: welcome-fade-in 0.5s ease;
-  padding: 20px 20px 4px;
-  min-height: 376px;
 
   @media (min-width: 800px) {
     margin-top: 72px;
-    padding: 40px 40px 8px;
-    min-height: 656px;
-    background-position: center top;
   }
 
   @keyframes welcome-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }
   }
+`;
+
+const BannerImage = styled.img`
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 `;
 
 const BannerBottom = styled.div`
@@ -61,26 +59,24 @@ const BannerBottom = styled.div`
 `;
 
 const WelcomeContent = styled.div`
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
   h1, p {
     color: transparent !important;
     text-shadow: none !important;
-  }
-
-  h1 {
-    font-size: 1.75rem;
-    margin: 0 0 8px 0;
-  }
-  p {
-    font-size: 1rem;
     margin: 0;
   }
+  h1 { font-size: 1.75rem; }
+  p { font-size: 1rem; }
   @media (min-width: 800px) {
-    h1 {
-      font-size: 2.25rem;
-    }
-    p {
-      font-size: 1.125rem;
-    }
+    h1 { font-size: 2.25rem; }
+    p { font-size: 1.125rem; }
   }
 `;
 
@@ -191,6 +187,7 @@ export function WelcomeBanner() {
   return (
     <WelcomeWrapper>
       <BannerTop>
+        <BannerImage src={bannerImg} alt="Welcome banner" />
         <WelcomeContent>
           <h1>Welcome to SOL-WIN👋</h1>
           <p>A fair, simple and decentralized casino on Solana. Play </p>

@@ -3,14 +3,13 @@ import React from 'react';
 import { GameBundle } from 'gamba-react-ui-v2';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-const cardBg = new URL('../../../buttons/bg.svg', import.meta.url).href;
 
 const tileAnimation = keyframes`
   0%   { background-position: -100px 100px; }
   100% { background-position: 100px -100px; }
 `;
 
-const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disabled?: boolean; $aspectRatio?: string }>`
+const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspectRatio?: string }>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -30,7 +29,6 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
   font-size: 24px;
   transition: transform 0.2s ease;
 
-  & > .background,
   & > .image {
     position: absolute;
     top: 0;
@@ -40,20 +38,11 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
     transition: transform 0.2s ease, opacity 0.3s ease;
   }
 
-  & > .background {
-    background-image: url(${cardBg});
+  & > .image {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 1;
-    pointer-events: none;
-  }
-
-  & > .image {
-    background-size: 90% auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    transform: scale(0.9);
+    transform: none;
   }
 
   & > .play {
@@ -103,12 +92,8 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
     transform: scale(1.01);
     outline: 5px solid rgba(149, 100, 255, 0.2);
     outline-offset: 0;
-
-    & > .background {
-      opacity: 0.35;
-    }
     & > .image {
-      transform: scale(1);
+      transform: none;
     }
     & > .play {
       opacity: 1;
@@ -143,12 +128,10 @@ export function GameCard({
   const CardContent = (
     <StyledGameCard
       $small={small}
-      $background={game.meta.background}
       $disabled={game.disabled}
       $aspectRatio={aspectRatio}
     >
       {game.meta.tag && <Tag>{game.meta.tag}</Tag>}
-      <div className="background" />
       <div
         className="image"
         style={{ backgroundImage: `url(${game.meta.image})` }}

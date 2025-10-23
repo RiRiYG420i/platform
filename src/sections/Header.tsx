@@ -334,7 +334,14 @@ const HamburgerButton = styled.button`
   box-shadow: 0 1px 2px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
   &:hover { opacity: 0.9; }
   &:active { transform: scale(0.98); }
-  img { width: 76%; height: 76%; }
+  img {
+    display: block;
+    width: 76%;
+    height: 76%;
+    pointer-events: none;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.9));
+    -webkit-filter: drop-shadow(0 1px 1px rgba(0,0,0,0.9));
+  }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
