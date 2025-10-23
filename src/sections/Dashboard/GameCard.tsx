@@ -19,7 +19,7 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
 
   width: 100%;
   aspect-ratio: ${({ $aspectRatio, $small }) => ($aspectRatio ? $aspectRatio : ($small ? '1/.5' : '1/.6'))};
-  background: #F8C61E;
+  background: transparent; /* Let a dedicated bottom strip handle the background tone */
   background-size: cover;
   background-position: center;
   border-radius: 10px;
@@ -28,6 +28,19 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
   font-weight: bold;
   font-size: 24px;
   transition: transform 0.2s ease;
+
+  /* Bottom background strip (footer tone), only visible below the image */
+  & > .bottom-bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 30%;
+    background: #252C37; /* Footer tone */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    z-index: 0;
+  }
 
   & > .image {
     position: absolute;
@@ -43,7 +56,7 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
     background-position: center;
     background-repeat: no-repeat;
     transform: none;
-    z-index: 1;
+    z-index: 1; /* Over the bottom-bg, so color is only visible below */
   }
 
   & > .play {
@@ -55,9 +68,10 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
     background: rgba(0, 0, 0, 0.4);
     border-radius: 5px;
     text-transform: uppercase;
-    opacity: 0;
+    opacity: 1; /* Always visible */
     backdrop-filter: blur(20px);
     transition: opacity 0.2s ease;
+    z-index: 2;
   }
 
   & > .disabled-overlay {
@@ -96,9 +110,6 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
     & > .image {
       transform: none;
     }
-    & > .play {
-      opacity: 1;
-    }
   }
 `;
 
@@ -132,6 +143,7 @@ export function GameCard({
       $disabled={game.disabled}
       $aspectRatio={aspectRatio}
     >
+      <div className="bottom-bg" />
       {game.meta.tag && <Tag>{game.meta.tag}</Tag>}
       <div
         className="image"
