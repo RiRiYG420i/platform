@@ -33,7 +33,7 @@ const Bonus = styled.button`
   }
 `
 
-const StyledHeader = styled.div<{ $scrolled: boolean }>`
+const StyledHeader = styled.div<{ $scrolled: boolean; $offset: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,6 +47,9 @@ const StyledHeader = styled.div<{ $scrolled: boolean }>`
   top: 0;
   left: 0;
   z-index: 1000;
+  transform: translateY(${(p: { $offset: number }) => -p.$offset}px);
+  will-change: transform;
+  touch-action: pan-y;
 `
 
 const Logo = styled(NavLink)`
@@ -87,13 +90,46 @@ export default function Header() {
   const [bonusHelp, setBonusHelp] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
+  const headerRef = React.useRef<HTMLDivElement>(null)
+  const [headerHeight, setHeaderHeight] = React.useState(0)
+  const [headerOffset, setHeaderOffset] = React.useState(0)
+  const prevScrollRef = React.useRef(0)
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 5)
-    onScroll()
+    // Measure header height
+    const measure = () => {
+      const h = headerRef.current?.clientHeight ?? 0
+      setHeaderHeight(h)
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY || 0
+      setScrolled(y > 5)
+      if (!isDesktop && !menuOpen) {
+        // Accumulate hide amount with scroll delta
+        const prev = prevScrollRef.current
+        const delta = y - prev
+        prevScrollRef.current = y
+        let next = headerOffset + delta
+        if (y <= 0) next = 0 // fully show at top bounce
+        next = Math.max(0, Math.min(next, headerHeight))
+        if (next !== headerOffset) setHeaderOffset(next)
+      } else {
+        // On desktop or menu open, keep header visible
+        prevScrollRef.current = y
+        if (headerOffset !== 0) setHeaderOffset(0)
+      }
+    }
+    // Initialize prev scroll
+    prevScrollRef.current = window.scrollY || 0
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isDesktop, menuOpen, headerHeight, headerOffset])
 
   return (
     <>
@@ -120,7 +156,7 @@ export default function Header() {
         />
       )}
 
-  <StyledHeader $scrolled={scrolled}>
+  <StyledHeader ref={headerRef} $scrolled={scrolled} $offset={headerOffset}>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Logo to="/">
             <img alt="Gamba logo" src="/logo.png" />
