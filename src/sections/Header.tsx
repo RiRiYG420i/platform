@@ -33,7 +33,7 @@ const Bonus = styled.button`
   }
 `
 
-const StyledHeader = styled.div<{ $scrolled: boolean; $offset: number }>`
+const StyledHeader = styled.div<{ $scrolled: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,9 +47,6 @@ const StyledHeader = styled.div<{ $scrolled: boolean; $offset: number }>`
   top: 0;
   left: 0;
   z-index: 1000;
-  transform: translateY(${(p: { $offset: number }) => -p.$offset}px);
-  will-change: transform;
-  touch-action: pan-y;
 `
 
 const Logo = styled(NavLink)`
@@ -90,46 +87,44 @@ export default function Header() {
   const [bonusHelp, setBonusHelp] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
-  const headerRef = React.useRef<HTMLDivElement>(null)
-  const [headerHeight, setHeaderHeight] = React.useState(0)
-  const [headerOffset, setHeaderOffset] = React.useState(0)
-  const prevScrollRef = React.useRef(0)
+  // Swipe-to-dismiss state (mobile sheet)
+  const [dragY, setDragY] = React.useState(0)
+  const [dragging, setDragging] = React.useState(false)
+  const startYRef = React.useRef<number | null>(null)
 
   React.useEffect(() => {
-    // Measure header height
-    const measure = () => {
-      const h = headerRef.current?.clientHeight ?? 0
-      setHeaderHeight(h)
-    }
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [])
-
-  React.useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY || 0
-      setScrolled(y > 5)
-      if (!isDesktop && !menuOpen) {
-        // Accumulate hide amount with scroll delta
-        const prev = prevScrollRef.current
-        const delta = y - prev
-        prevScrollRef.current = y
-        let next = headerOffset + delta
-        if (y <= 0) next = 0 // fully show at top bounce
-        next = Math.max(0, Math.min(next, headerHeight))
-        if (next !== headerOffset) setHeaderOffset(next)
-      } else {
-        // On desktop or menu open, keep header visible
-        prevScrollRef.current = y
-        if (headerOffset !== 0) setHeaderOffset(0)
-      }
-    }
-    // Initialize prev scroll
-    prevScrollRef.current = window.scrollY || 0
+    const onScroll = () => setScrolled(window.scrollY > 5)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [isDesktop, menuOpen, headerHeight, headerOffset])
+  }, [])
+
+  // Gesture handlers for the bottom sheet (mobile)
+  const onSheetPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    startYRef.current = e.clientY
+    setDragging(true)
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+  }
+  const onSheetPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging || startYRef.current == null) return
+    const dy = e.clientY - startYRef.current
+    setDragY(Math.max(0, dy))
+  }
+  const onSheetPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (startYRef.current == null) return
+    const dy = e.clientY - startYRef.current
+    startYRef.current = null
+    setDragging(false)
+    const threshold = 80
+    if (dy > threshold) {
+      // Dismiss the sheet
+      setMenuOpen(false)
+      setDragY(0)
+    } else {
+      // Snap back
+      setDragY(0)
+    }
+  }
 
   return (
     <>
@@ -156,7 +151,7 @@ export default function Header() {
         />
       )}
 
-  <StyledHeader ref={headerRef} $scrolled={scrolled} $offset={headerOffset}>
+  <StyledHeader $scrolled={scrolled}>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Logo to="/">
             <img alt="Gamba logo" src="/logo.png" />
@@ -227,7 +222,16 @@ export default function Header() {
           }}
         >
           <MobileScrim onClick={() => setMenuOpen(false)} />
-          <MobileSheet>
+          <MobileSheet
+            onPointerDown={onSheetPointerDown}
+            onPointerMove={onSheetPointerMove}
+            onPointerUp={onSheetPointerUp}
+            style={{
+              transform: `translateY(${dragY}px)`,
+              transition: dragging ? 'none' : 'transform 200ms ease',
+              touchAction: 'none',
+            }}
+          >
             <SheetHandle />
             <SheetContent>
               {ENABLE_LEADERBOARD && (
@@ -319,6 +323,7 @@ const MobileSheet = styled.div`
   box-shadow: 0 -10px 30px rgba(0,0,0,0.35);
   padding-bottom: env(safe-area-inset-bottom);
   animation: slideUp 220ms ease;
+  will-change: transform;
 
   @keyframes slideUp {
     from { transform: translateY(12%); opacity: 0; }

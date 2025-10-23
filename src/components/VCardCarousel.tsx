@@ -140,9 +140,8 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 	const rootRef = React.useRef<HTMLDivElement>(null)
   const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
   const base = baseGames.length
-	const games = React.useMemo<ExtendedGameBundle[]>(() => [...baseGames, ...baseGames, ...baseGames], [baseGames])
-	const [idx, setIdx] = React.useState(base) // visual index inside tripled list, start in middle block
-	const [noTransition, setNoTransition] = React.useState(false)
+  const games = React.useMemo<ExtendedGameBundle[]>(() => [...baseGames, ...baseGames, ...baseGames], [baseGames])
+	const [currentIdx, setCurrentIdx] = React.useState(0) // logical index; use visual mapping
 	const [visIdx, setVisIdx] = React.useState(() => base + 0)
   // baseGames/games control how many we render; base is original length
 
@@ -172,38 +171,40 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 	// Autoplay
 		React.useEffect(() => {
 			if (!autoplay) return
-					const id = setInterval(() => setIdx((i: number) => i + 1), interval)
+				const id = setInterval(() => setCurrentIdx((i: number) => i + 1), interval)
 		return () => clearInterval(id)
 		}, [autoplay, interval])
 
 	// Compute x-offset so that current slide center aligns to viewport center
-				// Rebase index into middle block seamlessly after each transition
-				const onTrackTransitionEnd = () => {
-					if (idx < base) {
-						setNoTransition(true)
-						setIdx(idx + base)
-						requestAnimationFrame(() => setNoTransition(false))
-					} else if (idx >= base * 2) {
-						setNoTransition(true)
-						setIdx(idx - base)
-						requestAnimationFrame(() => setNoTransition(false))
-					}
+			// Seamless mapping: choose the visually closest index within the tripled list
+			React.useEffect(() => {
+				if (base === 0) return
+				const mod = ((currentIdx % base) + base) % base
+				const candidates = [mod, mod + base, mod + 2 * base]
+				const prev = visIdx
+				let best = candidates[0]
+				let bestDist = Math.abs(best - prev)
+				for (const c of candidates) {
+					const d = Math.abs(c - prev)
+					if (d < bestDist) { best = c; bestDist = d }
 				}
+				if (best !== prev) setVisIdx(best)
+			}, [currentIdx, base])
 		const centerOffset = React.useMemo(() => {
 			const viewport = rootRef.current?.clientWidth ?? 0
 			const total = games.length * (slideWidth + gap) - gap + stagePadding * 2
-			const leftOfCurrent = idx * (slideWidth + gap) + stagePadding
+			const leftOfCurrent = visIdx * (slideWidth + gap) + stagePadding
 			const centerOfCurrent = leftOfCurrent + slideWidth / 2
 			const viewportCenter = viewport / 2
 			const desired = centerOfCurrent - viewportCenter
 			const maxX = Math.max(0, total - viewport)
 			const x = Math.max(0, Math.min(desired, maxX))
 			return x
-			}, [idx, gap, slideWidth, stagePadding, games.length])
+		}, [visIdx, gap, slideWidth, stagePadding, games.length])
 
 
-		const prev = () => setIdx((i: number) => i - 1)
-		const next = () => setIdx((i: number) => i + 1)
+		const prev = () => setCurrentIdx((i: number) => i - 1)
+		const next = () => setCurrentIdx((i: number) => i + 1)
 
 		// Geometry for vertical offset of neighbor cards (portrait 2/3)
 		const baseHeight = slideWidth * 1.5
@@ -257,10 +258,10 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				<Arrow side="left" aria-label="Previous" onClick={prev}>
 					‹
 				</Arrow>
-								<Track x={centerOffset} onTransitionEnd={onTrackTransitionEnd} style={{ transition: noTransition ? 'none' as const : undefined }}>
+				<Track x={centerOffset}>
 									{games.map((game: ExtendedGameBundle, i: number) => {
-										const active = i === idx
-										const neighbor = i === idx - 1 || i === idx + 1
+										const active = i === visIdx
+										const neighbor = i === visIdx - 1 || i === visIdx + 1
 										return (
 											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor} offsetY={neighbor ? neighborOffset : 0}>
 												<div style={{ width: '100%', maxWidth: slideWidth }}>
@@ -275,20 +276,20 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				</Arrow>
 			</CarouselRoot>
 					<Dots>
-												{baseGames.map((_: ExtendedGameBundle, i: number) => (
+							{baseGames.map((_: ExtendedGameBundle, i: number) => (
 								<Dot
 									key={i}
-														active={((idx % base) + base) % base === i}
+									active={((currentIdx % base) + base) % base === i}
 									onClick={() => {
-															// Jump to nearest visual index with same modulo within tripled array
-															const candidates = [i, i + base, i + base * 2]
+										// Snap to nearest index with same modulo (i) to keep minimal motion
+										const candidates = [i, i + base, i + base * 2]
 										let best = candidates[0]
-															let bestDist = Math.abs(best - idx)
+										let bestDist = Math.abs(best - currentIdx)
 										for (const c of candidates) {
-																const d = Math.abs(c - idx)
+											const d = Math.abs(c - currentIdx)
 											if (d < bestDist) { best = c; bestDist = d }
 										}
-															setIdx(best)
+										setCurrentIdx(best)
 									}}
 								/>
 						))}
