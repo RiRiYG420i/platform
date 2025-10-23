@@ -141,7 +141,8 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
   const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
   const base = baseGames.length
   const games = React.useMemo<ExtendedGameBundle[]>(() => [...baseGames, ...baseGames, ...baseGames], [baseGames])
-  const [currentIdx, setCurrentIdx] = React.useState(0) // logical index; use visual mapping
+	const [currentIdx, setCurrentIdx] = React.useState(0) // logical index; use visual mapping
+	const [visIdx, setVisIdx] = React.useState(() => base + 0)
   // baseGames/games control how many we render; base is original length
 
 	// Measurements
@@ -170,12 +171,25 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 	// Autoplay
 		React.useEffect(() => {
 			if (!autoplay) return
-			const id = setInterval(() => setCurrentIdx((i: number) => i + 1), interval)
+				const id = setInterval(() => setCurrentIdx((i: number) => i + 1), interval)
 		return () => clearInterval(id)
 		}, [autoplay, interval])
 
 	// Compute x-offset so that current slide center aligns to viewport center
-		const visIdx = React.useMemo(() => base + (((currentIdx % base) + base) % base), [currentIdx, base])
+			// Seamless mapping: choose the visually closest index within the tripled list
+			React.useEffect(() => {
+				if (base === 0) return
+				const mod = ((currentIdx % base) + base) % base
+				const candidates = [mod, mod + base, mod + 2 * base]
+				const prev = visIdx
+				let best = candidates[0]
+				let bestDist = Math.abs(best - prev)
+				for (const c of candidates) {
+					const d = Math.abs(c - prev)
+					if (d < bestDist) { best = c; bestDist = d }
+				}
+				if (best !== prev) setVisIdx(best)
+			}, [currentIdx, base])
 		const centerOffset = React.useMemo(() => {
 			const viewport = rootRef.current?.clientWidth ?? 0
 			const total = games.length * (slideWidth + gap) - gap + stagePadding * 2
