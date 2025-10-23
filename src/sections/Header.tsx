@@ -228,20 +228,7 @@ export default function Header() {
           {/* Mobile connect + hamburger */}
           {!isDesktop && (
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <GambaUi.Button
-                style={{ background: LANG_B_GRADIENT, minHeight: 40 }}
-                onClick={() => {
-                  if (wallet.connected) {
-                    user.set({ userModal: true })
-                  } else if (wallet.wallet) {
-                    wallet.connect()
-                  } else {
-                    walletModal.setVisible(true)
-                  }
-                }}
-              >
-                {wallet.connected ? 'Account' : 'Connect'}
-              </GambaUi.Button>
+              <UserButton />
               <HamburgerButton
                 aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'}
                 aria-expanded={menuOpen}
