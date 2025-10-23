@@ -49,10 +49,10 @@ const CarouselRoot = styled.div<{ stagePadding: number; topPad?: number }>`
 const Track = styled.div<{ x: number }>`
 	display: flex;
 	align-items: stretch;
-	gap: 28px;
+	gap: 10px; /* Owl default margin ~10px */
 	will-change: transform;
-	/* Purely horizontal movement; significantly slower for smoother exit */
-	transition: transform 700ms ease-in-out;
+	/* Match OwlCarousel2 center demo default movement */
+	transition: transform 250ms ease-in-out;
 	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
 
 	@media (prefers-reduced-motion: reduce) {
@@ -91,11 +91,9 @@ const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean; 
 				? css`
 						transform: scale(${NEIGHBOR_SCALE});
 						z-index: 1;
-						filter: brightness(0.98) saturate(0.98);
 					`
 				: css`
 						transform: scale(${OTHER_SCALE});
-						filter: brightness(0.9) saturate(0.95);
 					`}
 	}
 `
@@ -152,20 +150,11 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 	const rootRef = React.useRef<HTMLDivElement>(null)
 	const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
 	const base = baseGames.length
-	// Use 5x clones to avoid edge clamping on last page
-	const games = React.useMemo<ExtendedGameBundle[]>(
-		() => [
-			...baseGames,
-			...baseGames,
-			...baseGames,
-			...baseGames,
-			...baseGames,
-		],
-		[baseGames],
-	)
+	// Owl approach: minimal clones for seamless loop
+	const games = React.useMemo<ExtendedGameBundle[]>(() => [...baseGames, ...baseGames, ...baseGames], [baseGames])
 	const [currentIdx, setCurrentIdx] = React.useState(0) // logical index; use visual mapping
-	// Start in the middle band (3rd copy) to maximize headroom on both sides
-	const [visIdx, setVisIdx] = React.useState(() => base * 2)
+	// Start from the middle copy to keep headroom on both sides
+	const [visIdx, setVisIdx] = React.useState(() => base)
   // baseGames/games control how many we render; base is original length
 
 	// Measurements
@@ -203,8 +192,7 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 					React.useEffect(() => {
 						if (base === 0) return
 						const mod = ((currentIdx % base) + base) % base
-						// consider all 5 clone positions for the same logical card
-						const candidates = [mod, mod + base, mod + 2 * base, mod + 3 * base, mod + 4 * base]
+						const candidates = [mod, mod + base, mod + 2 * base]
 						const prev = visIdx
 						let best = candidates[0]
 						let bestDist = Math.abs(best - prev)
@@ -212,9 +200,9 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 							const d = Math.abs(c - prev)
 							if (d < bestDist) { best = c; bestDist = d }
 						}
-						// Normalize into the central band [2*base, 3*base)
-						while (best < 2 * base) best += base
-						while (best >= 3 * base) best -= base
+						// Keep within the middle third [base, 2*base) to avoid edge glitches
+						if (best < base) best += base
+						else if (best >= 2 * base) best -= base
 						if (best !== prev) setVisIdx(best)
 					}, [currentIdx, base])
 		const centerOffset = React.useMemo(() => {
