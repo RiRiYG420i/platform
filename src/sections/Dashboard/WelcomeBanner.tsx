@@ -21,14 +21,15 @@ const WelcomeWrapper = styled.div`
   }
 
   /* Styling */
-  background-color: #0C0C11;
+  /* Match header tone */
+  background-color: #252C37;
   background-image:
-    linear-gradient(to bottom, rgba(12,12,17,0) 98%, #0C0C11 100%),
+    linear-gradient(to bottom, rgba(12,12,17,0) 98%, #252C37 100%),
     url(${bannerImg});
   background-size: contain, contain;
   background-position: top center, top center;
   background-repeat: no-repeat;
-  border: 12px solid #0C0C11; /* thicker frame with requested color */
+  border: 12px solid #252C37; /* frame matches header color */
   background-clip: padding-box; /* keep GIF inside rounded inner area */
   overflow: hidden; /* visually round the GIF edges */
   animation: welcome-fade-in 0.5s ease;
@@ -52,7 +53,7 @@ const WelcomeWrapper = styled.div`
     /* Increase banner height downward by ~one button height on desktop */
     min-height: 656px;
     background-image:
-      linear-gradient(to bottom, rgba(12,12,17,0) 85%, #0C0C11 100%),
+      linear-gradient(to bottom, rgba(12,12,17,0) 85%, #252C37 100%),
       url(${bannerImg});
     background-size: contain, contain;
     background-position: center top, center top;

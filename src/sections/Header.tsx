@@ -228,14 +228,16 @@ export default function Header() {
           {/* Mobile connect + hamburger */}
           {!isDesktop && (
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <UserButton />
+              <RedButtonWrapper>
+                <UserButton />
+              </RedButtonWrapper>
               <HamburgerButton
                 aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'}
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setMenuOpen((v) => !v)}
               >
-                <img src={littleB} alt="Menu" style={{ width: '70%', height: '70%', filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.6))' }} />
+                <img src={littleB} alt="Menu" style={{ width: '72%', height: '72%', filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.9))', opacity: 0.98 }} />
               </HamburgerButton>
             </div>
           )}
@@ -321,7 +323,7 @@ const HamburgerButton = styled.button`
   height: 44px;
   border-radius: 10px;
   border: none;
-  background: rgba(37, 44, 55, 0.55);
+  background: rgba(37, 44, 55, 0.7);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   display: inline-flex;
