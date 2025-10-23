@@ -30,13 +30,13 @@ function useResponsive(): Layout {
 	return { items: 3, stagePadding: padding }
 }
 
-const CarouselRoot = styled.div<{ stagePadding: number }>`
+const CarouselRoot = styled.div<{ stagePadding: number; topPad?: number }>`
 	position: relative;
 	width: 100%;
 	padding-left: ${(p: { stagePadding: number }) => p.stagePadding}px;
 	padding-right: ${(p: { stagePadding: number }) => p.stagePadding}px;
-		padding-top: 8px;
-		padding-bottom: 12px; /* extra room for scaled center and dots */
+	padding-top: ${(p: { topPad?: number }) => (p.topPad ?? 8)}px;
+	padding-bottom: 16px; /* room for dots */
 	box-sizing: border-box;
 	overflow: hidden;
 	z-index: 1; /* ensure no accidental overlay blocks clicks */
@@ -97,6 +97,9 @@ const Arrow = styled.button<{ side: 'left' | 'right' }>`
 	display: grid;
 	place-items: center;
 	width: 44px;
+	border: 0 !important; /* override global button border */
+	outline: none !important;
+	box-shadow: none !important;
 	background: linear-gradient(
 		to ${(p: { side: 'left' | 'right' }) => (p.side === 'left' ? 'right' : 'left')},
 		rgba(0,0,0,0.35),
@@ -189,6 +192,11 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 		const prev = () => setCurrentIdx((i: number) => i - 1)
 		const next = () => setCurrentIdx((i: number) => i + 1)
 
+		// Geometry for vertical offset of neighbor cards (portrait 2/3)
+		const baseHeight = slideWidth * 1.5
+		const neighborOffset = 0.5 * CENTER_SCALE * baseHeight
+		const topPad = Math.ceil(neighborOffset + 8)
+
 			// Basic drag-to-snap interaction
 			const startX = React.useRef<number | null>(null)
 			const dragged = React.useRef(false)
@@ -224,9 +232,10 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 
 	return (
 		<div>
-					<CarouselRoot
+						<CarouselRoot
 						ref={rootRef}
 						stagePadding={stagePadding}
+							topPad={topPad}
 						onPointerDown={onPointerDown}
 						onPointerMove={onPointerMove}
 						onPointerUp={onPointerUp}
@@ -250,8 +259,6 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 									{games.map((game: ExtendedGameBundle, i: number) => {
 										const active = i === currentIdx
 										const neighbor = i === (currentIdx - 1 + games.length) % games.length || i === (currentIdx + 1) % games.length
-										const baseHeight = slideWidth * 1.5 // aspect 2/3 -> h = w * 1.5
-										const neighborOffset = 0.5 * CENTER_SCALE * baseHeight
 										return (
 											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor} offsetY={neighbor ? neighborOffset : 0}>
 												<div style={{ width: '100%', maxWidth: slideWidth }}>
