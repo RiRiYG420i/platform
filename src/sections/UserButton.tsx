@@ -3,6 +3,7 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GambaUi, useReferral } from 'gamba-react-ui-v2'
 import React, { useState } from 'react'
 import { Modal } from '../components/Modal'
+const langB = new URL('../buttons/lang-b.svg', import.meta.url).href
 import { PLATFORM_ALLOW_REFERRER_REMOVAL, PLATFORM_REFERRAL_FEE } from '../constants'
 import { useToast } from '../hooks/useToast'
 import { useUserStore } from '../hooks/useUserStore'
@@ -44,7 +45,17 @@ function UserModal() {
       </h1>
       <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', width: '100%', padding: '0 20px' }}>
         <div style={{ display: 'flex', gap: '10px', flexDirection: 'column', width: '100%' }}>
-          <GambaUi.Button main onClick={copyInvite}>
+          <GambaUi.Button
+            main
+            onClick={copyInvite}
+            style={{
+              backgroundImage: `url(${langB})`,
+              backgroundColor: 'transparent',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          >
             💸 Copy invite link
           </GambaUi.Button>
           <div style={{ opacity: '.8', fontSize: '80%' }}>
@@ -53,7 +64,17 @@ function UserModal() {
         </div>
         {PLATFORM_ALLOW_REFERRER_REMOVAL && referral.referrerAddress && (
           <div style={{ display: 'flex', gap: '10px', flexDirection: 'column', width: '100%' }}>
-            <GambaUi.Button disabled={removing} onClick={removeInvite}>
+            <GambaUi.Button
+              disabled={removing}
+              onClick={removeInvite}
+              style={{
+                backgroundImage: `url(${langB})`,
+                backgroundColor: 'transparent',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
               Remove invite
             </GambaUi.Button>
             <div style={{ opacity: '.8', fontSize: '80%' }}>
@@ -69,7 +90,16 @@ function UserModal() {
             </div>
           </div>
         )}
-        <GambaUi.Button onClick={() => wallet.disconnect()}>
+        <GambaUi.Button
+          onClick={() => wallet.disconnect()}
+          style={{
+            backgroundImage: `url(${langB})`,
+            backgroundColor: 'transparent',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
           Disconnect
         </GambaUi.Button>
       </div>
@@ -99,6 +129,13 @@ export function UserButton() {
         <div style={{ position: 'relative' }}>
           <GambaUi.Button
             onClick={() => user.set({ userModal: true })}
+            style={{
+              backgroundImage: `url(${langB})`,
+              backgroundColor: 'transparent',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
           >
             <div style={{ display: 'flex', gap: '.5em', alignItems: 'center' }}>
               <img src={wallet.wallet?.adapter.icon} height="20px" />
@@ -107,7 +144,16 @@ export function UserButton() {
           </GambaUi.Button>
         </div>
       ) : (
-        <GambaUi.Button onClick={connect}>
+        <GambaUi.Button
+          onClick={connect}
+          style={{
+            backgroundImage: `url(${langB})`,
+            backgroundColor: 'transparent',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
           {wallet.connecting ? 'Connecting' : 'Connect'}
         </GambaUi.Button>
       )}

@@ -58,11 +58,16 @@ const Logo = styled(NavLink)`
   }
 `
 
+const langB = new URL('../../buttons/lang-b.svg', import.meta.url).href
+
 const StyledButton = styled.div`
   button {
-  background: #E0B41B !important; /* darker yellow */
+    background: transparent !important;
+    background-image: url(${langB}) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
     color: #252C37 !important;
-    &:hover { background: #C9A019 !important; }
   }
 `
 
@@ -71,12 +76,12 @@ const RedButtonWrapper = styled.div`
   /* Target the immediate GambaUi.Button rendered as a button, not dropdown items */
   & > button,
   & > div > button {
-  background: #E0B41B !important;
+    background: transparent !important;
+    background-image: url(${langB}) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
     color: #252C37 !important;
-  }
-  & > button:hover,
-  & > div > button:hover {
-    background: #C9A019 !important;
   }
 `
 
@@ -236,7 +241,15 @@ export default function Header() {
             <SheetHandle />
             <SheetContent>
               {ENABLE_LEADERBOARD && (
-                <GambaUi.Button onClick={() => {
+                <GambaUi.Button
+                  style={{
+                    backgroundImage: `url(${langB})`,
+                    backgroundColor: 'transparent',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                  onClick={() => {
                   setMenuOpen(false)
                   setShowLeaderboard(true)
                 }}>
@@ -268,7 +281,7 @@ const HamburgerButton = styled.button`
   border: none;
   background: transparent;
   background-image: url(${littleB});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   display: inline-flex;

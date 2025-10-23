@@ -109,12 +109,18 @@ const BottomArea = styled.div`
   }
 `;
 
+const langB = new URL('../../../buttons/lang-b.svg', import.meta.url).href;
+
 const JackpotBadge = styled.button`
   border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #ECD11E;
+  background: transparent;
+  background-image: url(${langB});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #252C37;
   font-weight: 600;
   font-size: 0.9rem; /* match button font-size */
@@ -135,7 +141,11 @@ const ActionButton = styled.button`
   padding: 12px 16px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: #ECD11E;
+  background: transparent;
+  background-image: url(${langB});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #252C37;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
