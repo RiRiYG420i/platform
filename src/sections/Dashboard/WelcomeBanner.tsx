@@ -118,7 +118,7 @@ const JackpotBadge = styled.button`
   justify-content: center;
   background: transparent;
   background-image: url(${langB});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   color: #252C37;
@@ -143,7 +143,7 @@ const ActionButton = styled.button`
   font-weight: 600;
   background: transparent;
   background-image: url(${langB});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   color: #252C37;

@@ -64,7 +64,7 @@ const StyledButton = styled.div`
   button {
     background: transparent !important;
     background-image: url(${langB}) !important;
-    background-size: cover !important;
+    background-size: contain !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     color: #252C37 !important;
@@ -78,7 +78,7 @@ const RedButtonWrapper = styled.div`
   & > div > button {
     background: transparent !important;
     background-image: url(${langB}) !important;
-    background-size: cover !important;
+    background-size: contain !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     color: #252C37 !important;
@@ -245,7 +245,7 @@ export default function Header() {
                   style={{
                     backgroundImage: `url(${langB})`,
                     backgroundColor: 'transparent',
-                    backgroundSize: 'cover',
+                    backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                   }}
@@ -281,7 +281,7 @@ const HamburgerButton = styled.button`
   border: none;
   background: transparent;
   background-image: url(${littleB});
-  background-size: contain;
+  background-size: 70% auto;
   background-position: center;
   background-repeat: no-repeat;
   display: inline-flex;

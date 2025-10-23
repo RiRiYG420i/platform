@@ -51,7 +51,7 @@ function UserModal() {
             style={{
               backgroundImage: `url(${langB})`,
               backgroundColor: 'transparent',
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
             }}
@@ -70,7 +70,7 @@ function UserModal() {
               style={{
                 backgroundImage: `url(${langB})`,
                 backgroundColor: 'transparent',
-                backgroundSize: 'cover',
+                backgroundSize: 'contain',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
               }}
@@ -95,7 +95,7 @@ function UserModal() {
           style={{
             backgroundImage: `url(${langB})`,
             backgroundColor: 'transparent',
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }}
@@ -132,7 +132,7 @@ export function UserButton() {
             style={{
               backgroundImage: `url(${langB})`,
               backgroundColor: 'transparent',
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
             }}
@@ -149,7 +149,7 @@ export function UserButton() {
           style={{
             backgroundImage: `url(${langB})`,
             backgroundColor: 'transparent',
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }}

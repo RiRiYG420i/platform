@@ -85,12 +85,21 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
 }
 
 /* Unified border for all buttons across the app */
+/* Remove borders from buttons globally */
 button,
 .gamba-ui-button,
 .wallet-adapter-button,
 .wallet-adapter-button-trigger,
 .gamba-ui-select button {
-  border: 2px solid #252C37 !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure button text is centered and fully visible */
+.gamba-ui-button {
+  justify-content: center !important;
+  text-align: center !important;
 }
 
 /* Mobile: strictly enforce single-line in Gamba UI controls */
