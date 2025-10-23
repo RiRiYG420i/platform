@@ -80,6 +80,27 @@ const Dot = styled.button<{ active?: boolean }>`
 	cursor: pointer;
 `
 
+const NavButton = styled.button<{ $side: 'left' | 'right' }>`
+	position: absolute;
+	top: 50%;
+	${(p: { $side: 'left' | 'right' }) => (p.$side === 'left' ? 'left: 8px;' : 'right: 8px;')}
+	transform: translateY(-50%);
+	width: 38px;
+	height: 38px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: 999px;
+	background: rgba(0,0,0,0.45);
+	color: #fff;
+	cursor: pointer;
+	z-index: 2;
+	transition: background 150ms ease, transform 150ms ease, opacity 150ms ease;
+	&:hover { background: rgba(0,0,0,0.6); }
+	&:active { transform: translateY(-50%) scale(0.98); }
+`
+
 export interface VCardCarouselProps {
 	autoplay?: boolean
 	interval?: number
@@ -196,6 +217,14 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				onPointerMove={onPointerMove}
 				onPointerUp={onPointerUp}
 			>
+				<NavButton
+					$side="left"
+					aria-label="Previous"
+					onPointerDown={(e: React.PointerEvent) => { e.stopPropagation() }}
+					onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.stopPropagation(); prev() }}
+				>
+					‹
+				</NavButton>
 				<Track x={centerOffset}>
 					{games.map((game: ExtendedGameBundle, i: number) => (
 						<Slide key={i} width={slideWidth}>
@@ -205,6 +234,14 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 						</Slide>
 					))}
 				</Track>
+				<NavButton
+					$side="right"
+					aria-label="Next"
+					onPointerDown={(e: React.PointerEvent) => { e.stopPropagation() }}
+					onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.stopPropagation(); next() }}
+				>
+					›
+				</NavButton>
 			</CarouselRoot>
 			<Dots>
 							{baseGames.map((_: ExtendedGameBundle, i: number) => (

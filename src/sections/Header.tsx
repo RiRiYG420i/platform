@@ -45,7 +45,7 @@ const HAMBURGER_ICON_DATA =
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'><line x1='8' y1='14' x2='40' y2='14'/><line x1='8' y1='24' x2='40' y2='24'/><line x1='8' y1='34' x2='40' y2='34'/></svg>"
   )
 
-const StyledHeader = styled.div<{ $scrolled: boolean }>`
+const StyledHeader = styled.div<{ $scrolled: boolean; $hidden: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -53,7 +53,7 @@ const StyledHeader = styled.div<{ $scrolled: boolean }>`
   padding: 10px;
   /* Match footer background color */
   background: rgba(37, 44, 55, 0.6);
-  transition: background 200ms ease;
+  transition: background 200ms ease, transform 250ms ease;
   backdrop-filter: blur(20px);
   color: #252C37;
   position: fixed;
@@ -63,6 +63,7 @@ const StyledHeader = styled.div<{ $scrolled: boolean }>`
   /* Match corner radius with buttons and game cards */
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  transform: translateY(${(p: { $hidden: boolean }) => (p.$hidden ? '-110%' : '0')});
 `
 
 const Logo = styled(NavLink)`
@@ -102,17 +103,46 @@ export default function Header() {
   const wallet = useWallet()
   const walletModal = useWalletModal()
   const user = useUserStore()
+  // Mobile header hide/show on scroll + swipe-to-reveal
+  const [headerHidden, setHeaderHidden] = React.useState(false)
+  const lastYRef = React.useRef<number>(0)
+  const pullStartYRef = React.useRef<number | null>(null)
+  const pullingRef = React.useRef<boolean>(false)
   // Swipe-to-dismiss state (mobile sheet)
   const [dragX, setDragX] = React.useState(0)
   const [dragging, setDragging] = React.useState(false)
   const startXRef = React.useRef<number | null>(null)
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 5)
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 5)
+      // Only apply hide/show on mobile screens and when the menu is closed
+      if (!isDesktop && !menuOpen) {
+        const prev = lastYRef.current
+        const dy = y - prev
+        lastYRef.current = y
+        // Hide when scrolling down past a small threshold
+        if (y > 80 && dy > 3) {
+          setHeaderHidden(true)
+        }
+        // Show when scrolling up
+        if (dy < -3 || y < 10) {
+          setHeaderHidden(false)
+        }
+      }
+    }
+    // Initialize
+    lastYRef.current = window.scrollY
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isDesktop, menuOpen])
+
+  // Ensure header is visible while menu is open
+  React.useEffect(() => {
+    if (menuOpen) setHeaderHidden(false)
+  }, [menuOpen])
 
   // Gesture handlers for the side sheet (mobile)
   const onSheetPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -170,7 +200,7 @@ export default function Header() {
             {context.defaultJackpotFee === 0 ? 'DISABLED' : 'ENABLED'}
             <GambaUi.Switch
               checked={context.defaultJackpotFee > 0}
-              onChange={(checked) =>
+              onChange={(checked: boolean) =>
                 context.setDefaultJackpotFee(checked ? PLATFORM_JACKPOT_FEE : 0)
               }
             />
@@ -200,7 +230,7 @@ export default function Header() {
         />
       )}
 
-  <StyledHeader $scrolled={scrolled}>
+  <StyledHeader $scrolled={scrolled} $hidden={!isDesktop && headerHidden}>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Logo to="/">
             <img alt="Gamba logo" src="/logo.png" />
@@ -263,7 +293,7 @@ export default function Header() {
                 aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'}
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
-                onClick={() => setMenuOpen((v) => !v)}
+                onClick={() => setMenuOpen((v: boolean) => !v)}
               >
                 <span className="icon" aria-hidden="true" />
               </HamburgerButton>
@@ -272,13 +302,42 @@ export default function Header() {
         </div>
       </StyledHeader>
 
+      {/* Top edge swipe zone to reveal header on mobile */}
+      {!isDesktop && (
+        <TopSwipeZone
+          aria-hidden
+          onPointerDown={(e: React.PointerEvent<HTMLDivElement>) => {
+            pullStartYRef.current = e.clientY
+            pullingRef.current = false
+          }}
+          onPointerMove={(e: React.PointerEvent<HTMLDivElement>) => {
+            if (pullStartYRef.current == null) return
+            const dy = e.clientY - pullStartYRef.current
+            if (!pullingRef.current && dy > 8) {
+              pullingRef.current = true
+              ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+            }
+          }}
+          onPointerUp={(e: React.PointerEvent<HTMLDivElement>) => {
+            if (pullStartYRef.current == null) return
+            const dy = e.clientY - pullStartYRef.current
+            pullStartYRef.current = null
+            pullingRef.current = false
+            // If user pulled down enough, reveal header
+            if (dy > 28) {
+              setHeaderHidden(false)
+            }
+          }}
+        />
+      )}
+
       {/* Mobile overlay menu */}
       {!isDesktop && menuOpen && (
         <MobileMenuOverlay
           role="dialog"
           aria-modal="true"
           id="mobile-menu"
-          onKeyDown={(e) => {
+          onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
             if (e.key === 'Escape') setMenuOpen(false)
           }}
         >
@@ -439,4 +498,16 @@ const SheetContent = styled.div`
   gap: 12px;
   padding: 16px;
   & > * { width: 100%; }
+`
+
+// A small, invisible swipe zone at the very top to pull down the header on mobile
+const TopSwipeZone = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 14px; /* small strip to avoid interfering with normal content */
+  z-index: 1002; /* above header so it's reachable while header is hidden */
+  touch-action: none; /* we want to detect a short pull-down */
+  background: transparent;
 `
