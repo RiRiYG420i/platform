@@ -113,13 +113,23 @@ export default function Header() {
 
   // Gesture handlers for the side sheet (mobile)
   const onSheetPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // start tracking but don't mark as dragging until threshold is exceeded
     startXRef.current = e.clientX
-    setDragging(true)
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    setDragging(false)
   }
   const onSheetPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging || startXRef.current == null) return
+    if (startXRef.current == null) return
     const dx = e.clientX - startXRef.current
+    // Begin dragging only after a small horizontal threshold to preserve clicks inside
+    if (!dragging) {
+      if (Math.abs(dx) > 12) {
+        setDragging(true)
+        // capture now that we are actually dragging
+        ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+      } else {
+        return
+      }
+    }
     // Only allow dragging towards the right (to dismiss)
     setDragX(Math.max(0, dx))
   }
@@ -274,8 +284,11 @@ export default function Header() {
             style={{
               transform: `translateX(${dragX}px)`,
               transition: dragging ? 'none' : 'transform 220ms ease',
-              touchAction: 'none',
+              touchAction: 'pan-y',
             }}
+            onPointerDown={onSheetPointerDown}
+            onPointerMove={onSheetPointerMove}
+            onPointerUp={onSheetPointerUp}
           >
             <SheetHandle
               onPointerDown={onSheetPointerDown}

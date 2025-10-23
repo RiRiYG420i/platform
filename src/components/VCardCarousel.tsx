@@ -64,28 +64,35 @@ const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean; 
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
-	transform-origin: center bottom;
-	${css`
-		transition: transform 300ms ease, filter 300ms ease; 
-	`}
 
-	${(p: { active?: boolean; neighbor?: boolean; offsetY?: number }) =>
-		p.active
-			? css`
-					transform: translateY(0) scale(${CENTER_SCALE});
-					z-index: 2;
-					filter: none;
-				`
-			: p.neighbor
-			? css`
-					transform: translateY(-${(p.offsetY ?? 0)}px) scale(${NEIGHBOR_SCALE});
-					z-index: 1;
-					filter: brightness(0.98) saturate(0.98);
-				`
-			: css`
-					transform: translateY(0) scale(${OTHER_SCALE});
-					filter: brightness(0.9) saturate(0.95);
-				`}
+	/* Apply vertical offset via margin to avoid animated diagonal movement */
+	${(p: { neighbor?: boolean; offsetY?: number }) =>
+		p.neighbor
+			? css`margin-top: -${(p.offsetY ?? 0)}px;`
+			: css`margin-top: 0;`}
+
+	/* Inner wrapper handles scale/filter with transition only on scale/filter */
+	& > .scaleWrap {
+		transform-origin: center bottom;
+		${css`transition: transform 300ms ease, filter 300ms ease;`}
+		${(p: { active?: boolean; neighbor?: boolean }) =>
+			p.active
+				? css`
+						transform: scale(${CENTER_SCALE});
+						z-index: 2;
+						filter: none;
+					`
+				: p.neighbor
+				? css`
+						transform: scale(${NEIGHBOR_SCALE});
+						z-index: 1;
+						filter: brightness(0.98) saturate(0.98);
+					`
+				: css`
+						transform: scale(${OTHER_SCALE});
+						filter: brightness(0.9) saturate(0.95);
+					`}
+	}
 `
 
 const Arrow = styled.button<{ side: 'left' | 'right' }>`
@@ -264,7 +271,7 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 										const neighbor = i === visIdx - 1 || i === visIdx + 1
 										return (
 											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor} offsetY={neighbor ? neighborOffset : 0}>
-												<div style={{ width: '100%', maxWidth: slideWidth }}>
+												<div className="scaleWrap" style={{ width: '100%', maxWidth: slideWidth }}>
 													<GameCard game={game} aspectRatio={'2/3'} />
 												</div>
 											</Slide>

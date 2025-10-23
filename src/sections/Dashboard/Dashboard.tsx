@@ -6,6 +6,7 @@ import { GameCard } from './GameCard'
 import { WelcomeBanner } from './WelcomeBanner'
 import VCardCarousel from '../../components/VCardCarousel'
 import LeaderboardsPanel from '../LeaderBoard/LeaderboardsPanel'
+import FAQ from './FAQ'
 import { PLATFORM_CREATOR_ADDRESS } from '../../constants'
 // src/sections/Dashboard/Dashboard.tsx
 import FeaturedInlineGame from './FeaturedInlineGame'
@@ -39,17 +40,7 @@ const Grid = styled.div`
   }
 `
 
-export function GameGrid() {
-  return (
-    <Grid>
-      {GAMES.filter((game) => !game.disabled).map((game, i) => (
-        <div key={i}>
-          <GameCard game={game} />
-        </div>
-      ))}
-    </Grid>
-  )
-}
+export function GameGrid() { return null }
 
 
 // Removed unter_banner.gif image in favor of an always-visible Leaderboard panel
@@ -60,8 +51,7 @@ export default function Dashboard() {
       <WelcomeBanner />
       <VCardCarousel autoplay interval={4000} />
       <LeaderboardsPanel creator={PLATFORM_CREATOR_ADDRESS.toBase58()} />
-      <FeaturedInlineGame />
-      <GameGrid />
+      <FAQ />
     </>
   )
 }

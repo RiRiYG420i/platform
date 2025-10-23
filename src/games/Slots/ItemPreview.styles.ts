@@ -31,15 +31,7 @@ export const StyledItemPreview = styled.div`
   }
 
   & > div > .multiplier {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translate(50%, -50%);
-  color: #252C37;
-    background: #e6c000; /* hover-like darker yellow for contrast */
-    z-index: 20; /* ensure it stays above the tile */
-    padding: 0 2px;
-    border-radius: 2px;
+    display: none; /* Hide multiplier badges (x0.5, x1, x2, ...) */
   }
 
 `
