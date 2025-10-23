@@ -49,13 +49,17 @@ const CarouselRoot = styled.div<{ stagePadding: number }>`
 const Track = styled.div<{ x: number; noTransition?: boolean }>`
 	display: flex;
 	align-items: stretch;
-	gap: 16px;
+	gap: 28px;
 	will-change: transform;
 	transition: ${(p: { noTransition?: boolean }) => (p.noTransition ? 'none' : 'transform 450ms ease')};
 	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
 `
 
-const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean }>`
+const CENTER_SCALE = 1.1
+const NEIGHBOR_SCALE = CENTER_SCALE * 0.7
+const OTHER_SCALE = 0.7
+
+const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean; offsetY?: number }>`
 	flex: 0 0 ${(p: { width: number }) => p.width}px;
 	display: flex;
 	justify-content: center;
@@ -65,21 +69,21 @@ const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean }
 		transition: transform 300ms ease, filter 300ms ease; 
 	`}
 
-	${(p: { active?: boolean; neighbor?: boolean }) =>
+	${(p: { active?: boolean; neighbor?: boolean; offsetY?: number }) =>
 		p.active
 			? css`
-					transform: scale(1.12);
+					transform: translateY(0) scale(${CENTER_SCALE});
 					z-index: 2;
 					filter: none;
 				`
 			: p.neighbor
 			? css`
-					transform: scale(0.96);
+					transform: translateY(-${(p.offsetY ?? 0)}px) scale(${NEIGHBOR_SCALE});
 					z-index: 1;
 					filter: brightness(0.98) saturate(0.98);
 				`
 			: css`
-					transform: scale(0.92);
+					transform: translateY(0) scale(${OTHER_SCALE});
 					filter: brightness(0.9) saturate(0.95);
 				`}
 `
@@ -139,8 +143,8 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
   // baseGames/games control how many we render; base is original length
 
 	// Measurements
-	const [slideWidth, setSlideWidth] = React.useState(280)
-	const gap = 16
+		const [slideWidth, setSlideWidth] = React.useState(280)
+		const gap = 28
 
 	const recalc = React.useCallback(() => {
 		const el = rootRef.current
@@ -243,17 +247,19 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 							requestAnimationFrame(() => setNoTransition(false))
 						}
 					}}>
-						{games.map((game: ExtendedGameBundle, i: number) => {
-							const active = i === currentIdx
-							const neighbor = i === (currentIdx - 1 + games.length) % games.length || i === (currentIdx + 1) % games.length
-						return (
-											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor}>
+									{games.map((game: ExtendedGameBundle, i: number) => {
+										const active = i === currentIdx
+										const neighbor = i === (currentIdx - 1 + games.length) % games.length || i === (currentIdx + 1) % games.length
+										const baseHeight = slideWidth * 1.5 // aspect 2/3 -> h = w * 1.5
+										const neighborOffset = 0.5 * CENTER_SCALE * baseHeight
+										return (
+											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor} offsetY={neighbor ? neighborOffset : 0}>
 												<div style={{ width: '100%', maxWidth: slideWidth }}>
 													<GameCard game={game} aspectRatio={'2/3'} />
 												</div>
-							</Slide>
-						)
-					})}
+											</Slide>
+										)
+									})}
 				</Track>
 				<Arrow side="right" aria-label="Next" onClick={next}>
 					›
