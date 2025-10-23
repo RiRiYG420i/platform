@@ -49,7 +49,7 @@ export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
-  <VCardCarousel autoplay interval={4000} />
+  <VCardCarousel />
       <LeaderboardsPanel creator={PLATFORM_CREATOR_ADDRESS.toBase58()} />
       <FAQ />
     </>

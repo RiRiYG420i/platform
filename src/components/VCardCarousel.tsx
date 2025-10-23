@@ -8,34 +8,29 @@ import { GameCard } from '../sections/Dashboard/GameCard'
 // - Shows partial side cards via stage padding
 // - Optional autoplay
 
-// Always 3 items visible per request; stagePadding gives a little side air
-type Layout = { items: 3, stagePadding: number }
+// Match OwlCarousel2 center demo defaults:
+// items:2 (mobile), items:4 (>=600px), margin:10, center:true, loop:true
+type Layout = { items: number }
 function useResponsive(): Layout {
-	const [padding, setPadding] = React.useState<number>(() => {
+	const [items, setItems] = React.useState<number>(() => {
 		const w = typeof window !== 'undefined' ? window.innerWidth : 1200
-		if (w < 600) return 16
-		if (w < 900) return 24
-		return 32
+		return w >= 600 ? 4 : 2
 	})
 	React.useEffect(() => {
 		const onResize = () => {
 			const w = window.innerWidth
-			if (w < 600) setPadding(16)
-			else if (w < 900) setPadding(24)
-			else setPadding(32)
+			setItems(w >= 600 ? 4 : 2)
 		}
 		window.addEventListener('resize', onResize)
 		return () => window.removeEventListener('resize', onResize)
 	}, [])
-	return { items: 3, stagePadding: padding }
+	return { items }
 }
 
-const CarouselRoot = styled.div<{ stagePadding: number; topPad?: number }>`
+const CarouselRoot = styled.div`
 	position: relative;
 	width: 100%;
-	padding-left: ${(p: { stagePadding: number }) => p.stagePadding}px;
-	padding-right: ${(p: { stagePadding: number }) => p.stagePadding}px;
-	padding-top: ${(p: { topPad?: number }) => (p.topPad ?? 8)}px;
+	padding: 8px 0 16px 0; /* room for dots at bottom */
 	padding-bottom: 16px; /* room for dots */
 	box-sizing: border-box;
 	overflow: hidden;
@@ -51,8 +46,8 @@ const Track = styled.div<{ x: number }>`
 	align-items: stretch;
 	gap: 10px; /* Owl default margin ~10px */
 	will-change: transform;
-	/* Match OwlCarousel2 center demo default movement */
-	transition: transform 250ms ease-in-out;
+	/* Match OwlCarousel2 default movement */
+	transition: transform 250ms ease;
 	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
 
 	@media (prefers-reduced-motion: reduce) {
@@ -60,67 +55,12 @@ const Track = styled.div<{ x: number }>`
 	}
 `
 
-const CENTER_SCALE = 1.1
-const NEIGHBOR_SCALE = CENTER_SCALE * 0.7
-const OTHER_SCALE = 0.7
-
-const Slide = styled.div<{ width: number; active?: boolean; neighbor?: boolean; offsetY?: number }>`
+const Slide = styled.div<{ width: number }>`
 	flex: 0 0 ${(p: { width: number }) => p.width}px;
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
-
-	/* Apply vertical offset via margin to avoid animated diagonal movement */
-	${(p: { neighbor?: boolean; offsetY?: number }) =>
-		p.neighbor
-			? css`margin-top: -${(p.offsetY ?? 0)}px;`
-			: css`margin-top: 0;`}
-
-	/* Inner wrapper handles scale/filter with transition only on scale/filter */
-	& > .scaleWrap {
-		transform-origin: center bottom;
-		${css`transition: transform 300ms ease, filter 300ms ease;`}
-		${(p: { active?: boolean; neighbor?: boolean }) =>
-			p.active
-				? css`
-						transform: scale(${CENTER_SCALE});
-						z-index: 2;
-						filter: none;
-					`
-				: p.neighbor
-				? css`
-						transform: scale(${NEIGHBOR_SCALE});
-						z-index: 1;
-					`
-				: css`
-						transform: scale(${OTHER_SCALE});
-					`}
-	}
-`
-
-const Arrow = styled.button<{ side: 'left' | 'right' }>`
-	all: unset;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	${(p: { side: 'left' | 'right' }) => (p.side === 'left' ? 'left: 0;' : 'right: 0;')}
-	display: grid;
-	place-items: center;
-	width: 44px;
-	border: 0 !important; /* override global button border */
-	outline: none !important;
-	box-shadow: none !important;
-	background: linear-gradient(
-		to ${(p: { side: 'left' | 'right' }) => (p.side === 'left' ? 'right' : 'left')},
-		rgba(0,0,0,0.35),
-		rgba(0,0,0,0.0)
-	);
-	cursor: pointer;
-	color: white;
-	opacity: 0.6;
-	transition: opacity 150ms ease;
-	&:hover { opacity: 1; }
-	z-index: 3;
+	& > .scaleWrap { width: 100%; }
 `
 
 const Dots = styled.div`
@@ -146,7 +86,7 @@ export interface VCardCarouselProps {
 }
 
 export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCardCarouselProps) {
-	const { items, stagePadding } = useResponsive()
+	const { items } = useResponsive()
 	const rootRef = React.useRef<HTMLDivElement>(null)
 	const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
 	const base = baseGames.length
@@ -159,16 +99,16 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 
 	// Measurements
 		const [slideWidth, setSlideWidth] = React.useState(280)
-		const gap = 28
+		const gap = 10
 
 	const recalc = React.useCallback(() => {
 		const el = rootRef.current
 		if (!el) return
 		const viewport = el.clientWidth
-		const inner = viewport - stagePadding * 2
-		const width = Math.max(160, Math.floor((inner - gap * (items - 1)) / items))
+		const inner = viewport
+		const width = Math.max(140, Math.floor((inner - gap * (items - 1)) / items))
 		setSlideWidth(width)
-	}, [items, stagePadding])
+	}, [items])
 
 	React.useEffect(() => {
 		recalc()
@@ -207,24 +147,19 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 					}, [currentIdx, base])
 		const centerOffset = React.useMemo(() => {
 			const viewport = rootRef.current?.clientWidth ?? 0
-			const total = games.length * (slideWidth + gap) - gap + stagePadding * 2
-			const leftOfCurrent = visIdx * (slideWidth + gap) + stagePadding
+			const total = games.length * (slideWidth + gap) - gap
+			const leftOfCurrent = visIdx * (slideWidth + gap)
 			const centerOfCurrent = leftOfCurrent + slideWidth / 2
 			const viewportCenter = viewport / 2
 			const desired = centerOfCurrent - viewportCenter
 			const maxX = Math.max(0, total - viewport)
 			const x = Math.max(0, Math.min(desired, maxX))
 			return x
-		}, [visIdx, gap, slideWidth, stagePadding, games.length])
+		}, [visIdx, gap, slideWidth, games.length])
 
 
 		const prev = () => setCurrentIdx((i: number) => i - 1)
 		const next = () => setCurrentIdx((i: number) => i + 1)
-
-		// Geometry for vertical offset of neighbor cards (portrait 2/3)
-		const baseHeight = slideWidth * 1.5
-		const neighborOffset = 0.5 * CENTER_SCALE * baseHeight
-		const topPad = Math.ceil(neighborOffset + 8)
 
 			// Basic drag-to-snap interaction
 			const startX = React.useRef<number | null>(null)
@@ -251,46 +186,27 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				else next()
 			}
 
-			const onWheel = (e: React.WheelEvent) => {
-				if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-					e.preventDefault()
-					if (e.deltaX > 0) next()
-					else prev()
-				}
-			}
+			// Wheel navigation not part of Owl defaults; omit
 
 	return (
 		<div>
-						<CarouselRoot
-						ref={rootRef}
-						stagePadding={stagePadding}
-							topPad={topPad}
-						onPointerDown={onPointerDown}
-						onPointerMove={onPointerMove}
-						onPointerUp={onPointerUp}
-						onWheel={onWheel}
-					>
-				<Arrow side="left" aria-label="Previous" onClick={prev}>
-					‹
-				</Arrow>
+			<CarouselRoot
+				ref={rootRef}
+				onPointerDown={onPointerDown}
+				onPointerMove={onPointerMove}
+				onPointerUp={onPointerUp}
+			>
 				<Track x={centerOffset}>
-									{games.map((game: ExtendedGameBundle, i: number) => {
-										const active = i === visIdx
-										const neighbor = i === visIdx - 1 || i === visIdx + 1
-										return (
-											<Slide key={i} width={slideWidth} active={active} neighbor={neighbor} offsetY={neighbor ? neighborOffset : 0}>
-												<div className="scaleWrap" style={{ width: '100%', maxWidth: slideWidth }}>
-													<GameCard game={game} aspectRatio={'2/3'} />
-												</div>
-											</Slide>
-										)
-									})}
+					{games.map((game: ExtendedGameBundle, i: number) => (
+						<Slide key={i} width={slideWidth}>
+							<div className="scaleWrap">
+								<GameCard game={game} aspectRatio={'2/3'} />
+							</div>
+						</Slide>
+					))}
 				</Track>
-				<Arrow side="right" aria-label="Next" onClick={next}>
-					›
-				</Arrow>
 			</CarouselRoot>
-					<Dots>
+			<Dots>
 							{baseGames.map((_: ExtendedGameBundle, i: number) => (
 								<Dot
 									key={i}
@@ -308,7 +224,7 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 									}}
 								/>
 						))}
-					</Dots>
+			</Dots>
 		</div>
 	)
 }
