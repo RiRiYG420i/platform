@@ -3,6 +3,7 @@ import React from 'react';
 import { GameBundle } from 'gamba-react-ui-v2';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+const cardBg = new URL('../../../buttons/bg.svg', import.meta.url).href;
 
 const tileAnimation = keyframes`
   0%   { background-position: -100px 100px; }
@@ -40,11 +41,12 @@ const StyledGameCard = styled.div<{ $small: boolean; $background: string; $disab
   }
 
   & > .background {
-    background-image: url(/stuff.png);
-    background-size: 100%;
-    background-repeat: repeat;
-    animation: ${tileAnimation} 5s linear infinite;
-    opacity: 0;
+    background-image: url(${cardBg});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+    pointer-events: none;
   }
 
   & > .image {

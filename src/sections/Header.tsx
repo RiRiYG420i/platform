@@ -245,7 +245,7 @@ export default function Header() {
                   style={{
                     backgroundImage: `url(${langB})`,
                     backgroundColor: 'transparent',
-                    backgroundSize: 'contain',
+                    backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                   }}
