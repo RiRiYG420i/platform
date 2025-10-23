@@ -43,3 +43,8 @@ export const TosInner = styled.div`
   overflow: auto;
   position: relative;
 `
+
+// Gradient extracted from buttons/lang-b.svg (approximated)
+// Original radialGradient transitions from roughly #00D596 to #CBFFE3
+export const LANG_B_GRADIENT =
+  'radial-gradient(ellipse at center, #00D596 0%, #1FE0A0 15%, #36E4A9 30%, #63ECBB 55%, #90F4CE 75%, #CBFFE3 100%)'

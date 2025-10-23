@@ -109,16 +109,15 @@ const BottomArea = styled.div`
   }
 `;
 
-const langB = new URL('../../../buttons/lang-b.svg', import.meta.url).href;
+import { LANG_B_GRADIENT } from '../../styles';
 
 const JackpotBadge = styled.button`
   border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  background-image: url(${langB});
-  background-size: 90% auto;
+  background: ${LANG_B_GRADIENT};
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: #252C37;
@@ -133,7 +132,6 @@ const JackpotBadge = styled.button`
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
   &:hover { background: #e6c000; transform: translateY(-2px); }
-  background-origin: content-box;
   min-height: 48px;
 `;
 
@@ -143,9 +141,8 @@ const ActionButton = styled.button`
   padding: 12px 16px;
   font-size: 0.9rem;
   font-weight: 600;
-  background: transparent;
-  background-image: url(${langB});
-  background-size: 90% auto;
+  background: ${LANG_B_GRADIENT};
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: #252C37;
@@ -166,7 +163,6 @@ const ActionButton = styled.button`
     max-width: 180px;
     flex-grow: 0;
   }
-  background-origin: content-box;
   min-height: 48px;
 `;
 

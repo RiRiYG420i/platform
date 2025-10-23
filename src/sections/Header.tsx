@@ -8,6 +8,7 @@ import {
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import { LANG_B_GRADIENT } from '../styles'
 import { Modal } from '../components/Modal'
 import LeaderboardsModal from '../sections/LeaderBoard/LeaderboardsModal'
 import { PLATFORM_CREATOR_ADDRESS } from '../constants'
@@ -58,15 +59,9 @@ const Logo = styled(NavLink)`
   }
 `
 
-const langB = new URL('../../buttons/lang-b.svg', import.meta.url).href
-
 const StyledButton = styled.div`
   button {
-    background: transparent !important;
-    background-image: url(${langB}) !important;
-    background-size: contain !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+    background: ${LANG_B_GRADIENT} !important;
     color: #252C37 !important;
   }
 `
@@ -76,11 +71,7 @@ const RedButtonWrapper = styled.div`
   /* Target the immediate GambaUi.Button rendered as a button, not dropdown items */
   & > button,
   & > div > button {
-    background: transparent !important;
-    background-image: url(${langB}) !important;
-    background-size: contain !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+    background: ${LANG_B_GRADIENT} !important;
     color: #252C37 !important;
   }
 `
@@ -243,12 +234,7 @@ export default function Header() {
               {ENABLE_LEADERBOARD && (
                 <GambaUi.Button
                   style={{
-                    backgroundImage: `url(${langB})`,
-                    backgroundColor: 'transparent',
-                    backgroundSize: '90% auto',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundOrigin: 'content-box',
+                    background: LANG_B_GRADIENT,
                     minHeight: 48,
                   }}
                   onClick={() => {
