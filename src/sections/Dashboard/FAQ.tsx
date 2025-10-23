@@ -4,7 +4,8 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   display: grid;
   gap: 12px;
-  margin: 16px 0 8px;
+  margin: 20px 0 12px;
+  color: #fff;
 `
 
 const Item = styled.div`
@@ -24,14 +25,21 @@ const Question = styled.button<{ $open: boolean }>`
   cursor: pointer;
   color: #fff;
   font-weight: 600;
-  background: ${(p)=> p.$open ? 'rgba(255,255,255,0.05)' : 'transparent'};
+  background: ${({ $open }) => ($open ? 'rgba(255,255,255,0.05)' : 'transparent')};
 `
 
+// Smoother expand/collapse using grid rows instead of max-height (less jumpy)
 const Answer = styled.div<{ $open: boolean }>`
-  max-height: ${(p)=> p.$open ? '800px' : '0'};
+  display: grid;
+  grid-template-rows: ${({ $open }) => ($open ? '1fr' : '0fr')};
+  transition: grid-template-rows 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms ease;
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  will-change: grid-template-rows, opacity;
+`
+
+const AnswerInner = styled.div`
   overflow: hidden;
-  transition: max-height 220ms ease;
-  padding: ${(p)=> p.$open ? '0 16px 14px' : '0 16px 0'};
+  padding: 0 16px 14px;
   color: #cfd3da;
   line-height: 1.5;
 `
@@ -50,6 +58,7 @@ export default function FAQ({ items = DEFAULT_QA }: { items?: QA[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   return (
     <Wrapper>
+      <h2 style={{ margin: '0 0 8px', color: '#fff' }}>FAQ</h2>
       {items.map((it, i) => {
         const open = openIndex === i
         return (
@@ -58,7 +67,9 @@ export default function FAQ({ items = DEFAULT_QA }: { items?: QA[] }) {
               <span>{it.q}</span>
               <span aria-hidden> {open ? '−' : '+'} </span>
             </Question>
-            <Answer $open={open}>{it.a}</Answer>
+            <Answer $open={open}>
+              <AnswerInner>{it.a}</AnswerInner>
+            </Answer>
           </Item>
         )
       })}

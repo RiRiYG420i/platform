@@ -4,7 +4,7 @@ import { SlideSection } from '../../components/Slider'
 import { GAMES } from '../../games'
 import { GameCard } from './GameCard'
 import { WelcomeBanner } from './WelcomeBanner'
-import VCardCarousel from '../../components/VCardCarousel'
+// import VCardCarousel from '../../components/VCardCarousel'
 import LeaderboardsPanel from '../LeaderBoard/LeaderboardsPanel'
 import FAQ from './FAQ'
 import { PLATFORM_CREATOR_ADDRESS } from '../../constants'
@@ -49,7 +49,7 @@ export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
-      <VCardCarousel autoplay interval={4000} />
+  {/* Carousel removed to ensure no game cards appear below the leaderboard */}
       <LeaderboardsPanel creator={PLATFORM_CREATOR_ADDRESS.toBase58()} />
       <FAQ />
     </>
