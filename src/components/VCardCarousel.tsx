@@ -51,8 +51,8 @@ const Track = styled.div<{ x: number }>`
 	align-items: stretch;
 	gap: 28px;
 	will-change: transform;
-	/* Match OwlCarousel2 center demo default movement (smartSpeed ≈ 250ms, ease-in-out) */
-	transition: transform 250ms ease-in-out;
+	/* Purely horizontal movement; significantly slower for smoother exit */
+	transition: transform 700ms ease-in-out;
 	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
 
 	@media (prefers-reduced-motion: reduce) {
@@ -150,11 +150,22 @@ export interface VCardCarouselProps {
 export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCardCarouselProps) {
 	const { items, stagePadding } = useResponsive()
 	const rootRef = React.useRef<HTMLDivElement>(null)
-  const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
-  const base = baseGames.length
-  const games = React.useMemo<ExtendedGameBundle[]>(() => [...baseGames, ...baseGames, ...baseGames], [baseGames])
+	const baseGames = React.useMemo<ExtendedGameBundle[]>(() => GAMES.filter((g) => !g.disabled), [])
+	const base = baseGames.length
+	// Use 5x clones to avoid edge clamping on last page
+	const games = React.useMemo<ExtendedGameBundle[]>(
+		() => [
+			...baseGames,
+			...baseGames,
+			...baseGames,
+			...baseGames,
+			...baseGames,
+		],
+		[baseGames],
+	)
 	const [currentIdx, setCurrentIdx] = React.useState(0) // logical index; use visual mapping
-	const [visIdx, setVisIdx] = React.useState(() => base + 0)
+	// Start in the middle band (3rd copy) to maximize headroom on both sides
+	const [visIdx, setVisIdx] = React.useState(() => base * 2)
   // baseGames/games control how many we render; base is original length
 
 	// Measurements
@@ -189,19 +200,23 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 
 	// Compute x-offset so that current slide center aligns to viewport center
 			// Seamless mapping: choose the visually closest index within the tripled list
-			React.useEffect(() => {
-				if (base === 0) return
-				const mod = ((currentIdx % base) + base) % base
-				const candidates = [mod, mod + base, mod + 2 * base]
-				const prev = visIdx
-				let best = candidates[0]
-				let bestDist = Math.abs(best - prev)
-				for (const c of candidates) {
-					const d = Math.abs(c - prev)
-					if (d < bestDist) { best = c; bestDist = d }
-				}
-				if (best !== prev) setVisIdx(best)
-			}, [currentIdx, base])
+					React.useEffect(() => {
+						if (base === 0) return
+						const mod = ((currentIdx % base) + base) % base
+						// consider all 5 clone positions for the same logical card
+						const candidates = [mod, mod + base, mod + 2 * base, mod + 3 * base, mod + 4 * base]
+						const prev = visIdx
+						let best = candidates[0]
+						let bestDist = Math.abs(best - prev)
+						for (const c of candidates) {
+							const d = Math.abs(c - prev)
+							if (d < bestDist) { best = c; bestDist = d }
+						}
+						// Normalize into the central band [2*base, 3*base)
+						while (best < 2 * base) best += base
+						while (best >= 3 * base) best -= base
+						if (best !== prev) setVisIdx(best)
+					}, [currentIdx, base])
 		const centerOffset = React.useMemo(() => {
 			const viewport = rootRef.current?.clientWidth ?? 0
 			const total = games.length * (slideWidth + gap) - gap + stagePadding * 2
