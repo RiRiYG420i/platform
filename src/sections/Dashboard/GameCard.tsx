@@ -43,6 +43,7 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
     background-position: center;
     background-repeat: no-repeat;
     transform: none;
+    z-index: 1;
   }
 
   & > .play {

@@ -197,26 +197,7 @@ export function WelcomeBanner() {
         </WelcomeContent>
       </BannerTop>
       <BannerBottom>
-        <BottomArea>
-          {(
-            true
-          ) && (
-            <JackpotBadge
-              onClick={() => setJackpotHelp(true)}
-              aria-label="Show jackpot details"
-            >
-              💰 Jackpot: <TokenValue amount={pool?.jackpotBalance ?? 0} />
-            </JackpotBadge>
-          )}
-          <ButtonGroup>
-            <ActionButton onClick={handleCopyInvite}>
-              💸 Copy Invite
-            </ActionButton>
-            <ActionButton onClick={openLink('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view')}>
-              ❓ How to
-            </ActionButton>
-          </ButtonGroup>
-        </BottomArea>
+        {/* Buttons moved to Header (desktop) and Drawer (mobile) */}
       </BannerBottom>
       {jackpotHelp && (
         <Modal onClose={() => setJackpotHelp(false)}>

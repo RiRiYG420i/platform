@@ -222,6 +222,15 @@ export default function Header() {
           {/* Desktop actions */}
           {isDesktop && (
             <>
+              <StyledButton>
+                <GambaUi.Button onClick={() => setJackpotHelp(true)}>💰 Jackpot</GambaUi.Button>
+              </StyledButton>
+              <StyledButton>
+                <GambaUi.Button onClick={() => user.set({ userModal: true })}>💸 Invite</GambaUi.Button>
+              </StyledButton>
+              <StyledButton>
+                <GambaUi.Button onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}>❓ How to</GambaUi.Button>
+              </StyledButton>
               <RedButtonWrapper>
                 <TokenSelect />
               </RedButtonWrapper>
@@ -292,6 +301,12 @@ export default function Header() {
                 }}
               >
                 💸 Invite
+              </GambaUi.Button>
+              <GambaUi.Button
+                style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
+                onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}
+              >
+                ❓ How to
               </GambaUi.Button>
               {ENABLE_LEADERBOARD && (
                 <GambaUi.Button
