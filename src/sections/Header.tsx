@@ -4,14 +4,18 @@ import {
   TokenValue,
   useCurrentPool,
   useUserBalance,
+  useGambaPlatformContext,
 } from 'gamba-react-ui-v2'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { LANG_B_GRADIENT } from '../styles'
 import { Modal } from '../components/Modal'
 import LeaderboardsModal from '../sections/LeaderBoard/LeaderboardsModal'
-import { PLATFORM_CREATOR_ADDRESS } from '../constants'
+import { PLATFORM_CREATOR_ADDRESS, PLATFORM_JACKPOT_FEE } from '../constants'
+import { useUserStore } from '../hooks/useUserStore'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import TokenSelect from './TokenSelect'
 import { UserButton } from './UserButton'
@@ -79,11 +83,16 @@ const RedButtonWrapper = styled.div`
 export default function Header() {
   const pool = useCurrentPool()
   const balance = useUserBalance()
+  const context = useGambaPlatformContext()
   const isDesktop = useMediaQuery('lg') 
   const [showLeaderboard, setShowLeaderboard] = React.useState(false)
   const [bonusHelp, setBonusHelp] = React.useState(false)
   const [scrolled, setScrolled] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
+  const [jackpotHelp, setJackpotHelp] = React.useState(false)
+  const wallet = useWallet()
+  const walletModal = useWalletModal()
+  const user = useUserStore()
   // Swipe-to-dismiss state (mobile sheet)
   const [dragX, setDragX] = React.useState(0)
   const [dragging, setDragging] = React.useState(false)
@@ -126,6 +135,29 @@ export default function Header() {
 
   return (
     <>
+      {jackpotHelp && (
+        <Modal onClose={() => setJackpotHelp(false)}>
+          <h1>Jackpot 💰</h1>
+          <p style={{ fontWeight: 'bold' }}>
+            There&apos;s <TokenValue amount={pool?.jackpotBalance ?? 0} /> in the Jackpot.
+          </p>
+          <p>
+            The Jackpot is a prize pool that grows with every bet made. As it grows, so does your chance of winning. Once a winner is selected, the pool resets and grows again from there.
+          </p>
+          <p>
+            You pay a maximum of {(PLATFORM_JACKPOT_FEE * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })}% of each wager for a chance to win.
+          </p>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {context.defaultJackpotFee === 0 ? 'DISABLED' : 'ENABLED'}
+            <GambaUi.Switch
+              checked={context.defaultJackpotFee > 0}
+              onChange={(checked) =>
+                context.setDefaultJackpotFee(checked ? PLATFORM_JACKPOT_FEE : 0)
+              }
+            />
+          </label>
+        </Modal>
+      )}
       {bonusHelp && (
         <Modal onClose={() => setBonusHelp(false)}>
           <h1>Bonus ✨</h1>
@@ -193,18 +225,32 @@ export default function Header() {
             </>
           )}
 
-          {/* Mobile hamburger */}
+          {/* Mobile connect + hamburger */}
           {!isDesktop && (
-            <HamburgerButton
-              aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              <span aria-hidden />
-              <span aria-hidden />
-              <span aria-hidden />
-            </HamburgerButton>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <GambaUi.Button
+                style={{ background: LANG_B_GRADIENT, minHeight: 40 }}
+                onClick={() => {
+                  if (wallet.connected) {
+                    user.set({ userModal: true })
+                  } else if (wallet.wallet) {
+                    wallet.connect()
+                  } else {
+                    walletModal.setVisible(true)
+                  }
+                }}
+              >
+                {wallet.connected ? 'Account' : 'Connect'}
+              </GambaUi.Button>
+              <HamburgerButton
+                aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
+                onClick={() => setMenuOpen((v) => !v)}
+              >
+                <img src={littleB} alt="Menu" style={{ width: '70%', height: '70%', filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.6))' }} />
+              </HamburgerButton>
+            </div>
           )}
         </div>
       </StyledHeader>
@@ -232,6 +278,26 @@ export default function Header() {
           >
             <SheetHandle />
             <SheetContent>
+              {/* Drawer actions at the top */}
+              <GambaUi.Button
+                style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
+                onClick={() => setJackpotHelp(true)}
+              >
+                💰 Jackpot
+              </GambaUi.Button>
+              <GambaUi.Button
+                style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
+                onClick={() => {
+                  setMenuOpen(false)
+                  if (wallet.connected) {
+                    user.set({ userModal: true })
+                  } else {
+                    walletModal.setVisible(true)
+                  }
+                }}
+              >
+                💸 Invite
+              </GambaUi.Button>
               {ENABLE_LEADERBOARD && (
                 <GambaUi.Button
                   style={{
@@ -271,10 +337,6 @@ const HamburgerButton = styled.button`
   background: rgba(37, 44, 55, 0.55);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  background-image: url(${littleB});
-  background-size: 70% auto;
-  background-position: center;
-  background-repeat: no-repeat;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -283,12 +345,7 @@ const HamburgerButton = styled.button`
   box-shadow: 0 1px 2px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
   &:hover { opacity: 0.9; }
   &:active { transform: scale(0.98); }
-  span {
-    display: none; /* we now use the SVG background instead of bars */
-  }
-  span:nth-child(1), span:nth-child(2), span:nth-child(3) { display: none; }
-
-  /* bars disabled as we use image background */
+  img { width: 76%; height: 76%; }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;

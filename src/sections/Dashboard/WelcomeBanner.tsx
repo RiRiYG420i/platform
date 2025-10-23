@@ -25,8 +25,8 @@ const WelcomeWrapper = styled.div`
   background-image:
     linear-gradient(to bottom, rgba(12,12,17,0) 98%, #0C0C11 100%),
     url(${bannerImg});
-  background-size: cover;
-  background-position: top center;
+  background-size: contain, contain;
+  background-position: top center, top center;
   background-repeat: no-repeat;
   border: 12px solid #0C0C11; /* thicker frame with requested color */
   background-clip: padding-box; /* keep GIF inside rounded inner area */
@@ -54,6 +54,8 @@ const WelcomeWrapper = styled.div`
     background-image:
       linear-gradient(to bottom, rgba(12,12,17,0) 85%, #0C0C11 100%),
       url(${bannerImg});
+    background-size: contain, contain;
+    background-position: center top, center top;
   }
 `;
 
