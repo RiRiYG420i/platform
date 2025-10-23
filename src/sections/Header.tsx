@@ -245,9 +245,11 @@ export default function Header() {
                   style={{
                     backgroundImage: `url(${langB})`,
                     backgroundColor: 'transparent',
-                    backgroundSize: 'cover',
+                    backgroundSize: '90% auto',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
+                    backgroundOrigin: 'content-box',
+                    minHeight: 48,
                   }}
                   onClick={() => {
                   setMenuOpen(false)

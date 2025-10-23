@@ -51,9 +51,11 @@ function UserModal() {
             style={{
               backgroundImage: `url(${langB})`,
               backgroundColor: 'transparent',
-              backgroundSize: 'cover',
+                  backgroundSize: '90% auto',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
+                  backgroundOrigin: 'content-box',
+                  minHeight: 44,
             }}
           >
             💸 Copy invite link
@@ -70,9 +72,11 @@ function UserModal() {
               style={{
                 backgroundImage: `url(${langB})`,
                 backgroundColor: 'transparent',
-                backgroundSize: 'cover',
+                  backgroundSize: '90% auto',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
+                  backgroundOrigin: 'content-box',
+                  minHeight: 44,
               }}
             >
               Remove invite
@@ -95,9 +99,11 @@ function UserModal() {
           style={{
             backgroundImage: `url(${langB})`,
             backgroundColor: 'transparent',
-            backgroundSize: 'cover',
+              backgroundSize: '90% auto',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
+              backgroundOrigin: 'content-box',
+              minHeight: 44,
           }}
         >
           Disconnect
@@ -132,9 +138,11 @@ export function UserButton() {
             style={{
               backgroundImage: `url(${langB})`,
               backgroundColor: 'transparent',
-              backgroundSize: 'cover',
+                backgroundSize: '90% auto',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
+                backgroundOrigin: 'content-box',
+                minHeight: 44,
             }}
           >
             <div style={{ display: 'flex', gap: '.5em', alignItems: 'center' }}>
@@ -149,9 +157,11 @@ export function UserButton() {
           style={{
             backgroundImage: `url(${langB})`,
             backgroundColor: 'transparent',
-            backgroundSize: 'cover',
+              backgroundSize: '90% auto',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
+              backgroundOrigin: 'content-box',
+              minHeight: 44,
           }}
         >
           {wallet.connecting ? 'Connecting' : 'Connect'}

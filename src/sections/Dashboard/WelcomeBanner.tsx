@@ -118,7 +118,7 @@ const JackpotBadge = styled.button`
   justify-content: center;
   background: transparent;
   background-image: url(${langB});
-  background-size: cover;
+  background-size: 90% auto;
   background-position: center;
   background-repeat: no-repeat;
   color: #252C37;
@@ -133,6 +133,8 @@ const JackpotBadge = styled.button`
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
   &:hover { background: #e6c000; transform: translateY(-2px); }
+  background-origin: content-box;
+  min-height: 48px;
 `;
 
 const ActionButton = styled.button`
@@ -143,7 +145,7 @@ const ActionButton = styled.button`
   font-weight: 600;
   background: transparent;
   background-image: url(${langB});
-  background-size: contain;
+  background-size: 90% auto;
   background-position: center;
   background-repeat: no-repeat;
   color: #252C37;
@@ -164,6 +166,8 @@ const ActionButton = styled.button`
     max-width: 180px;
     flex-grow: 0;
   }
+  background-origin: content-box;
+  min-height: 48px;
 `;
 
 import { GambaUi, TokenValue, useCurrentPool, useGambaPlatformContext } from 'gamba-react-ui-v2';
