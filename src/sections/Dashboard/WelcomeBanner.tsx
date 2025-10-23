@@ -2,7 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import React from 'react';
 import styled from 'styled-components';
-const bannerImg = new URL('../../../banner.gif', import.meta.url).href;
+const bannerImg = new URL('../../../banner.png', import.meta.url).href;
 import { useUserStore } from '../../hooks/useUserStore';
 import { Modal } from '../../components/Modal';
 

@@ -39,10 +39,11 @@ const StyledHeader = styled.div<{ $scrolled: boolean }>`
   justify-content: space-between;
   width: 100%;
   padding: 10px;
-  background: ${(props: { $scrolled: boolean }) => (props.$scrolled ? 'rgba(236, 209, 30, 0.5)' : '#ECD11E')};
+  /* Match footer background color */
+  background: rgba(37, 44, 55, 0.6);
   transition: background 200ms ease;
   backdrop-filter: blur(20px);
-  color: #121212;
+  color: #252C37;
   position: fixed;
   top: 0;
   left: 0;
@@ -257,37 +258,32 @@ export default function Header() {
 }
 
 /* ----------------------------- Mobile styles ----------------------------- */
+const littleB = new URL('../../buttons/little-b.svg', import.meta.url).href
+
 const HamburgerButton = styled.button`
   position: relative;
   width: 44px;
   height: 44px;
   border-radius: 10px;
   border: none;
-  background: #E0B41B; /* darker yellow */
+  background: transparent;
+  background-image: url(${littleB});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
-  &:hover { background: #C9A019; }
+  &:hover { opacity: 0.9; }
   &:active { transform: scale(0.98); }
   span {
-    position: absolute;
-    display: block;
-    width: 20px;
-    height: 2px;
-    background: #252C37;
-    border-radius: 1px;
-    transition: transform 200ms ease, opacity 200ms ease;
+    display: none; /* we now use the SVG background instead of bars */
   }
-  span:nth-child(1) { transform: translateY(-6px); }
-  span:nth-child(2) { transform: translateY(0); }
-  span:nth-child(3) { transform: translateY(6px); }
+  span:nth-child(1), span:nth-child(2), span:nth-child(3) { display: none; }
 
-  /* When [aria-expanded=true], morph into an X */
-  &[aria-expanded='true'] span:nth-child(1) { transform: rotate(45deg); }
-  &[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
-  &[aria-expanded='true'] span:nth-child(3) { transform: rotate(-45deg); }
+  /* bars disabled as we use image background */
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
