@@ -7,7 +7,14 @@ import { useUserStore } from '../../hooks/useUserStore';
 import { Modal } from '../../components/Modal';
 
 const WelcomeWrapper = styled.div`
-  margin-top: 0;
+  /* Pull banner up so it starts exactly where the fixed header ends */
+  margin-top: -80px;
+  @media (min-width: 600px) {
+    margin-top: -100px;
+  }
+  @media (min-width: 1280px) {
+    margin-top: -100px;
+  }
   position: relative;
   display: flex;
   flex-direction: column;
@@ -18,14 +25,11 @@ const WelcomeWrapper = styled.div`
 
 const BannerTop = styled.div`
   position: relative;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  /* Remove top radius so the banner edge aligns flush under the header */
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   overflow: hidden;
   animation: welcome-fade-in 0.5s ease;
-
-  @media (min-width: 800px) {
-    margin-top: 72px;
-  }
 
   @keyframes welcome-fade-in {
     from { opacity: 0; }
