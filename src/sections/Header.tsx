@@ -60,6 +60,9 @@ const StyledHeader = styled.div<{ $scrolled: boolean }>`
   top: 0;
   left: 0;
   z-index: 1000;
+  /* Match corner radius with buttons and game cards */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 `
 
 const Logo = styled(NavLink)`

@@ -51,8 +51,13 @@ const Track = styled.div<{ x: number }>`
 	align-items: stretch;
 	gap: 28px;
 	will-change: transform;
-	transition: transform 450ms ease;
+	/* Match OwlCarousel2 center demo default movement (smartSpeed ≈ 250ms, ease-in-out) */
+	transition: transform 250ms ease-in-out;
 	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
 `
 
 const CENTER_SCALE = 1.1
