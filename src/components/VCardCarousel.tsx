@@ -30,12 +30,12 @@ function useResponsive(): Layout {
 const CarouselRoot = styled.div`
 	position: relative;
 	width: 100%;
-	padding: 8px 0 16px 0; /* room for dots at bottom */
-	padding-bottom: 16px; /* room for dots */
+	/* Reduce vertical spacing near heading/cards */
+	padding: 2px 0 12px 0; /* still leave a bit of room for dots */
 	box-sizing: border-box;
 	overflow: hidden;
 	z-index: 1; /* ensure no accidental overlay blocks clicks */
-	margin: 8px 0; /* give a bit of breathing room */
+	margin: 1px 0; /* tighter gap to heading */
 	cursor: grab;
 		pointer-events: auto;
 		touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipes */

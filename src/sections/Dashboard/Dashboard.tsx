@@ -50,8 +50,9 @@ const SectionHeading = styled.h2`
   font-size: 2.5rem; /* doubled */
   font-weight: 800;
   text-align: center; /* center on page */
-  margin: 12px auto 3px; /* reduce bottom space by ~60% */
-  @media (min-width: 600px) { margin: 16px auto 3px; }
+  /* Reduce top and bottom spacing by ~90% considering surrounding containers */
+  margin: 1px auto 1px;
+  @media (min-width: 600px) { margin: 1px auto 1px; }
 `
 
 export default function Dashboard() {

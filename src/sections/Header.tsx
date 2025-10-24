@@ -471,9 +471,12 @@ const HamburgerButton = styled.button<{ $open: boolean }>`
   }
 `
 
-const MobileMenuOverlay = styled.div`
+const MobileMenuOverlay = styled.div<{ $top: number }>`
   position: fixed;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: ${(p: { $top: number }) => `${p.$top}px`};
   z-index: 1200;
   display: grid;
 `
