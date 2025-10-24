@@ -45,10 +45,19 @@ export function GameGrid() { return null }
 
 // Removed unter_banner.gif image in favor of an always-visible Leaderboard panel
 
+const SectionHeading = styled.h2`
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 12px 8px 8px;
+  @media (min-width: 600px) { margin: 16px 12px 8px; }
+`
+
 export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
+      <SectionHeading>Top Games</SectionHeading>
   <VCardCarousel />
       <LeaderboardsPanel creator={PLATFORM_CREATOR_ADDRESS.toBase58()} />
       <FAQ />

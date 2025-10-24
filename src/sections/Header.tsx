@@ -10,7 +10,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { LANG_B_GRADIENT } from '../styles'
 import { Modal } from '../components/Modal'
 import LeaderboardsModal from '../sections/LeaderBoard/LeaderboardsModal'
@@ -38,12 +38,6 @@ const Bonus = styled.button`
   }
 `
 
-// Inline SVG data for a crisp hamburger icon
-const HAMBURGER_ICON_DATA =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'><line x1='8' y1='14' x2='40' y2='14'/><line x1='8' y1='24' x2='40' y2='24'/><line x1='8' y1='34' x2='40' y2='34'/></svg>"
-  )
 
 const StyledHeader = styled.div<{ $scrolled: boolean; $hidden: boolean }>`
   display: flex;
@@ -105,6 +99,8 @@ export default function Header() {
   const user = useUserStore()
   // Mobile header hide/show on scroll + swipe-to-reveal
   const [headerHidden, setHeaderHidden] = React.useState(false)
+  const headerRef = React.useRef<HTMLDivElement>(null)
+  const [headerHeight, setHeaderHeight] = React.useState(0)
   const lastYRef = React.useRef<number>(0)
   const pullStartYRef = React.useRef<number | null>(null)
   const pullingRef = React.useRef<boolean>(false)
@@ -143,6 +139,22 @@ export default function Header() {
   React.useEffect(() => {
     if (menuOpen) setHeaderHidden(false)
   }, [menuOpen])
+
+  // Measure header height to place mobile sheet below it
+  React.useEffect(() => {
+    const measure = () => setHeaderHeight(headerRef.current?.getBoundingClientRect().height ?? 0)
+    measure()
+    window.addEventListener('resize', measure)
+    let ro: ResizeObserver | undefined
+    if ('ResizeObserver' in window && headerRef.current) {
+      ro = new ResizeObserver(measure)
+      ro.observe(headerRef.current)
+    }
+    return () => {
+      window.removeEventListener('resize', measure)
+      ro?.disconnect()
+    }
+  }, [])
 
   // Gesture handlers for the side sheet (mobile)
   const onSheetPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -230,7 +242,7 @@ export default function Header() {
         />
       )}
 
-  <StyledHeader $scrolled={scrolled} $hidden={!isDesktop && headerHidden}>
+  <StyledHeader ref={headerRef} $scrolled={scrolled} $hidden={!isDesktop && headerHidden}>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <Logo to="/">
             <img alt="Gamba logo" src="/logo.png" />
@@ -294,8 +306,11 @@ export default function Header() {
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setMenuOpen((v: boolean) => !v)}
+                $open={menuOpen}
               >
-                <span className="icon" aria-hidden="true" />
+                <span className="bar bar1" aria-hidden="true" />
+                <span className="bar bar2" aria-hidden="true" />
+                <span className="bar bar3" aria-hidden="true" />
               </HamburgerButton>
             </div>
           )}
@@ -334,6 +349,7 @@ export default function Header() {
       {/* Mobile overlay menu */}
       {!isDesktop && menuOpen && (
         <MobileMenuOverlay
+          $top={headerHeight}
           role="dialog"
           aria-modal="true"
           id="mobile-menu"
@@ -413,7 +429,7 @@ export default function Header() {
 
 /* ----------------------------- Mobile styles ----------------------------- */
 
-const HamburgerButton = styled.button`
+const HamburgerButton = styled.button<{ $open: boolean }>`
   position: relative;
   width: 44px;
   height: 44px;
@@ -427,20 +443,31 @@ const HamburgerButton = styled.button`
   transition: transform 0.2s ease, opacity 0.2s ease;
   &:hover { opacity: 0.9; }
   &:active { transform: scale(0.98); }
-  .icon {
-    display: block;
-    width: 74%;
-    height: 74%;
-    background-image: url(${HAMBURGER_ICON_DATA});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    pointer-events: none;
+
+  /* Bars */
+  .bar {
+    position: absolute;
+    left: 50%;
+    width: 26px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transform-origin: center;
+    transition: transform 220ms ease, opacity 180ms ease;
   }
+  .bar1 { transform: translate(-50%, -7px) rotate(0deg); }
+  .bar2 { transform: translate(-50%, 0) scaleX(1); }
+  .bar3 { transform: translate(-50%, 7px) rotate(0deg); }
+
+  ${(p: { $open: boolean }) => p.$open && css`
+    .bar1 { transform: translate(-50%, 0) rotate(45deg); }
+    .bar2 { opacity: 0; transform: translate(-50%, 0) scaleX(0); }
+    .bar3 { transform: translate(-50%, 0) rotate(-45deg); }
+  `}
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
-    span { transition: none; }
+    .bar { transition: none; }
   }
 `
 

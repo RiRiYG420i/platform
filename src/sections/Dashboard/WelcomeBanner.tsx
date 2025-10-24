@@ -7,13 +7,13 @@ import { useUserStore } from '../../hooks/useUserStore';
 import { Modal } from '../../components/Modal';
 
 const WelcomeWrapper = styled.div`
-  /* Pull banner up so it starts exactly where the fixed header ends */
-  margin-top: -80px;
+  /* Give the header some breathing room above the banner */
+  margin-top: 16px;
   @media (min-width: 600px) {
-    margin-top: -100px;
+    margin-top: 20px;
   }
   @media (min-width: 1280px) {
-    margin-top: -100px;
+    margin-top: 24px;
   }
   position: relative;
   display: flex;
@@ -44,26 +44,7 @@ const BannerImage = styled.img`
   object-fit: contain;
 `;
 
-const BannerBottom = styled.div`
-  /* Visible container only BELOW the banner */
-  background: #252C37; /* match header tone */
-  border-left: 12px solid #252C37;
-  border-right: 12px solid #252C37;
-  border-bottom: 12px solid #252C37;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  /* Pull the background up slightly to meet the banner image */
-  margin-top: -8px;
-  padding: 20px 20px 16px; /* compensate for negative margin */
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-
-  @media (min-width: 800px) {
-    margin-top: -10px;
-    padding: 24px 40px 20px;
-  }
-`;
+// Removed colored bottom container per request
 
 const WelcomeContent = styled.div`
   position: absolute;
@@ -200,9 +181,6 @@ export function WelcomeBanner() {
           <p>A fair, simple and decentralized casino on Solana. Play </p>
         </WelcomeContent>
       </BannerTop>
-      <BannerBottom>
-        {/* Buttons moved to Header (desktop) and Drawer (mobile) */}
-      </BannerBottom>
       {jackpotHelp && (
         <Modal onClose={() => setJackpotHelp(false)}>
           <h1>Jackpot 💰</h1>
@@ -224,7 +202,7 @@ export function WelcomeBanner() {
             {context.defaultJackpotFee === 0 ? 'DISABLED' : 'ENABLED'}
             <GambaUi.Switch
               checked={context.defaultJackpotFee > 0}
-              onChange={(checked) =>
+              onChange={(checked: boolean) =>
                 context.setDefaultJackpotFee(checked ? PLATFORM_JACKPOT_FEE : 0)
               }
             />
