@@ -31,8 +31,8 @@ import {
 const PanelContent = styled(BaseContent)`
   max-width: 100%;
   border-radius: 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(37, 44, 55, 0.6); /* match FAQ item background */
+  border: 1px solid rgba(255,255,255,0.08); /* match FAQ border */
 `
 
 const PanelWrapper = styled.div`

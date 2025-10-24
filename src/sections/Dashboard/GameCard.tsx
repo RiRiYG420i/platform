@@ -52,7 +52,8 @@ const StyledGameCard = styled.div<{ $small: boolean; $disabled?: boolean; $aspec
   }
 
   & > .image {
-    background-size: contain;
+    /* Fill the card to avoid top/bottom letterboxing and match container to PNG height visually */
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     transform: none;

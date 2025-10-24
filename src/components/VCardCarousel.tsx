@@ -30,8 +30,8 @@ function useResponsive(): Layout {
 const CarouselRoot = styled.div`
 	position: relative;
 	width: 100%;
-	/* Add side gutters so nav buttons sit outside cards and minimize top spacing */
-	padding: 0 44px 10px 44px; /* leave a bit of room for dots */
+	/* Add even wider side gutters so nav buttons sit fully outside cards */
+	padding: 0 96px 10px 96px; /* leave a bit of room for dots */
 	box-sizing: border-box;
 	overflow: hidden;
 	z-index: 1; /* ensure no accidental overlay blocks clicks */
@@ -41,14 +41,14 @@ const CarouselRoot = styled.div`
 		touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipes */
 `
 
-const Track = styled.div<{ x: number }>`
+const Track = styled.div<{ x: number; dx: number; dragging: boolean; instant: boolean }>`
 	display: flex;
 	align-items: stretch;
 	gap: 10px; /* Owl default margin ~10px */
 	will-change: transform;
-	/* Match OwlCarousel2 default movement */
-	transition: transform 250ms ease;
-	transform: translate3d(${(p: { x: number }) => -p.x}px, 0, 0);
+	/* Match OwlCarousel2 default movement; disable transition while dragging or during instant wraps */
+	transition: ${(p: { dragging: boolean; instant: boolean }) => (p.dragging || p.instant ? 'none' : 'transform 250ms ease')};
+	transform: translate3d(${(p: { x: number; dx: number }) => (-p.x + (p.dx || 0))}px, 0, 0);
 
 	@media (prefers-reduced-motion: reduce) {
 		transition: none;
@@ -67,7 +67,7 @@ const Dots = styled.div`
 	display: flex;
 	justify-content: center;
 	gap: 8px;
-	margin-top: 12px;
+	margin-top: 6px;
 `
 
 const Dot = styled.button<{ active?: boolean }>`
@@ -83,7 +83,7 @@ const Dot = styled.button<{ active?: boolean }>`
 const NavButton = styled.button<{ $side: 'left' | 'right' }>`
 	position: absolute;
 	top: 50%;
-	${(p: { $side: 'left' | 'right' }) => (p.$side === 'left' ? 'left: 8px;' : 'right: 8px;')}
+	${(p: { $side: 'left' | 'right' }) => (p.$side === 'left' ? 'left: 12px;' : 'right: 12px;')}
 	transform: translateY(-50%);
 	width: 38px;
 	height: 38px;
@@ -148,24 +148,21 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 		return () => clearInterval(id)
 		}, [autoplay, interval])
 
-	// Compute x-offset so that current slide center aligns to viewport center
-			// Seamless mapping: choose the visually closest index within the tripled list
-					React.useEffect(() => {
-						if (base === 0) return
-						const mod = ((currentIdx % base) + base) % base
-						const candidates = [mod, mod + base, mod + 2 * base]
-						const prev = visIdx
-						let best = candidates[0]
-						let bestDist = Math.abs(best - prev)
-						for (const c of candidates) {
-							const d = Math.abs(c - prev)
-							if (d < bestDist) { best = c; bestDist = d }
-						}
-						// Keep within the middle third [base, 2*base) to avoid edge glitches
-						if (best < base) best += base
-						else if (best >= 2 * base) best -= base
-						if (best !== prev) setVisIdx(best)
-					}, [currentIdx, base])
+	// Map logical index to nearest visual index among clones without clamping;
+	// we'll wrap back to the middle third after the transition ends to stay centered.
+	React.useEffect(() => {
+		if (base === 0) return
+		const mod = ((currentIdx % base) + base) % base
+		const candidates = [mod, mod + base, mod + 2 * base]
+		const prev = visIdx
+		let best = candidates[0]
+		let bestDist = Math.abs(best - prev)
+		for (const c of candidates) {
+			const d = Math.abs(c - prev)
+			if (d < bestDist) { best = c; bestDist = d }
+		}
+		if (best !== prev) setVisIdx(best)
+	}, [currentIdx, base])
 		const centerOffset = React.useMemo(() => {
 			const viewport = rootRef.current?.clientWidth ?? 0
 			const total = games.length * (slideWidth + gap) - gap
@@ -182,13 +179,18 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 		const prev = () => setCurrentIdx((i: number) => i - 1)
 		const next = () => setCurrentIdx((i: number) => i + 1)
 
-			// Basic drag-to-snap interaction
+			// Drag interaction (mouse/touch): live move with snap on release
 			const startX = React.useRef<number | null>(null)
 			const dragged = React.useRef(false)
+			const [dragDX, setDragDX] = React.useState(0)
+			const [dragging, setDragging] = React.useState(false)
+			const [instant, setInstant] = React.useState(false)
 
 			const onPointerDown = (e: React.PointerEvent) => {
 				startX.current = e.clientX
 				dragged.current = false
+				setDragging(false)
+				setDragDX(0)
 				// Do not capture immediately to allow inner links to click
 			}
 
@@ -198,16 +200,58 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				if (Math.abs(dx) > 12 && !dragged.current) {
 					dragged.current = true
 					;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+					setDragging(true)
 				}
+				if (dragged.current) {
+					setDragDX(dx)
+				}
+			}
+
+			const finalizeDrag = (dx: number) => {
+				setDragging(false)
+				setDragDX(0)
+				if (Math.abs(dx) < 30) return
+				if (dx > 0) prev()
+				else next()
 			}
 
 			const onPointerUp = (e: React.PointerEvent) => {
 				if (startX.current == null) return
 				const dx = e.clientX - startX.current
 				startX.current = null
-				if (Math.abs(dx) < 30) return
-				if (dx > 0) prev()
-				else next()
+				finalizeDrag(dx)
+			}
+
+			const onPointerLeave = () => {
+				if (startX.current == null) return
+				const dx = dragDX
+				startX.current = null
+				finalizeDrag(dx)
+			}
+
+			const onPointerCancel = () => {
+				startX.current = null
+				setDragging(false)
+				setDragDX(0)
+			}
+
+			// After a slide transition completes, if we drifted into clone zones
+			// (left of base or right of 2*base-1), instantly wrap back by +/- base
+			// so we remain near the middle clone block without any visible jump.
+			const onTransitionEnd = () => {
+				if (base === 0) return
+				let next = visIdx
+				if (visIdx < base) {
+					next = visIdx + base
+				} else if (visIdx >= 2 * base) {
+					next = visIdx - base
+				}
+				if (next !== visIdx) {
+					setInstant(true)
+					setVisIdx(next)
+					// Re-enable transition on the next frame
+					requestAnimationFrame(() => setInstant(false))
+				}
 			}
 
 			// Wheel navigation not part of Owl defaults; omit
@@ -219,6 +263,9 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				onPointerDown={onPointerDown}
 				onPointerMove={onPointerMove}
 				onPointerUp={onPointerUp}
+				onPointerLeave={onPointerLeave}
+				onPointerCancel={onPointerCancel}
+				style={{ cursor: dragging ? 'grabbing' : 'grab' }}
 			>
 				<NavButton
 					$side="left"
@@ -228,7 +275,7 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 				>
 					‹
 				</NavButton>
-				<Track x={centerOffset}>
+				<Track x={centerOffset} dx={dragDX} dragging={dragging} instant={instant} onTransitionEnd={onTransitionEnd}>
 					{games.map((game: ExtendedGameBundle, i: number) => (
 						<Slide key={i} width={slideWidth}>
 							<div className="scaleWrap">

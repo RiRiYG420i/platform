@@ -39,9 +39,10 @@ const Answer = styled.div<{ $open: boolean }>`
 
 const AnswerInner = styled.div`
   overflow: hidden;
-  padding: 0 16px 14px;
+  /* Increase spacing inside the answer for better aesthetics */
+  padding: 22px 18px 18px; /* more top padding for a clear gap */
   color: #cfd3da;
-  line-height: 1.5;
+  line-height: 1.6;
 `
 
 interface QA { q: string; a: React.ReactNode }

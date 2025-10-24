@@ -38,7 +38,7 @@ export const Title = styled.h1`
 
 export const Subtitle = styled.p`
   font-size: .9rem;
-  color: #a0a0a0;
+  color: #cfd3da; /* match FAQ answer text color */
   margin: 0;
 `
 
@@ -78,8 +78,8 @@ export const LeaderboardList = styled.div`
 export const ListHeader = styled.div`
   display:flex; align-items:center;
   padding:.5rem 1rem;
-  font-size:.8rem; color:#a0a0a0; text-transform:uppercase; letter-spacing:.5px;
-  border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:.5rem;
+  font-size:.8rem; color:#cfd3da; text-transform:uppercase; letter-spacing:.5px;
+  border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:.5rem;
 `
 export const HeaderRank   = styled.div`flex:0 0 50px; text-align:center;`
 export const HeaderPlayer = styled.div`flex:1; padding-left:.5rem;`
@@ -88,11 +88,11 @@ export const HeaderVolume = styled.div`flex:0 0 100px; text-align:right;`
 export const RankItem = styled.div<{ $isTop3?:boolean }>`
   display:flex; align-items:center;
   padding:.75rem 1rem;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:8px;
-  transition:background .2s,border-color .2s;
-  &:hover{ background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15); }
+  background: rgba(37, 44, 55, 0.6); /* match FAQ item background */
+  border: 1px solid rgba(255,255,255,0.08); /* match FAQ border */
+  border-radius: 12px; /* match FAQ radius */
+  transition: background .2s, border-color .2s;
+  &:hover{ background: rgba(37, 44, 55, 0.75); border-color: rgba(255,255,255,0.12); }
   ${({ $isTop3 })=>$isTop3 && css``}
 `
 
@@ -103,11 +103,11 @@ export const RankNumber = styled.div<{ rank:number }>`
   ${({ rank })=>rank===3 && css`&:before{content:'🥉';margin-right:.5em;font-size:1.1em;}color:#cd7f32;`}
 `
 export const PlayerInfo    = styled.div`
-  flex:1; padding-left:.5rem; font-size:.95rem; color:#eee;
+  flex:1; padding-left:.5rem; font-size:.95rem; color:#cfd3da; /* match FAQ */
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 `
 export const VolumeAmount  = styled.div`
-  flex:0 0 100px; text-align:right; font-size:.95rem; font-weight:500; color:#03ffa4;
+  flex:0 0 100px; text-align:right; font-size:.95rem; font-weight:500; color:#cfd3da; /* align with FAQ palette */
 `
 
 /* ───── States & helpers ───── */

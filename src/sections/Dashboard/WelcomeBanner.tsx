@@ -43,7 +43,7 @@ const BannerImage = styled.img`
   height: auto;
   object-fit: contain;
   @media (min-width: 1024px) {
-    max-height: 32vh; /* take less vertical space on desktop */
+    max-height: 40vh; /* slightly larger on desktop */
   }
 `;
 

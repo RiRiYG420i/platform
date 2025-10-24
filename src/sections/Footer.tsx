@@ -1,6 +1,6 @@
 // src/sections/Footer.tsx
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledFooter = styled.div`
@@ -68,6 +68,7 @@ const SocialIcon = styled.a`
 `
 
 export default function Footer() {
+  const location = useLocation()
   const socials = [
     { name: 'X (Twitter)', icon: '/x.png', url: 'https://x.com/SolWin_Official' },
     { name: 'Telegram', icon: '/telegram.png', url: 'https://t.me/SOL_WIN_Casino' },
@@ -76,7 +77,19 @@ export default function Footer() {
 
   return (
     <StyledFooter>
-      <Logo to="/">
+      <Logo
+        to="/"
+        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+          if (location.pathname === '/') {
+            e.preventDefault()
+            try {
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            } catch {
+              window.scrollTo(0, 0)
+            }
+          }
+        }}
+      >
         <img alt="SOL-WIN logo" src="/logo.png" />
       </Logo>
 
