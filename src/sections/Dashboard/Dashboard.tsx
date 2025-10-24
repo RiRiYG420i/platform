@@ -10,6 +10,7 @@ import FAQ from './FAQ'
 import { PLATFORM_CREATOR_ADDRESS } from '../../constants'
 // src/sections/Dashboard/Dashboard.tsx
 import FeaturedInlineGame from './FeaturedInlineGame'
+import topGamesTitle from '../../../topgames.png'
 
 
 
@@ -45,21 +46,18 @@ export function GameGrid() { return null }
 
 // Removed unter_banner.gif image in favor of an always-visible Leaderboard panel
 
-const SectionHeading = styled.h2`
-  color: #fff;
-  font-size: 2.5rem; /* doubled */
-  font-weight: 800;
-  text-align: center; /* center on page */
-  /* Reduce top and bottom spacing by ~90% considering surrounding containers */
+const SectionTitleImage = styled.img`
+  display: block;
   margin: 1px auto 1px;
-  @media (min-width: 600px) { margin: 1px auto 1px; }
+  max-width: 100%;
+  height: auto;
 `
 
 export default function Dashboard() {
   return (
     <>
       <WelcomeBanner />
-      <SectionHeading>Top Games</SectionHeading>
+      <SectionTitleImage src={topGamesTitle} alt="Top Games" />
   <VCardCarousel />
       <LeaderboardsPanel creator={PLATFORM_CREATOR_ADDRESS.toBase58()} />
       <FAQ />
