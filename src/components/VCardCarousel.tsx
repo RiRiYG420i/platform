@@ -30,12 +30,12 @@ function useResponsive(): Layout {
 const CarouselRoot = styled.div`
 	position: relative;
 	width: 100%;
-	/* Reduce vertical spacing near heading/cards */
-	padding: 2px 0 12px 0; /* still leave a bit of room for dots */
+	/* Add side gutters so nav buttons sit outside cards and minimize top spacing */
+	padding: 0 44px 10px 44px; /* leave a bit of room for dots */
 	box-sizing: border-box;
 	overflow: hidden;
 	z-index: 1; /* ensure no accidental overlay blocks clicks */
-	margin: 1px 0; /* tighter gap to heading */
+	margin: 0; /* minimal gap to heading */
 	cursor: grab;
 		pointer-events: auto;
 		touch-action: pan-y; /* allow vertical scroll; we handle horizontal swipes */
@@ -189,13 +189,16 @@ export default function VCardCarousel({ autoplay = false, interval = 3500 }: VCa
 			const onPointerDown = (e: React.PointerEvent) => {
 				startX.current = e.clientX
 				dragged.current = false
-				;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+				// Do not capture immediately to allow inner links to click
 			}
 
 			const onPointerMove = (e: React.PointerEvent) => {
 				if (startX.current == null) return
 				const dx = e.clientX - startX.current
-				if (Math.abs(dx) > 10) dragged.current = true
+				if (Math.abs(dx) > 12 && !dragged.current) {
+					dragged.current = true
+					;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+				}
 			}
 
 			const onPointerUp = (e: React.PointerEvent) => {

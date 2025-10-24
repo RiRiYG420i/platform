@@ -42,6 +42,9 @@ const BannerImage = styled.img`
   width: 100%;
   height: auto;
   object-fit: contain;
+  @media (min-width: 1024px) {
+    max-height: 32vh; /* take less vertical space on desktop */
+  }
 `;
 
 // Removed colored bottom container per request

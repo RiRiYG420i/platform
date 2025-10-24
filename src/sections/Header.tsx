@@ -281,7 +281,7 @@ export default function Header() {
 
           {balance.bonusBalance > 0 && (
             <Bonus onClick={() => setBonusHelp(true)}>
-              ✨ <TokenValue amount={balance.bonusBalance} />
+              <TokenValue amount={balance.bonusBalance} />
             </Bonus>
           )}
 
@@ -298,13 +298,13 @@ export default function Header() {
           {isDesktop && (
             <>
               <StyledButton>
-                <GambaUi.Button onClick={() => setJackpotHelp(true)}>💰 Jackpot</GambaUi.Button>
+                <GambaUi.Button onClick={() => setJackpotHelp(true)}>Jackpot</GambaUi.Button>
               </StyledButton>
               <StyledButton>
-                <GambaUi.Button onClick={() => user.set({ userModal: true })}>💸 Invite</GambaUi.Button>
+                <GambaUi.Button onClick={() => user.set({ userModal: true })}>Invite</GambaUi.Button>
               </StyledButton>
               <StyledButton>
-                <GambaUi.Button onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}>❓ How to</GambaUi.Button>
+                <GambaUi.Button onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}>How to</GambaUi.Button>
               </StyledButton>
               <RedButtonWrapper>
                 <TokenSelect />
@@ -399,7 +399,7 @@ export default function Header() {
                 style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
                 onClick={() => setJackpotHelp(true)}
               >
-                💰 Jackpot
+                Jackpot
               </GambaUi.Button>
               <GambaUi.Button
                 style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
@@ -412,13 +412,13 @@ export default function Header() {
                   }
                 }}
               >
-                💸 Invite
+                Invite
               </GambaUi.Button>
               <GambaUi.Button
                 style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
                 onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}
               >
-                ❓ How to
+                How to
               </GambaUi.Button>
               {ENABLE_LEADERBOARD && (
                 <GambaUi.Button

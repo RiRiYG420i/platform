@@ -24,9 +24,9 @@ const Logo = styled(NavLink)`
   align-items: center;
   height: 30px;
   margin: 0 25px 0 0;
-  background: #ECD11E; /* Yellow background behind the logo */
+  background: transparent; /* remove yellow background */
   border-radius: 8px;
-  padding: 4px 8px;
+  padding: 0; /* remove extra padding */
   & > img {
     height: 100%;
     display: block;
