@@ -7,13 +7,13 @@ import { useUserStore } from '../../hooks/useUserStore';
 import { Modal } from '../../components/Modal';
 
 const WelcomeWrapper = styled.div`
-  /* Give the header some breathing room above the banner */
-  margin-top: 16px;
+  /* Reduce spacing to header by ~60% */
+  margin-top: 6px;
   @media (min-width: 600px) {
-    margin-top: 20px;
+    margin-top: 8px;
   }
   @media (min-width: 1280px) {
-    margin-top: 24px;
+    margin-top: 10px;
   }
   position: relative;
   display: flex;

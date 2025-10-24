@@ -47,10 +47,11 @@ export function GameGrid() { return null }
 
 const SectionHeading = styled.h2`
   color: #fff;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 12px 8px 8px;
-  @media (min-width: 600px) { margin: 16px 12px 8px; }
+  font-size: 2.5rem; /* doubled */
+  font-weight: 800;
+  text-align: center; /* center on page */
+  margin: 12px auto 3px; /* reduce bottom space by ~60% */
+  @media (min-width: 600px) { margin: 16px auto 3px; }
 `
 
 export default function Dashboard() {
