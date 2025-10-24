@@ -304,7 +304,7 @@ export default function Header() {
                 <GambaUi.Button onClick={() => user.set({ userModal: true })}>Invite</GambaUi.Button>
               </StyledButton>
               <StyledButton>
-                <GambaUi.Button onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}>How to</GambaUi.Button>
+                <GambaUi.Button onClick={() => window.open('https://linktr.ee/Solwin_Casino', '_blank', 'noopener,noreferrer')}>How to</GambaUi.Button>
               </StyledButton>
               <RedButtonWrapper>
                 <TokenSelect />
@@ -416,7 +416,7 @@ export default function Header() {
               </GambaUi.Button>
               <GambaUi.Button
                 style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
-                onClick={() => window.open('https://drive.google.com/file/d/1ytQLxvTwmaXRSnJwcfv3R-Nh4ostI53u/view', '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open('https://linktr.ee/Solwin_Casino', '_blank', 'noopener,noreferrer')}
               >
                 How to
               </GambaUi.Button>

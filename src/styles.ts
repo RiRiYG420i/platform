@@ -46,4 +46,5 @@ export const TosInner = styled.div`
 // Gradient extracted from buttons/lang-b.svg (approximated)
 // Now linear from left (start) to right (end)
 export const LANG_B_GRADIENT =
-  'linear-gradient(90deg, #00D596 0%, #1FE0A0 15%, #36E4A9 30%, #63ECBB 55%, #90F4CE 75%, #CBFFE3 100%)'
+  // Keep palette, but make the lightest area only a tiny sliver in the top-right corner
+  'linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%)'
