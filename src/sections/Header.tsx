@@ -30,10 +30,10 @@ const Bonus = styled.button`
   font-size: 12px;
   text-transform: uppercase;
   font-weight: bold;
-  background: #E0B41B; /* slightly darker than header background */
-  transition: background-color 0.2s, transform 0.2s ease;
+  background: ${LANG_B_GRADIENT}; /* unify with other gradient buttons */
+  transition: filter 0.2s ease, transform 0.2s ease;
   &:hover {
-  background: #C9A019;
+    filter: brightness(1.02);
     transform: translateY(-1px);
   }
 `
@@ -470,7 +470,7 @@ const HamburgerButton = styled.button<{ $open: boolean }>`
     left: 50%;
     width: 26px;
     height: 2px;
-    background: #fff;
+    background: #252C37; /* match button text color */
     border-radius: 2px;
     transform-origin: center;
     transition: transform 220ms ease, opacity 180ms ease;

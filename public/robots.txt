@@ -1,0 +1,30 @@
+# robots.txt für AI- und Suchmaschinen-Zugriff
+User-agent: *
+Allow: /
+
+# OpenAI ChatGPT Crawler
+User-agent: GPTBot
+Allow: /
+
+# Anthropic Claude Crawler
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity Crawler
+User-agent: PerplexityBot
+Allow: /
+
+# Common Crawl (häufige Datenquelle für AIs)
+User-agent: CCBot
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Bing (für Copilot / Edge)
+User-agent: Bingbot
+Allow: /
+
+# Sitemap angeben (optional, falls vorhanden)
+Sitemap: https://deine-domain.de/sitemap.xml
