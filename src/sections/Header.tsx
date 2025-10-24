@@ -142,7 +142,14 @@ export default function Header() {
 
   // Measure header height to place mobile sheet below it
   React.useEffect(() => {
-    const measure = () => setHeaderHeight(headerRef.current?.getBoundingClientRect().height ?? 0)
+    const measure = () => {
+      const h = headerRef.current?.getBoundingClientRect().height ?? 0
+      setHeaderHeight(h)
+      // Expose header height to CSS so layout can sit just below header
+      if (typeof document !== 'undefined') {
+        document.documentElement.style.setProperty('--header-height', `${Math.round(h)}px`)
+      }
+    }
     measure()
     window.addEventListener('resize', measure)
     let ro: ResizeObserver | undefined

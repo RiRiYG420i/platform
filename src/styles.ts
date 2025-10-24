@@ -4,22 +4,21 @@ export const MainWrapper = styled.div`
   position: relative;
   width: 100%;
   max-width: 100%;
-  transition: width .25s ease, padding .25s ease;
+  transition: width .25s ease, padding .25s ease, margin-top .25s ease;
   margin: 0 auto;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 80px; /* Increased to create more space between fixed header and top content */
+  /* Keep content immediately below the fixed header, using measured header height */
+  margin-top: calc(var(--header-height, 60px) + 1px);
   @media (min-width: 600px) {
     padding: 20px;
     width: 1000px;
-    margin-top: 100px; /* Extra space on wider screens */
   }
   @media (min-width: 1280px) {
     padding: 20px;
     width: 1100px;
-    margin-top: 100px;
   }
 `
 
