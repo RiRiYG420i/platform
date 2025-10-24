@@ -9,7 +9,7 @@ import {
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { LANG_B_GRADIENT } from '../styles'
 import { Modal } from '../components/Modal'
@@ -85,6 +85,7 @@ const RedButtonWrapper = styled.div`
 `
 
 export default function Header() {
+  const location = useLocation()
   const pool = useCurrentPool()
   const balance = useUserBalance()
   const context = useGambaPlatformContext()
@@ -251,7 +252,19 @@ export default function Header() {
 
   <StyledHeader ref={headerRef} $scrolled={scrolled} $hidden={!isDesktop && headerHidden}>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <Logo to="/">
+          <Logo
+            to="/"
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+              if (location.pathname === '/') {
+                e.preventDefault()
+                try {
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                } catch {
+                  window.scrollTo(0, 0)
+                }
+              }
+            }}
+          >
             <img alt="Gamba logo" src="/logo.png" />
           </Logo>
         </div>
