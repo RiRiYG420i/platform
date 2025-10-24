@@ -17,7 +17,7 @@ import RecentPlays from './sections/RecentPlays/RecentPlays'
 import Toasts from './sections/Toasts'
 import TrollBox from './components/TrollBox'
 
-import { MainWrapper, TosInner, TosWrapper } from './styles'
+import { MainWrapper, TosInner, TosWrapper, LANG_B_GRADIENT } from './styles'
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -66,7 +66,11 @@ export default function App() {
             <TosInner dangerouslySetInnerHTML={{ __html: TOS_HTML }} />
           </TosWrapper>
           <p>By playing on our platform, you confirm your compliance.</p>
-          <GambaUi.Button main onClick={() => set({ newcomer: false })}>
+          <GambaUi.Button
+            main
+            style={{ background: LANG_B_GRADIENT, color: '#252C37', minHeight: 44 }}
+            onClick={() => set({ newcomer: false })}
+          >
             Acknowledge
           </GambaUi.Button>
         </Modal>
