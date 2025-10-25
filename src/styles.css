@@ -154,6 +154,8 @@ body {
   color: var(--text-color);
   cursor: default;
   margin: 0;
+  /* Push all content below the fixed header so screens start directly under it */
+  padding-top: var(--header-height, 60px);
   overflow-y: scroll;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
