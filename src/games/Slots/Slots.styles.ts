@@ -11,9 +11,26 @@ export const StyledSlots = styled.div`
   overflow: visible;
 
   & > div {
+    position: relative; /* ensure content layers above decorative background */
+    z-index: 1;
     display: grid;
     gap: 12px;
     transform: rotateX(3deg) rotateY(0deg);
+  }
+
+  /* Oversized decorative background image that can extend beyond the frame */
+  .bg-image {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(900px, 130%, 2200px); /* very large on wide screens */
+    height: auto;
+    filter: none;
+    opacity: 1;
+    image-rendering: -webkit-optimize-contrast;
   }
 
   .inline-header {

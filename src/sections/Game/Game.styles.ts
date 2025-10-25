@@ -25,7 +25,8 @@ export const BackRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin: 0 0 8px;
+  /* small gap from the fixed header */
+  margin: 8px 0 8px;
   padding: 0;
 `
 

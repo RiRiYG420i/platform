@@ -164,13 +164,10 @@ export default function Slots() {
         )}
         <GambaUi.Responsive>
           <StyledSlots style={{
-            backgroundImage: `url(${bg})`,
-            backgroundSize: 'contain', // show full image without distortion
-            backgroundPosition: 'top center',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: '#0C0C11', // fallback fill around the contained image
+            backgroundColor: '#0C0C11', // fill around decorative image
             marginTop: '-10px', // pull the inline game closer to the header
           }}>
+            <img src={bg} alt="" aria-hidden className="bg-image" />
             <div>
               <img src={headerImg} alt="Slots header" className={'inline-header'} />
               <ItemPreview betArray={bet} />

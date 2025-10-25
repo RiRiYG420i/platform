@@ -74,7 +74,7 @@ function CustomRenderer() {
       <FullBleed>
         <BackRow>
           <Link to="/">
-            <BackButton aria-label="Zurück zur Startseite">← Zurück</BackButton>
+            <BackButton aria-label="Back to Home">← Back</BackButton>
           </Link>
         </BackRow>
         <Container>
