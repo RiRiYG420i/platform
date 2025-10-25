@@ -92,7 +92,7 @@ export const StyledSlots = styled.div`
 
   .slots {
     display: flex;
-    gap: 20px;
+    gap: clamp(12px, 2vw, 28px);
     justify-content: center;
     box-sizing: border-box;
     border-radius: 10px;

@@ -27,6 +27,9 @@ export const FullBleed = styled.div`
   margin-right: calc(50% - 50vw);
   padding-left: max(10px, env(safe-area-inset-left));
   padding-right: max(10px, env(safe-area-inset-right));
+  /* Pull up to cancel MainWrapper's top padding so the game sits right under the header */
+  margin-top: -10px;
+  @media (min-width: 600px) { margin-top: -20px; }
 `
 
 export const SettingControls = styled.div`
@@ -61,27 +64,22 @@ export const Screen = styled.div`
   position: relative;
   background: #0c0c11;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: visible; /* do not crop game content */
   width: 100%;
 
-  /* Responsive sizing: keep a sane aspect and cap height by available viewport */
-  aspect-ratio: 4 / 3; /* even taller for a clearly larger screen */
-  height: auto;
+  /* Make the game nearly fullscreen in height below the header */
+  height: calc(100dvh - var(--header-height, 60px));
 
-  /* Reserve space for inline controls + bottom controls so the screen doesn't overflow */
-  --controls-allowance: 120px; /* minimal reserve -> maximize screen height */
-  max-height: calc(100svh - var(--header-height, 60px) - var(--controls-allowance));
-
-  /* Fallback for browsers without small-viewport units */
+  /* Fallbacks for browsers without dynamic/small viewport units */
+  @supports not (height: 100dvh) {
+    height: calc(100svh - var(--header-height, 60px));
+  }
   @supports not (height: 100svh) {
-    max-height: calc(100vh - var(--header-height, 60px) - var(--controls-allowance));
+    height: calc(100vh - var(--header-height, 60px));
   }
 
-  /* On narrow screens, allow a taller aspect for better use of space */
-  @media (max-width: 700px) {
-    aspect-ratio: 9 / 16; /* tall in portrait */
-    --controls-allowance: 140px;
-  }
+  /* Reasonable floor so it doesn't get too tiny on very small viewports */
+  min-height: 520px;
 `
 
 export const IconButton = styled.button`

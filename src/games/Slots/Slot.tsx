@@ -32,7 +32,8 @@ const pulse = keyframes`
 `
 
 const StyledSlot = styled.div<{$good: boolean}>`
-  width: 100px;
+  /* Make each reel responsive: bigger on wide screens, never tiny on mobile */
+  width: clamp(110px, 12vw, 260px);
   aspect-ratio: 1/1.5;
   position: relative;
   background: ${LANG_B_GRADIENT};

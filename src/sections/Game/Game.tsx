@@ -76,7 +76,10 @@ function CustomRenderer() {
           <Screen>
           <Splash><img height="150" src={game.meta.image} /></Splash>
           <GambaUi.PortalTarget target="error" />
-          {ready && <GambaUi.PortalTarget target="screen" />}
+          {/* Fit the game content into the available Screen size without cropping */}
+          {ready && (
+            <FitToScreen children={<GambaUi.PortalTarget target="screen" />} />
+          )}
 
           <MetaControls>
             <IconButton onClick={() => setInfo(true)}><Icon.Info /></IconButton>
@@ -118,5 +121,54 @@ export default function Game() {
       )}
       <GameSlider />
     </>
+  )
+}
+
+/* --------------------------------- Utils --------------------------------- */
+
+function FitToScreen({ children }: { children: React.ReactNode }) {
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const contentRef = React.useRef<HTMLDivElement>(null)
+  const [scale, setScale] = React.useState(1)
+
+  React.useEffect(() => {
+    const el = containerRef.current
+    const content = contentRef.current
+    if (!el || !content) return
+
+    const ro = new ResizeObserver(() => {
+      const cw = el.clientWidth
+      const ch = el.clientHeight
+      // Use scroll sizes to capture natural content size
+      const iw = content.scrollWidth || content.clientWidth || 1
+      const ih = content.scrollHeight || content.clientHeight || 1
+      const next = Math.min(cw / iw, ch / ih, 1)
+      setScale(next > 0 && isFinite(next) ? next : 1)
+    })
+    ro.observe(el)
+    ro.observe(content)
+    return () => ro.disconnect()
+  }, [])
+
+  return (
+    <div ref={containerRef} style={{
+      position: 'relative',
+      width: '100%',
+      height: '100%',
+      overflow: 'visible',
+    }}>
+      <div ref={contentRef} style={{
+        position: 'absolute',
+        left: '50%',
+        top: 0,
+        transform: `translateX(-50%) scale(${scale})`,
+        transformOrigin: 'top center',
+        width: 'auto',
+        height: 'auto',
+        willChange: 'transform',
+      }}>
+        {children}
+      </div>
+    </div>
   )
 }
