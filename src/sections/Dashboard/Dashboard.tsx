@@ -56,6 +56,7 @@ const SectionTitleImage = styled.img`
 export default function Dashboard() {
   return (
     <>
+      <FeaturedInlineGame />
       <WelcomeBanner />
       <SectionTitleImage src={topGamesTitle} alt="Top Games" />
   <VCardCarousel />
