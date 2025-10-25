@@ -35,9 +35,9 @@ export const StyledSlots = styled.div`
 
   .inline-header {
     display: block;
-    height: 28px; /* make header much smaller */
+    height: clamp(28px, 6vw, 90px); /* responsive height */
     width: auto;
-    margin: 4px auto 2px; /* center horizontally */
+    margin: clamp(4px, 0.8vw, 10px) auto clamp(2px, 0.6vw, 8px); /* center horizontally with responsive gaps */
     image-rendering: -webkit-optimize-contrast;
   }
 
@@ -89,17 +89,16 @@ export const StyledSlots = styled.div`
 
   .result {
     border: none;
-    padding: 10px;
+    padding: clamp(8px, 1.2vw, 16px);
     text-transform: uppercase;
     position: relative;
-    padding: 10px;
     width: 100%;
-    border-radius: 10px;
+    border-radius: clamp(8px, 1vw, 14px);
     border-spacing: 10px;
     border: 1px solid rgba(255,255,255,0.25);
     background: ${LANG_B_GRADIENT};
     color: #252C37;
-    font-size: 14px;
+    font-size: clamp(14px, 1.6vw, 20px);
     font-weight: bold;
     text-align: center;
   }
@@ -139,6 +138,7 @@ export const StyledSlots = styled.div`
     aspect-ratio: 1/1;
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
   }
 
   /* Inline controls directly under the banner/result */
@@ -150,6 +150,15 @@ export const StyledSlots = styled.div`
     margin-top: 6px;
     position: relative;
     z-index: 20; /* ensure above reels/overlays so they're never visually clipped */
+    
+    /* Scale buttons/inputs with viewport width (scoped to Slots only) */
+    & .gamba-ui-button,
+    & .gamba-ui-input,
+    & .gamba-ui-select button {
+      font-size: clamp(14px, 1.6vw, 20px) !important;
+      min-height: clamp(38px, 5.2vw, 56px) !important;
+      padding: 0 clamp(10px, 1.2vw, 16px) !important;
+    }
   }
 
   .controls-inline > * {

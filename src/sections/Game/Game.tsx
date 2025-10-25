@@ -78,7 +78,7 @@ function CustomRenderer() {
           </Link>
         </BackRow>
         <Container>
-          <Screen>
+          <Screen style={game.id === 'slots' ? { height: 'calc(100dvh - var(--header-height, 60px) - 56px)' } : undefined}>
           <Splash><img height="150" src={game.meta.image} /></Splash>
           <GambaUi.PortalTarget target="error" />
           {/* Fit the game content into the available Screen size without cropping */}
@@ -95,18 +95,19 @@ function CustomRenderer() {
           </MetaControls>
           </Screen>
 
-          {/* Inline controls host directly under the screen */}
-          <InlineControlsArea>
-            <GambaUi.PortalTarget target="inline" />
-          </InlineControlsArea>
-
-          <LoadingBar />
-
-          {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
-          <Controls>
-            <GambaUi.PortalTarget target="controls" />
-            <GambaUi.PortalTarget target="play" />
-          </Controls>
+          {/* Inline controls & bottom bar are hidden for Slots to avoid extra page height */}
+          {game.id !== 'slots' && (
+            <>
+              <InlineControlsArea>
+                <GambaUi.PortalTarget target="inline" />
+              </InlineControlsArea>
+              <LoadingBar />
+              <Controls>
+                <GambaUi.PortalTarget target="controls" />
+                <GambaUi.PortalTarget target="play" />
+              </Controls>
+            </>
+          )}
         </Container>
       </FullBleed>
     </>
