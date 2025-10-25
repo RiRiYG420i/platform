@@ -14,7 +14,7 @@ import {
 // exactly the same wrapper width as WelcomeBanner / MainWrapper
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1520px; /* match MainWrapper larger breakpoint */
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
@@ -36,8 +36,8 @@ export default function FeaturedInlineGame() {
         }
       >
         <GameContainer style={{ gap: 10, width: '100%' }}>
-          {/* force the same 600px height as your regular <Screen> */}
-          <GameScreen style={{ width: '100%', height: '720px' }}>
+          {/* Let GameScreen's responsive styles define height */}
+          <GameScreen style={{ width: '100%' }}>
             <GambaUi.PortalTarget target="screen" />
           </GameScreen>
           {/* controls + play button */}

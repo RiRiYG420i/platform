@@ -19,6 +19,16 @@ export const Container = styled.div`
   gap: 5px;
 `
 
+/* Full-bleed wrapper to let the game use the entire viewport width,
+   escaping the centered MainWrapper constraints on dedicated game pages */
+export const FullBleed = styled.div`
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: max(10px, env(safe-area-inset-left));
+  padding-right: max(10px, env(safe-area-inset-right));
+`
+
 export const SettingControls = styled.div`
   & > button {
     all: unset;
@@ -55,11 +65,11 @@ export const Screen = styled.div`
   width: 100%;
 
   /* Responsive sizing: keep a sane aspect and cap height by available viewport */
-  aspect-ratio: 16 / 10; /* taller than 16:9 to make it noticeably bigger */
+  aspect-ratio: 4 / 3; /* even taller for a clearly larger screen */
   height: auto;
 
   /* Reserve space for inline controls + bottom controls so the screen doesn't overflow */
-  --controls-allowance: 140px; /* less reserved space -> more room for the screen */
+  --controls-allowance: 120px; /* minimal reserve -> maximize screen height */
   max-height: calc(100svh - var(--header-height, 60px) - var(--controls-allowance));
 
   /* Fallback for browsers without small-viewport units */
@@ -69,8 +79,8 @@ export const Screen = styled.div`
 
   /* On narrow screens, allow a taller aspect for better use of space */
   @media (max-width: 700px) {
-    aspect-ratio: 9 / 16; /* a bit taller in portrait */
-    --controls-allowance: 160px;
+    aspect-ratio: 9 / 16; /* tall in portrait */
+    --controls-allowance: 140px;
   }
 `
 

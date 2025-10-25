@@ -9,7 +9,7 @@ import { Modal } from '../../components/Modal'
 import { GAMES } from '../../games'
 import { useUserStore } from '../../hooks/useUserStore'
 import { GameSlider } from '../Dashboard/Dashboard'
-import { Container, Controls, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
+import { Container, Controls, FullBleed, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
 import { LoadingBar, useLoadingState } from './LoadingBar'
 import { ProvablyFairModal } from './ProvablyFairModal'
 import { TransactionModal } from './TransactionModal'
@@ -71,8 +71,9 @@ function CustomRenderer() {
       {provablyFair && <ProvablyFairModal onClose={() => setProvablyFair(false)} />}
       {txModal     && <TransactionModal onClose={() => setTxModal(false)} />}
 
-      <Container>
-        <Screen>
+      <FullBleed>
+        <Container>
+          <Screen>
           <Splash><img height="150" src={game.meta.image} /></Splash>
           <GambaUi.PortalTarget target="error" />
           {ready && <GambaUi.PortalTarget target="screen" />}
@@ -84,21 +85,22 @@ function CustomRenderer() {
               {soundStore.volume ? <Icon.Volume /> : <Icon.VolumeMuted />}
             </IconButton>
           </MetaControls>
-        </Screen>
+          </Screen>
 
-        {/* Inline controls host directly under the screen */}
-        <InlineControlsArea>
-          <GambaUi.PortalTarget target="inline" />
-        </InlineControlsArea>
+          {/* Inline controls host directly under the screen */}
+          <InlineControlsArea>
+            <GambaUi.PortalTarget target="inline" />
+          </InlineControlsArea>
 
-        <LoadingBar />
+          <LoadingBar />
 
-        {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
-        <Controls>
-          <GambaUi.PortalTarget target="controls" />
-          <GambaUi.PortalTarget target="play" />
-        </Controls>
-      </Container>
+          {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
+          <Controls>
+            <GambaUi.PortalTarget target="controls" />
+            <GambaUi.PortalTarget target="play" />
+          </Controls>
+        </Container>
+      </FullBleed>
     </>
   )
 }
