@@ -60,6 +60,7 @@ export const Screen = styled.div`
     height: calc(100vh - var(--header-height, 60px));
     max-height: calc(100vh - var(--header-height, 60px));
     width: 100%;
+    border-radius: 0; /* edge-to-edge on mobile */
   }
 `
 

@@ -11,8 +11,8 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* Bring content notably closer than exact header height */
-  margin-top: calc(var(--header-height, 60px) - 16px);
+  /* Place content directly under the fixed header */
+  margin-top: calc(var(--header-height, 60px));
   @media (min-width: 600px) {
     padding: 0 20px 20px;
     width: 1000px;
@@ -20,6 +20,11 @@ export const MainWrapper = styled.div`
   @media (min-width: 1280px) {
     padding: 0 20px 20px;
     width: 1100px;
+  }
+
+  /* Mobile: remove horizontal padding so the game screen can be edge-to-edge */
+  @media (max-width: 600px) {
+    padding: 0 0 10px;
   }
 `
 
