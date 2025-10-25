@@ -174,9 +174,11 @@ body.game-fullscreen {
   width: 100% !important;
 }
 
-/* When using a global hero for Slots, hide the inline header inside the game content */
-body.slots-global-hero .inline-header {
-  display: none !important;
+/* Ensure no gap between header and game content */
+.game-viewport {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
 /* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */

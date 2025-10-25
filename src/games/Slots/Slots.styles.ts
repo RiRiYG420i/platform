@@ -12,6 +12,10 @@ export const StyledSlots = styled.div`
   flex-direction: column;
   padding: 1rem;
   gap: 1rem;
+  
+  /* Ensure game starts at the very top of the viewport */
+  margin: 0;
+  padding-top: 0;
 
   @keyframes pulse {
     0%, 30% {
