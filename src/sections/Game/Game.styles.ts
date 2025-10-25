@@ -55,7 +55,12 @@ export const Screen = styled.div`
   overflow: hidden;
   transition: height .2s ease;
   height: 880px;
-  @media (max-width: 700px) { height: 800px; }
+  @media (max-width: 700px) {
+    /* On mobile, make the game area fill the viewport height under the fixed header */
+    height: calc(100vh - var(--header-height, 60px));
+    max-height: calc(100vh - var(--header-height, 60px));
+    width: 100%;
+  }
 `
 
 export const IconButton = styled.button`
