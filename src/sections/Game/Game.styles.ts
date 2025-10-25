@@ -51,7 +51,7 @@ export const Screen = styled.div`
   position: relative;
   flex-grow: 1;
   background: #0c0c11;
-  border-radius: 10px;
+  border-radius: 0; /* ensure flush alignment with header */
   overflow: hidden;
   transition: height .2s ease;
   height: 880px;
@@ -60,7 +60,7 @@ export const Screen = styled.div`
     height: calc(100vh - var(--header-height, 60px));
     max-height: calc(100vh - var(--header-height, 60px));
     width: 100%;
-    border-radius: 0; /* edge-to-edge on mobile */
+    border-radius: 0; /* edge-to-edge */
   }
 `
 

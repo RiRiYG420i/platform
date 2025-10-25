@@ -54,9 +54,9 @@ const StyledHeader = styled.div<{ $scrolled: boolean; $hidden: boolean }>`
   top: 0;
   left: 0;
   z-index: 1000;
-  /* Match corner radius with buttons and game cards */
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  /* Straight bottom edge so content appears directly attached */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   transform: translateY(${(p: { $hidden: boolean }) => (p.$hidden ? '-110%' : '0')});
 `
 

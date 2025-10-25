@@ -1,8 +1,8 @@
 import * as ReactRoot from 'react'
-console.log('🏷️ App React identity:', ReactRoot)
+// console.log('App React identity:', ReactRoot)
 
 import * as ReactLocal from 'react'
-console.log('🏷️ useConnection React identity:', ReactLocal)
+// console.log('useConnection React identity:', ReactLocal)
 
 
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
