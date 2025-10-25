@@ -5,6 +5,8 @@ import React, { useEffect, useRef } from 'react'
 import { ItemPreview } from './ItemPreview'
 import { Slot } from './Slot'
 import { StyledSlots } from './Slots.styles'
+import bg from './assets/bg.jpg'
+import headerImg from './assets/header.png'
 import {
   FINAL_DELAY,
   LEGENDARY_THRESHOLD,
@@ -161,8 +163,14 @@ export default function Slots() {
           </div>
         )}
         <GambaUi.Responsive>
-          <StyledSlots>
+          <StyledSlots style={{
+            backgroundImage: `url(${bg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}>
             <div>
+              <img src={headerImg} alt="Slots header" className={'inline-header'} />
               <ItemPreview betArray={bet} />
               <div className={'slots'}>
                 {combination.map((slot, i) => (

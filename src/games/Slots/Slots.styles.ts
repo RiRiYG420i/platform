@@ -4,11 +4,23 @@ import { LANG_B_GRADIENT } from '../../styles'
 export const StyledSlots = styled.div`
   perspective: 100px;
   user-select: none;
+  position: relative;
+  min-height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 
   & > div {
     display: grid;
     gap: 20px;
     transform: rotateX(3deg) rotateY(0deg);
+  }
+
+  .inline-header {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 6px 0 2px;
+    image-rendering: -webkit-optimize-contrast;
   }
 
   @keyframes pulse {
