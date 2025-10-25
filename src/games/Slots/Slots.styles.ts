@@ -5,17 +5,19 @@ export const StyledSlots = styled.div`
   perspective: 100px;
   user-select: none;
   position: relative;
-  height: 100%;
   width: 100%;
+  height: 100%; /* fill the Screen container (which sits under the header) */
   background: transparent;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  gap: 1rem;
-  
-  /* Ensure game starts at the very top of the viewport */
-  margin: 0;
-  padding-top: 0;
+  padding: 0; /* avoid pushing content down inside the screen */
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
 
   @keyframes pulse {
     0%, 30% {
@@ -90,9 +92,8 @@ export const StyledSlots = styled.div`
     justify-content: center;
     box-sizing: border-box;
     border-radius: 10px;
-    flex: 1;
     align-items: center;
-    padding: 2rem;
+    padding: 10px;
   }
 
   .slot::after {
