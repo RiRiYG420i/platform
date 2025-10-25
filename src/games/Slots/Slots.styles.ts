@@ -17,9 +17,9 @@ export const StyledSlots = styled.div`
 
   .inline-header {
     display: block;
-    width: 100%;
-    height: auto;
-    margin: 6px 0 2px;
+    height: 28px; /* make header much smaller */
+    width: auto;
+    margin: 4px auto 2px; /* center horizontally */
     image-rendering: -webkit-optimize-contrast;
   }
 
