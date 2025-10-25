@@ -1,5 +1,6 @@
 // src/sections/Game/Game.styles.ts
 import styled, { css, keyframes } from 'styled-components'
+import { LANG_B_GRADIENT } from '../../styles'
 
 const splashAnimation = keyframes`
   0% { opacity: 1; }
@@ -17,6 +18,34 @@ export const Container = styled.div`
   position: relative;
   display: grid;
   gap: 5px;
+`
+
+export const BackRow = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 8px;
+  padding: 0;
+`
+
+export const BackButton = styled.button`
+  appearance: none;
+  border: 0;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: ${LANG_B_GRADIENT};
+  color: #252C37;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .15s ease, filter .15s ease;
+  box-shadow: none;
+  &:hover { filter: brightness(1.03); }
+  &:active { transform: translateY(1px); }
 `
 
 /* Full-bleed wrapper to let the game use the entire viewport width,

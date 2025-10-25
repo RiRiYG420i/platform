@@ -1,6 +1,6 @@
 // src/sections/Game/Game.tsx
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { GambaUi, useSoundStore } from 'gamba-react-ui-v2'
 import { useTransactionError } from 'gamba-react-v2'
 
@@ -9,7 +9,7 @@ import { Modal } from '../../components/Modal'
 import { GAMES } from '../../games'
 import { useUserStore } from '../../hooks/useUserStore'
 import { GameSlider } from '../Dashboard/Dashboard'
-import { Container, Controls, FullBleed, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
+import { BackButton, BackRow, Container, Controls, FullBleed, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
 import { LoadingBar, useLoadingState } from './LoadingBar'
 import { ProvablyFairModal } from './ProvablyFairModal'
 import { TransactionModal } from './TransactionModal'
@@ -72,6 +72,11 @@ function CustomRenderer() {
       {txModal     && <TransactionModal onClose={() => setTxModal(false)} />}
 
       <FullBleed>
+        <BackRow>
+          <Link to="/">
+            <BackButton aria-label="Zurück zur Startseite">← Zurück</BackButton>
+          </Link>
+        </BackRow>
         <Container>
           <Screen>
           <Splash><img height="150" src={game.meta.image} /></Splash>
