@@ -11,8 +11,8 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* Bring content slightly closer than exact header height */
-  margin-top: calc(var(--header-height, 60px) - 8px);
+  /* Bring content notably closer than exact header height */
+  margin-top: calc(var(--header-height, 60px) - 16px);
   @media (min-width: 600px) {
     padding: 0 20px 20px;
     width: 1000px;

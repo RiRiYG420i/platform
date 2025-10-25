@@ -37,7 +37,7 @@ export default function FeaturedInlineGame() {
       >
         <GameContainer style={{ gap: 10, width: '100%' }}>
           {/* force the same 600px height as your regular <Screen> */}
-          <GameScreen style={{ width: '100%', height: '800px' }}>
+          <GameScreen style={{ width: '100%', height: '880px' }}>
             <GambaUi.PortalTarget target="screen" />
           </GameScreen>
           {/* controls + play button */}

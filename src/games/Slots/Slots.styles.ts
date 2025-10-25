@@ -11,15 +11,15 @@ export const StyledSlots = styled.div`
 
   & > div {
     display: grid;
-    gap: 12px;
-    transform: rotateX(3deg) rotateY(0deg);
+    gap: 6px;
+    transform: none; /* remove tilt to reclaim vertical space */
   }
 
   .inline-header {
     display: block;
-    height: 28px; /* make header much smaller */
+    height: 20px; /* even smaller to save space */
     width: auto;
-    margin: 4px auto 2px; /* center horizontally */
+    margin: 0px auto 2px; /* center horizontally with no extra top gap */
     image-rendering: -webkit-optimize-contrast;
   }
 

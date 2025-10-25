@@ -169,7 +169,7 @@ export default function Slots() {
             backgroundPosition: 'top center',
             backgroundRepeat: 'no-repeat',
             backgroundColor: '#0C0C11', // fallback fill around the contained image
-            marginTop: '-10px', // pull the inline game closer to the header
+            marginTop: '-24px', // pull the inline game closer to the header
           }}>
             <div>
               <img src={headerImg} alt="Slots header" className={'inline-header'} />
