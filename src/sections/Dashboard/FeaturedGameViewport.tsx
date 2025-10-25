@@ -9,7 +9,7 @@ import { Container as GameContainer, Screen as GameScreen, Controls as GameContr
 
 export default function FeaturedGameViewport() {
   if (!FEATURED_GAME_INLINE || !FEATURED_GAME_ID) return null
-  const game = GAMES.find((g) => g.id === FEATURED_GAME_ID)
+  const game = GAMES.find((g) => (g as any).id === FEATURED_GAME_ID)
   if (!game) return null
 
   const hasInlineControls = FEATURED_GAME_ID === 'slots'
