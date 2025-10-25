@@ -47,7 +47,7 @@ export const Splash = styled.div`
   font-weight: bold;
 `
 
-export const Screen = styled.div<{$fixed?: boolean}>`
+export const Screen = styled.div<{$fixed?: boolean; $fill?: boolean}>`
   position: relative;
   flex-grow: 1;
   background: #0c0c11;
@@ -74,6 +74,12 @@ export const Screen = styled.div<{$fixed?: boolean}>`
     max-height: calc(100vh - var(--header-height, 60px));
     border-radius: 0;
     z-index: 5;
+  `}
+
+  /* When asked to fill, stretch to the parent's available height (GameViewport controls parent sizing) */
+  ${(p: { $fill?: boolean }) => p.$fill && css`
+    height: 100%;
+    max-height: none;
   `}
 `
 

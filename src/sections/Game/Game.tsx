@@ -10,6 +10,7 @@ import { GAMES } from '../../games'
 import { useUserStore } from '../../hooks/useUserStore'
 import { GameSlider } from '../Dashboard/Dashboard'
 import { Container, Controls, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
+import { GameViewport } from './GameViewport'
 import { LoadingBar, useLoadingState } from './LoadingBar'
 import { ProvablyFairModal } from './ProvablyFairModal'
 import { TransactionModal } from './TransactionModal'
@@ -36,13 +37,8 @@ function CustomRenderer() {
   const [txModal, setTxModal] = React.useState(false)
   const loading = useLoadingState()
 
-  // Force the game screen to be fixed under the header while this view is active
-  React.useEffect(() => {
-    document.body.classList.add('game-fullscreen')
-    return () => {
-      document.body.classList.remove('game-fullscreen')
-    }
-  }, [])
+  // hasInlineControls: games like Slots render their own controls inside the screen
+  const hasInlineControls = game.id === 'slots'
 
   React.useEffect(() => {
     const t = setTimeout(() => setReady(true), 750)
@@ -79,8 +75,9 @@ function CustomRenderer() {
       {provablyFair && <ProvablyFairModal onClose={() => setProvablyFair(false)} />}
       {txModal     && <TransactionModal onClose={() => setTxModal(false)} />}
 
-      <Container>
-        <Screen $fixed>
+      <GameViewport>
+        <Container>
+        <Screen $fill>
           <Splash><img height="150" src={game.meta.image} /></Splash>
           <GambaUi.PortalTarget target="error" />
           {ready && <GambaUi.PortalTarget target="screen" />}
@@ -94,19 +91,24 @@ function CustomRenderer() {
           </MetaControls>
         </Screen>
 
-        {/* Inline controls host directly under the screen */}
-        <InlineControlsArea>
-          <GambaUi.PortalTarget target="inline" />
-        </InlineControlsArea>
+        {/* Inline controls host directly under the screen (only when game doesn't have inline controls) */}
+        {!hasInlineControls && (
+          <InlineControlsArea>
+            <GambaUi.PortalTarget target="inline" />
+          </InlineControlsArea>
+        )}
 
-        <LoadingBar />
+        {!hasInlineControls && <LoadingBar />}
 
-        {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
-        <Controls>
-          <GambaUi.PortalTarget target="controls" />
-          <GambaUi.PortalTarget target="play" />
-        </Controls>
-      </Container>
+        {/* Global controls/play area (suppressed for games with their own inline controls) */}
+        {!hasInlineControls && (
+          <Controls>
+            <GambaUi.PortalTarget target="controls" />
+            <GambaUi.PortalTarget target="play" />
+          </Controls>
+        )}
+        </Container>
+      </GameViewport>
     </>
   )
 }
