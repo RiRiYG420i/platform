@@ -81,6 +81,8 @@ const RedButtonWrapper = styled.div`
   & > div > button {
     background: ${LANG_B_GRADIENT} !important;
     color: #252C37 !important;
+    min-height: 48px !important;
+    width: 100%;
   }
 `
 
@@ -545,13 +547,16 @@ const SheetContent = styled.div`
   display: grid;
   gap: 12px;
   padding: 16px;
-  & > * { width: 100%; }
+  /* Make typical controls full-width, but don't stretch images (logo) */
+  & > :not(img) { width: 100%; }
 `
 
 const SheetLogo = styled.img`
   height: 35px;
+  width: auto;
   margin: 4px auto 6px;
   display: block;
+  object-fit: contain;
 `
 
 const TwoCol = styled.div`
