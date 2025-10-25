@@ -18,7 +18,11 @@ export const MainWrapper = styled.div`
   }
   @media (min-width: 1280px) {
     padding: 20px;
-    width: 1100px;
+    width: 1280px; /* widen layout to allow a larger game screen */
+  }
+  @media (min-width: 1600px) {
+    padding: 24px;
+    width: 1400px; /* even wider on very large screens */
   }
 `
 

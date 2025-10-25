@@ -55,11 +55,11 @@ export const Screen = styled.div`
   width: 100%;
 
   /* Responsive sizing: keep a sane aspect and cap height by available viewport */
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10; /* taller than 16:9 to make it noticeably bigger */
   height: auto;
 
   /* Reserve space for inline controls + bottom controls so the screen doesn't overflow */
-  --controls-allowance: 180px;
+  --controls-allowance: 140px; /* less reserved space -> more room for the screen */
   max-height: calc(100svh - var(--header-height, 60px) - var(--controls-allowance));
 
   /* Fallback for browsers without small-viewport units */
@@ -69,8 +69,8 @@ export const Screen = styled.div`
 
   /* On narrow screens, allow a taller aspect for better use of space */
   @media (max-width: 700px) {
-    aspect-ratio: 10 / 16;
-    --controls-allowance: 200px;
+    aspect-ratio: 9 / 16; /* a bit taller in portrait */
+    --controls-allowance: 160px;
   }
 `
 
