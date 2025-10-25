@@ -5,26 +5,26 @@ export const StyledSlots = styled.div`
   perspective: 100px;
   user-select: none;
   position: relative;
-  min-height: 100%;
+  min-height: 100vh;
   height: 100%;
+  width: 100%;
   border-radius: 0;
-  overflow: hidden;
-  margin: 0;
+  overflow: visible;
+  margin-top: -64px; /* Adjust this value to match your header height */
   padding: 0;
 
   & > div {
     display: grid;
-    gap: 4px;
+    gap: 10px;
+    padding: 10px;
     transform: none;
-    padding-top: 0;
-    margin-top: 0;
   }
 
   .inline-header {
     display: block;
-    height: 20px;
+    height: 40px;
     width: auto;
-    margin: 0 auto;
+    margin: 64px auto 0; /* Add margin-top to match the negative margin of container */
     padding: 0;
     image-rendering: -webkit-optimize-contrast;
   }

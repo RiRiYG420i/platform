@@ -162,17 +162,13 @@ export default function Slots() {
             <EffectTest src={combination[0].image} />
           </div>
         )}
-        <GambaUi.Responsive style={{ height: '100%', width: '100%', padding: 0, margin: 0, position: 'relative', top: 0 }}>
+        <GambaUi.Responsive style={{ height: '100%', width: '100%', padding: 0, margin: 0 }}>
           <StyledSlots style={{
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
             backgroundPosition: 'top center',
             backgroundRepeat: 'no-repeat',
             backgroundColor: '#0C0C11',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
           }}>
             <div>
               <img src={headerImg} alt="Slots header" className={'inline-header'} />
