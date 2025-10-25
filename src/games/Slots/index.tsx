@@ -171,7 +171,6 @@ export default function Slots() {
             backgroundColor: '#0C0C11',
           }}>
             <div>
-              <img src={headerImg} alt="Slots header" className={'inline-header'} />
               <ItemPreview betArray={bet} />
               <div className={'slots'}>
                 {combination.map((slot, i) => (

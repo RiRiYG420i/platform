@@ -10,23 +10,14 @@ export const StyledSlots = styled.div`
   width: 100%;
   border-radius: 0;
   overflow: visible;
-  margin-top: -64px; /* Adjust this value to match your header height */
+  margin-top: 0;
   padding: 0;
 
   & > div {
     display: grid;
-    gap: 10px;
-    padding: 10px;
-    transform: none;
-  }
-
-  .inline-header {
-    display: block;
-    height: 40px;
-    width: auto;
-    margin: 64px auto 0; /* Add margin-top to match the negative margin of container */
+    gap: 0;
     padding: 0;
-    image-rendering: -webkit-optimize-contrast;
+    transform: none;
   }
 
   @keyframes pulse {
