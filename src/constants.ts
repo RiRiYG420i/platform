@@ -112,6 +112,6 @@ export const ENABLE_LEADERBOARD = true
 export const ENABLE_TROLLBOX = false // Requires setup in vercel (check tutorial in discord)
 
 /** If true, the featured game is fully playable inline on the dashboard */
-export const FEATURED_GAME_INLINE = true 
-export const FEATURED_GAME_ID: string | undefined = 'slots'   // ← put game id or leave undefined
+export const FEATURED_GAME_INLINE = false 
+export const FEATURED_GAME_ID: string | undefined = undefined   // ← put game id or leave undefined
 
