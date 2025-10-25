@@ -32,8 +32,8 @@ const pulse = keyframes`
 `
 
 const StyledSlot = styled.div<{$good: boolean}>`
-  /* Make each reel responsive: much bigger on wide screens, still reasonable on mobile */
-  width: clamp(140px, 15vw, 340px);
+  /* Let parent grid define width; fill the grid cell */
+  width: 100%;
   aspect-ratio: 1/1.5;
   position: relative;
   background: ${LANG_B_GRADIENT};
@@ -80,7 +80,7 @@ export function Slot({ revealed, good, item, index }: SlotProps) {
   , [],
   )
   return (
-    <StyledSlot $good={good} $revealed={revealed}>
+    <StyledSlot className={"slot"} $good={good} $revealed={revealed}>
       <StyledSpinner data-spinning={!revealed}>
         {items.map((item, i) => (
           <div key={i}>

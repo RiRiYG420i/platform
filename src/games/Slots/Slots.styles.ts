@@ -10,12 +10,16 @@ export const StyledSlots = styled.div`
   /* Allow game UI (e.g., buttons) to extend outside without being clipped */
   overflow: visible;
 
+  /* Unified canvas width so background and interactive overlay align perfectly */
+  --slots-canvas-width: clamp(900px, 90vw, 1600px);
+
   & > div {
     position: relative; /* ensure content layers above decorative background */
     z-index: 1;
     display: grid;
     gap: 12px;
-    transform: rotateX(3deg) rotateY(0deg);
+    width: var(--slots-canvas-width);
+    margin: 0 auto; /* center overlay to match bg-image centering */
   }
 
   /* Oversized decorative background image that can extend beyond the frame */
@@ -26,7 +30,7 @@ export const StyledSlots = styled.div`
     top: -24px;
     left: 50%;
     transform: translateX(-50%);
-    width: clamp(900px, 130%, 2200px); /* very large on wide screens */
+    width: var(--slots-canvas-width); /* match overlay width for perfect alignment */
     height: auto;
     filter: none;
     opacity: 1;
@@ -108,9 +112,12 @@ export const StyledSlots = styled.div`
   }
 
   .slots {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: clamp(16px, 2.5vw, 36px);
-    justify-content: center;
+    width: 100%;
+    justify-items: center;
+    align-items: stretch;
     box-sizing: border-box;
     border-radius: 10px;
   }
