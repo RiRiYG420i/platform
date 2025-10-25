@@ -9,6 +9,8 @@ import { Modal } from '../../components/Modal'
 import { GAMES } from '../../games'
 import { useUserStore } from '../../hooks/useUserStore'
 import { GameSlider } from '../Dashboard/Dashboard'
+import slotsBg from '../../games/Slots/assets/bg.jpg'
+import slotsHeader from '../../games/Slots/assets/header.png'
 import { Container, Controls, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
 import { GameViewport } from './GameViewport'
 import { LoadingBar, useLoadingState } from './LoadingBar'
@@ -39,6 +41,7 @@ function CustomRenderer() {
 
   // hasInlineControls: games like Slots render their own controls inside the screen
   const hasInlineControls = game.id === 'slots'
+  const isSlots = hasInlineControls
 
   React.useEffect(() => {
     const t = setTimeout(() => setReady(true), 750)
@@ -75,7 +78,22 @@ function CustomRenderer() {
       {provablyFair && <ProvablyFairModal onClose={() => setProvablyFair(false)} />}
       {txModal     && <TransactionModal onClose={() => setTxModal(false)} />}
 
-      <GameViewport>
+      <GameViewport
+        className={isSlots ? 'slots-global-hero' : undefined}
+        style={isSlots ? {
+          backgroundImage: `url(${slotsBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'top center',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: '#0C0C11',
+        } : undefined}
+      >
+        <div style={{ display: 'grid', gridTemplateRows: isSlots ? 'auto 1fr' : '1fr', width: '100%', height: '100%' }}>
+          {isSlots && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', paddingTop: 6 }}>
+              <img src={slotsHeader} alt="Slots header" style={{ height: 60, width: 'auto' }} />
+            </div>
+          )}
         <Container>
         <Screen $fill>
           <Splash><img height="150" src={game.meta.image} /></Splash>
@@ -108,6 +126,7 @@ function CustomRenderer() {
           </Controls>
         )}
         </Container>
+        </div>
       </GameViewport>
     </>
   )

@@ -174,6 +174,11 @@ body.game-fullscreen {
   width: 100% !important;
 }
 
+/* When using a global hero for Slots, hide the inline header inside the game content */
+body.slots-global-hero .inline-header {
+  display: none !important;
+}
+
 /* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */
 @media (max-width: 1200px), 
        (orientation: portrait), 

@@ -38,9 +38,11 @@ const Viewport = styled.div`
 
 type GameViewportProps = {
   children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
 }
 
-export function GameViewport({ children }: GameViewportProps) {
+export function GameViewport({ children, className, style }: GameViewportProps) {
   React.useEffect(() => {
     // Lock background scroll while the game viewport is active
     document.body.classList.add('game-fullscreen')
@@ -50,7 +52,7 @@ export function GameViewport({ children }: GameViewportProps) {
   }, [])
 
   return (
-    <Viewport className="game-viewport">
+    <Viewport className={`game-viewport${className ? ' ' + className : ''}`} style={style}>
       {children}
     </Viewport>
   )
