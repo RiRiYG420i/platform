@@ -162,14 +162,13 @@ export default function Slots() {
             <EffectTest src={combination[0].image} />
           </div>
         )}
-        <GambaUi.Responsive>
+        <GambaUi.Responsive style={{ height: '100%', width: '100%', padding: 0, margin: 0 }}>
           <StyledSlots style={{
             backgroundImage: `url(${bg})`,
-            backgroundSize: 'contain', // show full image without distortion
+            backgroundSize: 'cover', // ensure the top edge touches header without letterboxing
             backgroundPosition: 'top center',
             backgroundRepeat: 'no-repeat',
-            backgroundColor: '#0C0C11', // fallback fill around the contained image
-            // no extra offset; global wrapper handles spacing under header
+            backgroundColor: '#0C0C11',
           }}>
             <div>
               <img src={headerImg} alt="Slots header" className={'inline-header'} />

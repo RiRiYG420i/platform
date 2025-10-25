@@ -166,6 +166,14 @@ body.game-fullscreen {
   overflow: hidden;
 }
 
+/* Ensure Gamba responsive wrapper inside the fixed viewport doesn't add extra spacing */
+.game-viewport .gamba-ui-responsive {
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+}
+
 /* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */
 @media (max-width: 1200px), 
        (orientation: portrait), 

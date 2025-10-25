@@ -6,7 +6,8 @@ export const StyledSlots = styled.div`
   user-select: none;
   position: relative;
   min-height: 100%;
-  border-radius: 10px;
+  height: 100%;
+  border-radius: 0; /* flush to header without rounded gap */
   overflow: hidden;
 
   & > div {
