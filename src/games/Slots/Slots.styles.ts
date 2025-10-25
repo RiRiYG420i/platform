@@ -10,8 +10,8 @@ export const StyledSlots = styled.div`
   /* Allow game UI (e.g., buttons) to extend outside without being clipped */
   overflow: visible;
 
-  /* Unified canvas width so background and interactive overlay align perfectly */
-  --slots-canvas-width: clamp(900px, 90vw, 1600px);
+  /* Background should always match device screen width */
+  --slots-canvas-width: 100vw;
 
   & > div {
     position: relative; /* ensure content layers above decorative background */
