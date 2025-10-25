@@ -166,9 +166,14 @@ export default function Slots() {
           <StyledSlots style={{
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'top center',
+            backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundColor: '#0C0C11',
+            position: 'fixed',
+            top: 'var(--header-height, 64px)',
+            left: 0,
+            right: 0,
+            bottom: 0,
           }}>
             <div>
               <ItemPreview betArray={bet} />
