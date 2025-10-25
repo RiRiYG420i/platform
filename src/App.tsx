@@ -1,4 +1,4 @@
-es import React from 'react'
+import React from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { GambaUi } from 'gamba-react-ui-v2'
