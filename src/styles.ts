@@ -6,18 +6,19 @@ export const MainWrapper = styled.div`
   max-width: 100%;
   transition: width .25s ease, padding .25s ease, margin-top .25s ease;
   margin: 0 auto;
-  padding: 10px;
+  /* Remove extra top padding so content sits closer to the header */
+  padding: 0 10px 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   /* Keep content immediately below the fixed header, using measured header height */
-  margin-top: calc(var(--header-height, 60px) + 1px);
+  margin-top: calc(var(--header-height, 60px));
   @media (min-width: 600px) {
-    padding: 20px;
+    padding: 0 20px 20px;
     width: 1000px;
   }
   @media (min-width: 1280px) {
-    padding: 20px;
+    padding: 0 20px 20px;
     width: 1100px;
   }
 `
