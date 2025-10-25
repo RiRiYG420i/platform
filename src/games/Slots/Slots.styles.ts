@@ -7,20 +7,25 @@ export const StyledSlots = styled.div`
   position: relative;
   min-height: 100%;
   height: 100%;
-  border-radius: 0; /* flush to header without rounded gap */
+  border-radius: 0;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 
   & > div {
     display: grid;
-    gap: 6px;
-    transform: none; /* remove tilt to reclaim vertical space */
+    gap: 4px;
+    transform: none;
+    padding-top: 0;
+    margin-top: 0;
   }
 
   .inline-header {
     display: block;
-    height: 20px; /* even smaller to save space */
+    height: 20px;
     width: auto;
-    margin: 0px auto 2px; /* center horizontally with no extra top gap */
+    margin: 0 auto;
+    padding: 0;
     image-rendering: -webkit-optimize-contrast;
   }
 
