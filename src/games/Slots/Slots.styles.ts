@@ -5,19 +5,15 @@ export const StyledSlots = styled.div`
   perspective: 100px;
   user-select: none;
   position: relative;
-  height: calc(100vh - var(--header-height, 64px));
+  height: 100%;
+  min-height: 100%;
   width: 100%;
-  border-radius: 0;
-  overflow: hidden;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
+  background: #0C0C11;
 
   & > div {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 1rem;
-    flex: 1;
+    padding: 1rem;
   }
 
   @keyframes pulse {
@@ -93,9 +89,7 @@ export const StyledSlots = styled.div`
     justify-content: center;
     box-sizing: border-box;
     border-radius: 10px;
-    flex: 1;
-    align-items: center;
-    padding: 1rem;
+    margin: 1rem 0;
   }
 
   .slot::after {
@@ -129,8 +123,7 @@ export const StyledSlots = styled.div`
     gap: 12px;
     justify-content: center;
     align-items: stretch;
-    margin-top: auto;
-    padding: 1rem;
+    margin-top: 1rem;
   }
 
   .controls-inline > * {
