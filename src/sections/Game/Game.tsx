@@ -174,6 +174,8 @@ function FitToScreen({ children }: { children: React.ReactNode }) {
         width: 'auto',
         height: 'auto',
         willChange: 'transform',
+        // expose the current scale so specific UI (e.g., slots controls) can opt-out or inverse-scale
+        ['--fit-scale' as any]: String(scale),
       }}>
         {children}
       </div>

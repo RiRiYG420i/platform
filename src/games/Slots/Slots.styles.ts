@@ -39,9 +39,10 @@ export const StyledSlots = styled.div`
 
   .inline-header {
     display: block;
-    height: clamp(28px, 6vw, 90px); /* responsive height */
+    /* Show header.png roughly 3x larger by default, with responsive scaling */
+    height: clamp(84px, 12vw, 240px);
     width: auto;
-    margin: clamp(4px, 0.8vw, 10px) auto clamp(2px, 0.6vw, 8px); /* center horizontally with responsive gaps */
+    margin: clamp(8px, 1.6vw, 20px) auto clamp(6px, 1.2vw, 16px); /* center horizontally with responsive gaps */
     image-rendering: -webkit-optimize-contrast;
   }
 
@@ -157,6 +158,10 @@ export const StyledSlots = styled.div`
     margin-top: 6px;
     position: relative;
     z-index: 20; /* ensure above reels/overlays so they're never visually clipped */
+    /* Keep visual size stable even if parent FitToScreen scales the overall content */
+    --controls-inverse: calc(1 / var(--fit-scale, 1));
+    transform: scale(var(--controls-inverse));
+    transform-origin: top center;
     
     /* Scale buttons/inputs with viewport width (scoped to Slots only) */
     & .gamba-ui-button,
