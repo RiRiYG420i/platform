@@ -67,7 +67,6 @@ export default function App() {
           </TosWrapper>
           <p>By playing on our platform, you confirm your compliance.</p>
           <GambaUi.Button
-            main
             style={{ background: LANG_B_GRADIENT, color: '#252C37', minHeight: 44 }}
             onClick={() => set({ newcomer: false })}
           >

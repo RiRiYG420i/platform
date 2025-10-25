@@ -394,51 +394,49 @@ export default function Header() {
               onPointerUp={onSheetPointerUp}
             />
             <SheetContent>
-              {/* Drawer actions at the top */}
+              {/* Top: logo same as header */}
+              <SheetLogo src="/logo.png" alt="Logo" />
+
+              {/* Row 1: currency (left) + wallet (right) */}
+              <TwoCol>
+                <RedButtonWrapper>
+                  <TokenSelect />
+                </RedButtonWrapper>
+                <RedButtonWrapper>
+                  <UserButton />
+                </RedButtonWrapper>
+              </TwoCol>
+
+              {/* Row 2: How To (left) + Invite (right) */}
+              <TwoCol>
+                <GambaUi.Button
+                  style={{ background: LANG_B_GRADIENT, color: '#252C37', minHeight: 48 }}
+                  onClick={() => window.open('https://linktr.ee/Solwin_Casino', '_blank', 'noopener,noreferrer')}
+                >
+                  How to
+                </GambaUi.Button>
+                <GambaUi.Button
+                  style={{ background: LANG_B_GRADIENT, color: '#252C37', minHeight: 48 }}
+                  onClick={() => {
+                    setMenuOpen(false)
+                    if (wallet.connected) {
+                      user.set({ userModal: true })
+                    } else {
+                      walletModal.setVisible(true)
+                    }
+                  }}
+                >
+                  Invite
+                </GambaUi.Button>
+              </TwoCol>
+
+              {/* Row 3: Jackpot (full width) */}
               <GambaUi.Button
-                style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
+                style={{ background: LANG_B_GRADIENT, color: '#252C37', minHeight: 48 }}
                 onClick={() => setJackpotHelp(true)}
               >
                 Jackpot
               </GambaUi.Button>
-              <GambaUi.Button
-                style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
-                onClick={() => {
-                  setMenuOpen(false)
-                  if (wallet.connected) {
-                    user.set({ userModal: true })
-                  } else {
-                    walletModal.setVisible(true)
-                  }
-                }}
-              >
-                Invite
-              </GambaUi.Button>
-              <GambaUi.Button
-                style={{ background: LANG_B_GRADIENT, minHeight: 48 }}
-                onClick={() => window.open('https://linktr.ee/Solwin_Casino', '_blank', 'noopener,noreferrer')}
-              >
-                How to
-              </GambaUi.Button>
-              {ENABLE_LEADERBOARD && (
-                <GambaUi.Button
-                  style={{
-                    background: LANG_B_GRADIENT,
-                    minHeight: 48,
-                  }}
-                  onClick={() => {
-                  setMenuOpen(false)
-                  setShowLeaderboard(true)
-                }}>
-                  Leaderboard
-                </GambaUi.Button>
-              )}
-              <RedButtonWrapper>
-                <TokenSelect />
-              </RedButtonWrapper>
-              <RedButtonWrapper>
-                <UserButton />
-              </RedButtonWrapper>
             </SheetContent>
           </MobileSheet>
         </MobileMenuOverlay>
@@ -548,6 +546,18 @@ const SheetContent = styled.div`
   gap: 12px;
   padding: 16px;
   & > * { width: 100%; }
+`
+
+const SheetLogo = styled.img`
+  height: 35px;
+  margin: 4px auto 6px;
+  display: block;
+`
+
+const TwoCol = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 `
 
 // A small, invisible swipe zone at the very top to pull down the header on mobile
