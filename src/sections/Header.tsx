@@ -53,7 +53,9 @@ const StyledHeader = styled.div<{ $scrolled: boolean; $hidden: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
+  margin: 0;
   /* Straight bottom edge so content appears directly attached */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;

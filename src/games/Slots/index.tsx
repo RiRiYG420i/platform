@@ -162,7 +162,7 @@ export default function Slots() {
             <EffectTest src={combination[0].image} />
           </div>
         )}
-        <GambaUi.Responsive style={{ height: '100%', width: '100%', padding: 0, margin: 0 }}>
+        <GambaUi.Responsive>
           <StyledSlots style={{
             backgroundImage: `url(${bg})`,
             backgroundSize: 'cover',
@@ -207,7 +207,6 @@ export default function Slots() {
                   </>
                 )}
               </div>
-              {/* Controls moved directly under the banner/result */}
               <div className="controls-inline">
                 <WagerInputPatched value={wager} onChange={setWager} />
                 <GambaUi.Button main disabled={!isValid || spinning} onClick={play}>
