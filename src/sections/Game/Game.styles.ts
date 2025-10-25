@@ -49,13 +49,29 @@ export const Splash = styled.div`
 
 export const Screen = styled.div`
   position: relative;
-  flex-grow: 1;
   background: #0c0c11;
   border-radius: 10px;
   overflow: hidden;
-  transition: height .2s ease;
-  height: 720px;
-  @media (max-width: 700px) { height: 680px; }
+  width: 100%;
+
+  /* Responsive sizing: keep a sane aspect and cap height by available viewport */
+  aspect-ratio: 16 / 9;
+  height: auto;
+
+  /* Reserve space for inline controls + bottom controls so the screen doesn't overflow */
+  --controls-allowance: 180px;
+  max-height: calc(100svh - var(--header-height, 60px) - var(--controls-allowance));
+
+  /* Fallback for browsers without small-viewport units */
+  @supports not (height: 100svh) {
+    max-height: calc(100vh - var(--header-height, 60px) - var(--controls-allowance));
+  }
+
+  /* On narrow screens, allow a taller aspect for better use of space */
+  @media (max-width: 700px) {
+    aspect-ratio: 10 / 16;
+    --controls-allowance: 200px;
+  }
 `
 
 export const IconButton = styled.button`
@@ -87,7 +103,7 @@ export const StyledLoadingIndicator = styled.div<{$active: boolean}>`
     opacity: 0;
     background: #9564ff;
     transition: opacity .5s;
-    ${(props) => props.$active && css`opacity: 1;`}
+    ${(props: { $active: boolean }) => props.$active && css`opacity: 1;`}
   }
 `
 
