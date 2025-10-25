@@ -1,6 +1,7 @@
 import React from 'react'
 import { SLOT_ITEMS, SlotItem } from './constants'
 import styled, { css, keyframes } from 'styled-components'
+import { LANG_B_GRADIENT } from '../../styles'
 import { StyledSpinner } from './Slot.styles'
 
 interface SlotProps {
@@ -34,7 +35,7 @@ const StyledSlot = styled.div<{$good: boolean}>`
   width: 100px;
   aspect-ratio: 1/1.5;
   position: relative;
-  background: #ECD11E;
+  background: ${LANG_B_GRADIENT};
   overflow: hidden;
   border-radius: 10px;
   border: 2px solid #2d2d57;

@@ -300,7 +300,14 @@ export default function Header() {
           {isDesktop && (
             <>
               <StyledButton>
-                <GambaUi.Button onClick={() => setJackpotHelp(true)}>Jackpot</GambaUi.Button>
+                <GambaUi.Button onClick={() => setJackpotHelp(true)}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    Jackpot
+                    <span style={{ opacity: 0.9 }}>
+                      <TokenValue amount={pool?.jackpotBalance ?? 0} />
+                    </span>
+                  </span>
+                </GambaUi.Button>
               </StyledButton>
               <StyledButton>
                 <GambaUi.Button onClick={() => user.set({ userModal: true })}>Invite</GambaUi.Button>
@@ -435,9 +442,18 @@ export default function Header() {
               {/* Row 3: Jackpot (full width) */}
               <GambaUi.Button
                 style={{ background: LANG_B_GRADIENT, color: '#252C37', minHeight: 48 }}
-                onClick={() => setJackpotHelp(true)}
+                onClick={() => {
+                  // Close menu first so modal isn't hidden under the sheet, then open modal
+                  setMenuOpen(false)
+                  setTimeout(() => setJackpotHelp(true), 200)
+                }}
               >
-                Jackpot
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, width: '100%', justifyContent: 'center' }}>
+                  Jackpot
+                  <span style={{ opacity: 0.9 }}>
+                    <TokenValue amount={pool?.jackpotBalance ?? 0} />
+                  </span>
+                </span>
               </GambaUi.Button>
             </SheetContent>
           </MobileSheet>

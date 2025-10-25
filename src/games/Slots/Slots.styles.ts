@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { LANG_B_GRADIENT } from '../../styles'
 
 export const StyledSlots = styled.div`
   perspective: 100px;
@@ -41,21 +42,17 @@ export const StyledSlots = styled.div`
 
   @keyframes result-flash {
     25%, 75% {
-      background-color: #ffec63;
-      color: #333;
+      filter: brightness(1.12) contrast(1.05);
     }
     50% {
-      background-color: #ffec6311;
-      color: #ffec63;
+      filter: brightness(1.02) contrast(1);
     }
   }
   @keyframes result-flash-2 {
     0%, 50% {
-      background-color: #ffec6388;
-      filter: brightness(2.5) contrast(1.5) saturate(10);
+      filter: brightness(2) contrast(1.5) saturate(1.2);
     }
     100% {
-      background-color: #ffec6300;
       filter: brightness(1) contrast(1);
     }
   }
@@ -69,9 +66,9 @@ export const StyledSlots = styled.div`
     width: 100%;
     border-radius: 10px;
     border-spacing: 10px;
-    border: 1px solid #ffec63;
-    background-color: #ffec6311;
-    color: #ffec63;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: ${LANG_B_GRADIENT};
+    color: #252C37;
     font-size: 14px;
     font-weight: bold;
     text-align: center;

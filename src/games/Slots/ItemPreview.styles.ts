@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { LANG_B_GRADIENT } from "../../styles";
 
 export const StyledItemPreview = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ export const StyledItemPreview = styled.div`
     aspect-ratio: 1/1.5;
     border-radius: 5px;
     border: 1px solid #2d2d57;
-    background: #ECD11E; /* Match button yellow */
+  background: ${LANG_B_GRADIENT};
     /* Allow multiplier badge to render outside the tile without being clipped */
     overflow: visible;
   }
