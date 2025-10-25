@@ -9,21 +9,21 @@
 
   --gamba-ui-border-radius: 10px;
 
-  --gamba-ui-button-default-background: #ECD11E;
-  --gamba-ui-button-default-background-hover: #ECD11E;
+  --gamba-ui-button-default-background: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%);
+  --gamba-ui-button-default-background-hover: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%);
   --gamba-ui-button-default-color: #252C37;
 
-  --gamba-ui-button-main-background: #ECD11E;
+  --gamba-ui-button-main-background: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%);
   --gamba-ui-button-main-color: #252C37;
-  --gamba-ui-button-main-background-hover: #ECD11E;
+  --gamba-ui-button-main-background-hover: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%);
 
   /* Keep button content on a single line in wide layouts */
   --gamba-ui-button-text-wrap: nowrap;
 
-  /* Make inputs (e.g., WagerInput) match requested yellow */
-  --gamba-ui-input-background: #F8C61E;
+  /* Inputs follow the same gradient to avoid any remaining yellow */
+  --gamba-ui-input-background: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%);
   --gamba-ui-input-color: #252C37;
-  --gamba-ui-input-background-hover: #F8C61E;
+  --gamba-ui-input-background-hover: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%);
 }
 
 body, input, button, textarea, pre {
@@ -80,7 +80,7 @@ button, .gamba-ui-button, .gamba-ui-input, .gamba-ui-select {
 /* Style for patched wager multiplier buttons */
 .wager-multiplier-patched {
   border: 2px solid #252C37 !important;
-  background: #F8C61E !important;
+  background: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%) !important;
   color: #252C37 !important;
 }
 
@@ -94,6 +94,22 @@ button,
   border: 0 !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Force Gamba UI buttons to use the unified gradient everywhere */
+.gamba-ui-button {
+  background: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%) !important;
+  color: #252C37 !important;
+}
+.gamba-ui-button:hover {
+  filter: brightness(1.02);
+}
+
+/* Wallet adapter trigger to match the rest */
+.wallet-adapter-button,
+.wallet-adapter-button-trigger {
+  background: linear-gradient(to top right, #00D596 0%, #1FE0A0 20%, #36E4A9 40%, #63ECBB 65%, #90F4CE 88%, #CBFFE3 99%, #CBFFE3 100%) !important;
+  color: #252C37 !important;
 }
 
 /* Ensure button text is centered and fully visible */

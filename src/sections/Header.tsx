@@ -552,7 +552,7 @@ const SheetContent = styled.div`
 `
 
 const SheetLogo = styled.img`
-  height: 35px;
+  height: 64px;
   width: auto;
   margin: 4px auto 6px;
   display: block;
