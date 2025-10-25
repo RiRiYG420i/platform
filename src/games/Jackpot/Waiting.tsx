@@ -31,7 +31,7 @@ export function Waiting() {
         animate={{ y: [-10, 10, -10], rotate: [-3, 3, -3] }}
         transition={{ duration: 4, ease: 'easeInOut', repeat: Infinity }}
       >
-        <Ghost>👻</Ghost>
+        <Ghost />
       </motion.div>
       <Text>Waiting for game…</Text>
     </Overlay>

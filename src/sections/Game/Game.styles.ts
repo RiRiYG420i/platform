@@ -54,8 +54,8 @@ export const Screen = styled.div`
   border-radius: 10px;
   overflow: hidden;
   transition: height .2s ease;
-  height: 600px;
-  @media (max-width: 700px) { height: 600px; }
+  height: 720px;
+  @media (max-width: 700px) { height: 680px; }
 `
 
 export const IconButton = styled.button`

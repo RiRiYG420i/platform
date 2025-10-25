@@ -11,7 +11,7 @@ export const StyledSlots = styled.div`
 
   & > div {
     display: grid;
-    gap: 20px;
+    gap: 12px;
     transform: rotateX(3deg) rotateY(0deg);
   }
 
@@ -129,7 +129,7 @@ export const StyledSlots = styled.div`
     gap: 12px;
     justify-content: center;
     align-items: stretch;
-    margin-top: 10px;
+    margin-top: 6px;
   }
 
   .controls-inline > * {

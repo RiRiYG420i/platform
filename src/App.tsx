@@ -39,7 +39,7 @@ function ErrorHandler() {
       walletModal.setVisible(true)
     } else {
       toast({
-        title: '❌ Transaction error',
+        title: 'Transaction error',
         description: err.error?.errorMessage ?? err.message,
       })
     }

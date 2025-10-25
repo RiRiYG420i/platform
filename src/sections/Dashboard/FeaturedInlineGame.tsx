@@ -31,13 +31,13 @@ export default function FeaturedInlineGame() {
         game={game}
         errorFallback={
           <p style={{ color: 'white', textAlign: 'center' }}>
-            ⚠️ Unable to load game.
+            Unable to load game.
           </p>
         }
       >
         <GameContainer style={{ gap: 10, width: '100%' }}>
           {/* force the same 600px height as your regular <Screen> */}
-          <GameScreen style={{ width: '100%', height: '600px' }}>
+          <GameScreen style={{ width: '100%', height: '720px' }}>
             <GambaUi.PortalTarget target="screen" />
           </GameScreen>
           {/* controls + play button */}

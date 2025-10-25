@@ -21,7 +21,7 @@ function UserModal() {
     try {
       referral.copyLinkToClipboard()
       toast({
-        title: '📋 Copied to clipboard',
+        title: 'Copied to clipboard',
         description: 'Your referral code has been copied!',
       })
     } catch {
@@ -53,7 +53,7 @@ function UserModal() {
               minHeight: 44,
             }}
           >
-            💸 Copy invite link
+            Copy invite link
           </GambaUi.Button>
           <div style={{ opacity: '.8', fontSize: '80%' }}>
             Share your link with new users to earn {(PLATFORM_REFERRAL_FEE * 100)}% every time they play on this platform.

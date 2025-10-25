@@ -335,7 +335,7 @@ export default function CreateGameModal({
 
             {/* rent-explanation warning */}
             <Warning>
-              ⚠️Creating a game requires paying refundable
+              Creating a game requires paying refundable
               “rent” to cover on-chain storage. You’ll get it back
               automatically once the game ends.
             </Warning>

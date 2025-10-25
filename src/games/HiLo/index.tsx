@@ -162,7 +162,7 @@ export default function HiLo(props: HiLoConfig) {
                   onMouseLeave={() => hoverOption(undefined)}
                 >
                   <div>
-                    👆
+                    ^
                   </div>
                   <div>HI - ({Math.max(...betHi).toFixed(2)}x)</div>
                 </Option>
@@ -173,7 +173,7 @@ export default function HiLo(props: HiLoConfig) {
                   onMouseLeave={() => hoverOption(undefined)}
                 >
                   <div>
-                    👇
+                    v
                   </div>
                   <div>LO - ({Math.max(...betLo).toFixed(2)}x)</div>
                 </Option>

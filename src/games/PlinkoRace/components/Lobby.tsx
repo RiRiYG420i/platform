@@ -205,7 +205,7 @@ export default function Lobby({
 
             <TR $clickable onClick={onDebug}>
               <TD colSpan={5} style={{ textAlign:'center', fontStyle:'italic' }}>
-                🐞 Debug Simulator
+                Debug Simulator
               </TD>
             </TR>
 

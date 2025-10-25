@@ -18,7 +18,7 @@ function CustomError() {
   return (
     <GambaUi.Portal target="error">
       <GambaUi.Responsive>
-        <h1>😭 Oh no!</h1>
+  <h1>Oh no!</h1>
         <p>Something went wrong</p>
       </GambaUi.Responsive>
     </GambaUi.Portal>
@@ -112,7 +112,7 @@ export default function Game() {
       {game ? (
         <GambaUi.Game game={game} errorFallback={<CustomError />} children={<CustomRenderer />} />
       ) : (
-        <h1>Game not found! 👎</h1>
+  <h1>Game not found!</h1>
       )}
       <GameSlider />
     </>

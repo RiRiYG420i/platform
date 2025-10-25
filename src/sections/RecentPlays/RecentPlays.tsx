@@ -80,7 +80,7 @@ export default function RecentPlays() {
             window.open(`${EXPLORER_URL}/platform/${PLATFORM_CREATOR_ADDRESS.toString()}`)
           }
         >
-          🚀 Explorer
+          Explorer
         </GambaUi.Button>
       )}
     </Container>

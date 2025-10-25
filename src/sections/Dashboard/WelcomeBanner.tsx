@@ -180,13 +180,13 @@ export function WelcomeBanner() {
       <BannerTop>
         <BannerImage src={bannerImg} alt="Welcome banner" />
         <WelcomeContent>
-          <h1>Welcome to SOL-WIN👋</h1>
+          <h1>Welcome to SOL-WIN</h1>
           <p>A fair, simple and decentralized casino on Solana. Play </p>
         </WelcomeContent>
       </BannerTop>
       {jackpotHelp && (
         <Modal onClose={() => setJackpotHelp(false)}>
-          <h1>Jackpot 💰</h1>
+          <h1>Jackpot</h1>
           <p style={{ fontWeight: 'bold' }}>
             There&apos;s <TokenValue amount={pool.jackpotBalance} /> in the
             Jackpot.

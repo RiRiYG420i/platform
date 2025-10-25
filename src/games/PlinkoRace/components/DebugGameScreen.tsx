@@ -183,7 +183,7 @@ export default function DebugGameScreen({
         <Page>
         <Panel>
           <PanelHeader>
-            <h2>🐞 Debug Simulator</h2>
+            <h2>Debug Simulator</h2>
           </PanelHeader>
           <FormGrid>
             <Field>

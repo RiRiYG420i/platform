@@ -31,10 +31,10 @@ export const CARD_VALUES: Record<number, number> = {
 }
 
 export const SUIT_SYMBOLS: Record<number, string> = {
-  0: '♠', // Spades
-  1: '♥', // Hearts
-  2: '♦', // Diamonds
-  3: '♣', // Clubs
+  0: 'S', // Spades
+  1: 'H', // Hearts
+  2: 'D', // Diamonds
+  3: 'C', // Clubs
 }
 
 export const SUIT_COLORS: Record<number, string> = {

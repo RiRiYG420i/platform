@@ -208,7 +208,7 @@ export default function Header() {
     <>
       {jackpotHelp && (
         <Modal onClose={() => setJackpotHelp(false)}>
-          <h1>Jackpot 💰</h1>
+          <h1>Jackpot</h1>
           <p style={{ fontWeight: 'bold' }}>
             There&apos;s <TokenValue amount={pool?.jackpotBalance ?? 0} /> in the Jackpot.
           </p>
@@ -231,7 +231,7 @@ export default function Header() {
       )}
       {bonusHelp && (
         <Modal onClose={() => setBonusHelp(false)}>
-          <h1>Bonus ✨</h1>
+          <h1>Bonus</h1>
           <p>
             You have <b>
               <TokenValue amount={balance.bonusBalance} />

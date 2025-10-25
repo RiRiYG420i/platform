@@ -98,9 +98,9 @@ export const RankItem = styled.div<{ $isTop3?:boolean }>`
 
 export const RankNumber = styled.div<{ rank:number }>`
   flex:0 0 50px; font-weight:600; font-size:.9rem; color:#fff; text-align:center;
-  ${({ rank })=>rank===1 && css`&:before{content:'🥇';margin-right:.5em;font-size:1.1em;}color:#ffd700;`}
-  ${({ rank })=>rank===2 && css`&:before{content:'🥈';margin-right:.5em;font-size:1.1em;}color:#c0c0c0;`}
-  ${({ rank })=>rank===3 && css`&:before{content:'🥉';margin-right:.5em;font-size:1.1em;}color:#cd7f32;`}
+  ${({ rank })=>rank===1 && css`color:#ffd700;`}
+  ${({ rank })=>rank===2 && css`color:#c0c0c0;`}
+  ${({ rank })=>rank===3 && css`color:#cd7f32;`}
 `
 export const PlayerInfo    = styled.div`
   flex:1; padding-left:.5rem; font-size:.95rem; color:#cfd3da; /* match FAQ */

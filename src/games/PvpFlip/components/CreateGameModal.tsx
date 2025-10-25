@@ -262,7 +262,7 @@ export default function CreateGameModal({
 
               {wagerType !== 'sameWager' && (
                 <p style={{ margin: '8px 0 0', color: '#bbb', fontSize: 12, lineHeight: 1.3 }}>
-                  ⚠️ Without a fixed amount, larger bets gain a proportionally higher chance to win.
+                  Without a fixed amount, larger bets gain a proportionally higher chance to win.
                 </p>
               )}
 
