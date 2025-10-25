@@ -106,13 +106,17 @@ function CustomRenderer() {
 export default function Game() {
   const { gameId } = useParams()
   const game = GAMES.find(g => g.id === gameId)
+  // Nudge the game container closer to the header specifically for Slots
+  const topNudge = gameId === 'slots' ? -16 : 0
 
   return (
     <>
       {game ? (
-        <GambaUi.Game game={game} errorFallback={<CustomError />} children={<CustomRenderer />} />
+        <div style={{ marginTop: topNudge }}>
+          <GambaUi.Game game={game} errorFallback={<CustomError />} children={<CustomRenderer />} />
+        </div>
       ) : (
-  <h1>Game not found!</h1>
+        <h1>Game not found!</h1>
       )}
       <GameSlider />
     </>
