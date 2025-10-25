@@ -7,7 +7,8 @@ export const StyledSlots = styled.div`
   position: relative;
   min-height: 100%;
   border-radius: 10px;
-  overflow: hidden;
+  /* Allow game UI (e.g., buttons) to extend outside without being clipped */
+  overflow: visible;
 
   & > div {
     display: grid;
@@ -92,7 +93,7 @@ export const StyledSlots = styled.div`
 
   .slots {
     display: flex;
-    gap: clamp(12px, 2vw, 28px);
+    gap: clamp(16px, 2.5vw, 36px);
     justify-content: center;
     box-sizing: border-box;
     border-radius: 10px;
@@ -130,6 +131,8 @@ export const StyledSlots = styled.div`
     justify-content: center;
     align-items: stretch;
     margin-top: 6px;
+    position: relative;
+    z-index: 20; /* ensure above reels/overlays so they're never visually clipped */
   }
 
   .controls-inline > * {

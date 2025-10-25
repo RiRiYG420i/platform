@@ -147,8 +147,10 @@ function FitToScreen({ children }: { children: React.ReactNode }) {
       // Use scroll sizes to capture natural content size
       const iw = content.scrollWidth || content.clientWidth || 1
       const ih = content.scrollHeight || content.clientHeight || 1
-      const next = Math.min(cw / iw, ch / ih, 1)
-      setScale(next > 0 && isFinite(next) ? next : 1)
+      // Allow scaling UP to fill, but never exceed a sane cap
+      const fit = Math.min(cw / iw, ch / ih)
+      const capped = Math.max(0.1, Math.min(fit, 2.5))
+      setScale(isFinite(capped) ? capped : 1)
     })
     ro.observe(el)
     ro.observe(content)
