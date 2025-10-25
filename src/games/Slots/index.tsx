@@ -165,52 +165,58 @@ export default function Slots() {
         <GambaUi.Responsive>
           <StyledSlots style={{
             backgroundImage: `url(${bg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: 'contain', // show full image without distortion
+            backgroundPosition: 'top center',
             backgroundRepeat: 'no-repeat',
+            backgroundColor: '#0C0C11', // fallback fill around the contained image
+            marginTop: '-10px', // pull the inline game closer to the header
           }}>
-            <ItemPreview betArray={bet} />
-            <div className={'slots'}>
-              {combination.map((slot, i) => (
-                <Slot
-                  key={i}
-                  index={i}
-                  revealed={revealedSlots > i}
-                  item={slot}
-                  good={good}
-                />
-              ))}
-            </div>
-            <div className="result" data-good={good}>
-              {spinning ? (
-                <Messages
-                  messages={[
-                    'Spinning!',
-                    'Good luck',
-                  ]}
-                />
-              ) : result ? (
-                <>
-                  Payout: <TokenValue mint={result.token} amount={result.payout} />
-                </>
-              ) : isValid ? (
-                <Messages
-                  messages={[
-                    'SPIN ME!',
-                    'FEELING LUCKY?',
-                  ]}
-                />
-              ) : (
-                <>
-                  Choose a lower wager!
-                </>
-              )}
-            </div>
-            <div className="controls-inline">
-              <WagerInputPatched value={wager} onChange={setWager} />
-              <GambaUi.Button main disabled={!isValid || spinning} onClick={play}>
-                Spin
-              </GambaUi.Button>
+            <div>
+              <img src={headerImg} alt="Slots header" className={'inline-header'} />
+              <ItemPreview betArray={bet} />
+              <div className={'slots'}>
+                {combination.map((slot, i) => (
+                  <Slot
+                    key={i}
+                    index={i}
+                    revealed={revealedSlots > i}
+                    item={slot}
+                    good={good}
+                  />
+                ))}
+              </div>
+              <div className="result" data-good={good}>
+                {spinning ? (
+                  <Messages
+                    messages={[
+                      'Spinning!',
+                      'Good luck',
+                    ]}
+                  />
+                ) : result ? (
+                  <>
+                    Payout: <TokenValue mint={result.token} amount={result.payout} />
+                  </>
+                ) : isValid ? (
+                  <Messages
+                    messages={[
+                      'SPIN ME!',
+                      'FEELING LUCKY?',
+                    ]}
+                  />
+                ) : (
+                  <>
+                    Choose a lower wager!
+                  </>
+                )}
+              </div>
+              {/* Controls moved directly under the banner/result */}
+              <div className="controls-inline">
+                <WagerInputPatched value={wager} onChange={setWager} />
+                <GambaUi.Button main disabled={!isValid || spinning} onClick={play}>
+                  Spin
+                </GambaUi.Button>
+              </div>
             </div>
           </StyledSlots>
         </GambaUi.Responsive>

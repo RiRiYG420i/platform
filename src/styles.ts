@@ -6,25 +6,19 @@ export const MainWrapper = styled.div`
   max-width: 100%;
   transition: width .25s ease, padding .25s ease, margin-top .25s ease;
   margin: 0 auto;
-  /* Remove extra top padding so content sits closer to the header */
-  padding: 0 10px 10px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* Content positioning handled by global body padding-top; no extra offset here */
-  margin-top: 0;
+  /* Keep content immediately below the fixed header, using measured header height */
+  margin-top: calc(var(--header-height, 60px) + 1px);
   @media (min-width: 600px) {
-    padding: 0 20px 20px;
+    padding: 20px;
     width: 1000px;
   }
   @media (min-width: 1280px) {
-    padding: 0 20px 20px;
+    padding: 20px;
     width: 1100px;
-  }
-
-  /* Mobile: remove horizontal padding so the game screen can be edge-to-edge */
-  @media (max-width: 600px) {
-    padding: 0 0 10px;
   }
 `
 

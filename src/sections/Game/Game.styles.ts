@@ -47,40 +47,15 @@ export const Splash = styled.div`
   font-weight: bold;
 `
 
-export const Screen = styled.div<{$fixed?: boolean; $fill?: boolean}>`
+export const Screen = styled.div`
   position: relative;
   flex-grow: 1;
   background: #0c0c11;
-  border-radius: 0; /* ensure flush alignment with header */
+  border-radius: 10px;
   overflow: hidden;
   transition: height .2s ease;
-  height: 880px;
-  @media (max-width: 700px) {
-    /* On mobile, make the game area fill the viewport height under the fixed header */
-    height: calc(100vh - var(--header-height, 60px));
-    max-height: calc(100vh - var(--header-height, 60px));
-    width: 100%;
-    border-radius: 0; /* edge-to-edge */
-  }
-
-  /* When fixed mode is enabled, pin the screen under the header across all viewports */
-  ${(p: { $fixed?: boolean }) => p.$fixed && css`
-    position: fixed;
-    top: var(--header-height, 60px);
-    left: 0;
-    right: 0;
-    width: 100vw;
-    height: calc(100vh - var(--header-height, 60px));
-    max-height: calc(100vh - var(--header-height, 60px));
-    border-radius: 0;
-    z-index: 5;
-  `}
-
-  /* When asked to fill, stretch to the parent's available height (GameViewport controls parent sizing) */
-  ${(p: { $fill?: boolean }) => p.$fill && css`
-    height: 100%;
-    max-height: none;
-  `}
+  height: 720px;
+  @media (max-width: 700px) { height: 680px; }
 `
 
 export const IconButton = styled.button`
@@ -112,7 +87,7 @@ export const StyledLoadingIndicator = styled.div<{$active: boolean}>`
     opacity: 0;
     background: #9564ff;
     transition: opacity .5s;
-    ${(props: { $active: boolean }) => props.$active && css`opacity: 1;`}
+    ${(props) => props.$active && css`opacity: 1;`}
   }
 `
 

@@ -154,31 +154,9 @@ body {
   color: var(--text-color);
   cursor: default;
   margin: 0;
-  /* Push all content below the fixed header so screens start directly under it */
-  padding-top: var(--header-height, 60px);
   overflow-y: scroll;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
-}
-
-/* When a game is fullscreen-fixed under the header, disable background scrolling */
-body.game-fullscreen {
-  overflow: hidden;
-}
-
-/* Ensure Gamba responsive wrapper inside the fixed viewport doesn't add extra spacing */
-.game-viewport .gamba-ui-responsive {
-  padding: 0 !important;
-  margin: 0 !important;
-  height: 100% !important;
-  width: 100% !important;
-}
-
-/* Ensure no gap between header and game content */
-.game-viewport {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
 }
 
 /* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */

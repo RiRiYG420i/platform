@@ -113,5 +113,5 @@ export const ENABLE_TROLLBOX = false // Requires setup in vercel (check tutorial
 
 /** If true, the featured game is fully playable inline on the dashboard */
 export const FEATURED_GAME_INLINE = false 
-export const FEATURED_GAME_ID: string | undefined = undefined   // ← put game id or leave undefined
+export const FEATURED_GAME_ID: string | undefined = 'jackpot'   // ← put game id or leave undefined
 

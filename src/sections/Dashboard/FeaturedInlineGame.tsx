@@ -24,7 +24,6 @@ export default function FeaturedInlineGame() {
   if (!FEATURED_GAME_INLINE || !FEATURED_GAME_ID) return null
   const game = GAMES.find((g) => g.id === FEATURED_GAME_ID)
   if (!game) return null
-  const hasInlineControls = FEATURED_GAME_ID === 'slots'
 
   return (
     <Wrapper>
@@ -38,22 +37,20 @@ export default function FeaturedInlineGame() {
       >
         <GameContainer style={{ gap: 10, width: '100%' }}>
           {/* force the same 600px height as your regular <Screen> */}
-          <GameScreen style={{ width: '100%', height: '880px' }}>
+          <GameScreen style={{ width: '100%', height: '720px' }}>
             <GambaUi.PortalTarget target="screen" />
           </GameScreen>
-          {/* controls + play button (hidden for games with inline controls, e.g., slots) */}
-          {!hasInlineControls && (
-            <GameControls
-              style={{
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-                gap: '10px',
-              }}
-            >
-              <GambaUi.PortalTarget target="controls" />
-              <GambaUi.PortalTarget target="play" />
-            </GameControls>
-          )}
+          {/* controls + play button */}
+          <GameControls
+            style={{
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '10px',
+            }}
+          >
+            <GambaUi.PortalTarget target="controls" />
+            <GambaUi.PortalTarget target="play" />
+          </GameControls>
         </GameContainer>
       </GambaUi.Game>
     </Wrapper>

@@ -9,10 +9,7 @@ import { Modal } from '../../components/Modal'
 import { GAMES } from '../../games'
 import { useUserStore } from '../../hooks/useUserStore'
 import { GameSlider } from '../Dashboard/Dashboard'
-import slotsBg from '../../games/Slots/assets/bg.jpg'
-import slotsHeader from '../../games/Slots/assets/header.png'
 import { Container, Controls, IconButton, InlineControlsArea, MetaControls, Screen, Spinner, Splash } from './Game.styles'
-import { GameViewport } from './GameViewport'
 import { LoadingBar, useLoadingState } from './LoadingBar'
 import { ProvablyFairModal } from './ProvablyFairModal'
 import { TransactionModal } from './TransactionModal'
@@ -38,10 +35,6 @@ function CustomRenderer() {
   const [ready, setReady] = React.useState(false)
   const [txModal, setTxModal] = React.useState(false)
   const loading = useLoadingState()
-
-  // hasInlineControls: games like Slots render their own controls inside the screen
-  const hasInlineControls = game.id === 'slots'
-  const isSlots = hasInlineControls
 
   React.useEffect(() => {
     const t = setTimeout(() => setReady(true), 750)
@@ -78,24 +71,8 @@ function CustomRenderer() {
       {provablyFair && <ProvablyFairModal onClose={() => setProvablyFair(false)} />}
       {txModal     && <TransactionModal onClose={() => setTxModal(false)} />}
 
-      <GameViewport
-        className={isSlots ? 'slots-global-hero' : undefined}
-        style={isSlots ? {
-          backgroundImage: `url(${slotsBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'top center',
-          backgroundRepeat: 'no-repeat',
-          backgroundColor: '#0C0C11',
-        } : undefined}
-      >
-        <div style={{ display: 'grid', gridTemplateRows: isSlots ? 'auto 1fr' : '1fr', width: '100%', height: '100%' }}>
-          {isSlots && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', paddingTop: 6 }}>
-              <img src={slotsHeader} alt="Slots header" style={{ height: 60, width: 'auto' }} />
-            </div>
-          )}
-        <Container>
-        <Screen $fill>
+      <Container>
+        <Screen>
           <Splash><img height="150" src={game.meta.image} /></Splash>
           <GambaUi.PortalTarget target="error" />
           {ready && <GambaUi.PortalTarget target="screen" />}
@@ -109,25 +86,19 @@ function CustomRenderer() {
           </MetaControls>
         </Screen>
 
-        {/* Inline controls host directly under the screen (only when game doesn't have inline controls) */}
-        {!hasInlineControls && (
-          <InlineControlsArea>
-            <GambaUi.PortalTarget target="inline" />
-          </InlineControlsArea>
-        )}
+        {/* Inline controls host directly under the screen */}
+        <InlineControlsArea>
+          <GambaUi.PortalTarget target="inline" />
+        </InlineControlsArea>
 
-        {!hasInlineControls && <LoadingBar />}
+        <LoadingBar />
 
-        {/* Global controls/play area (suppressed for games with their own inline controls) */}
-        {!hasInlineControls && (
-          <Controls>
-            <GambaUi.PortalTarget target="controls" />
-            <GambaUi.PortalTarget target="play" />
-          </Controls>
-        )}
-        </Container>
-        </div>
-      </GameViewport>
+        {/* ← No inner wrapper—controls & play buttons are centered by Controls */}
+        <Controls>
+          <GambaUi.PortalTarget target="controls" />
+          <GambaUi.PortalTarget target="play" />
+        </Controls>
+      </Container>
     </>
   )
 }
@@ -139,9 +110,9 @@ export default function Game() {
   return (
     <>
       {game ? (
-          <GambaUi.Game game={game} errorFallback={<CustomError />} children={<CustomRenderer />} />
+        <GambaUi.Game game={game} errorFallback={<CustomError />} children={<CustomRenderer />} />
       ) : (
-        <h1>Game not found!</h1>
+  <h1>Game not found!</h1>
       )}
       <GameSlider />
     </>

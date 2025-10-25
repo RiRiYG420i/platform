@@ -5,18 +5,22 @@ export const StyledSlots = styled.div`
   perspective: 100px;
   user-select: none;
   position: relative;
-  width: 100%;
-  height: 100%; /* fill the Screen container (which sits under the header) */
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-  padding: 0; /* avoid pushing content down inside the screen */
+  min-height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 
   & > div {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
+    display: grid;
+    gap: 12px;
+    transform: rotateX(3deg) rotateY(0deg);
+  }
+
+  .inline-header {
+    display: block;
+    height: 28px; /* make header much smaller */
+    width: auto;
+    margin: 4px auto 2px; /* center horizontally */
+    image-rendering: -webkit-optimize-contrast;
   }
 
   @keyframes pulse {
@@ -92,8 +96,6 @@ export const StyledSlots = styled.div`
     justify-content: center;
     box-sizing: border-box;
     border-radius: 10px;
-    align-items: center;
-    padding: 10px;
   }
 
   .slot::after {
@@ -127,8 +129,7 @@ export const StyledSlots = styled.div`
     gap: 12px;
     justify-content: center;
     align-items: stretch;
-    padding: 1rem;
-    margin-top: auto;
+    margin-top: 6px;
   }
 
   .controls-inline > * {
