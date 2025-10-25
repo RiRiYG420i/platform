@@ -169,50 +169,48 @@ export default function Slots() {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
           }}>
-            <div>
-              <ItemPreview betArray={bet} />
-              <div className={'slots'}>
-                {combination.map((slot, i) => (
-                  <Slot
-                    key={i}
-                    index={i}
-                    revealed={revealedSlots > i}
-                    item={slot}
-                    good={good}
-                  />
-                ))}
-              </div>
-              <div className="result" data-good={good}>
-                {spinning ? (
-                  <Messages
-                    messages={[
-                      'Spinning!',
-                      'Good luck',
-                    ]}
-                  />
-                ) : result ? (
-                  <>
-                    Payout: <TokenValue mint={result.token} amount={result.payout} />
-                  </>
-                ) : isValid ? (
-                  <Messages
-                    messages={[
-                      'SPIN ME!',
-                      'FEELING LUCKY?',
-                    ]}
-                  />
-                ) : (
-                  <>
-                    Choose a lower wager!
-                  </>
-                )}
-              </div>
-              <div className="controls-inline">
-                <WagerInputPatched value={wager} onChange={setWager} />
-                <GambaUi.Button main disabled={!isValid || spinning} onClick={play}>
-                  Spin
-                </GambaUi.Button>
-              </div>
+            <ItemPreview betArray={bet} />
+            <div className={'slots'}>
+              {combination.map((slot, i) => (
+                <Slot
+                  key={i}
+                  index={i}
+                  revealed={revealedSlots > i}
+                  item={slot}
+                  good={good}
+                />
+              ))}
+            </div>
+            <div className="result" data-good={good}>
+              {spinning ? (
+                <Messages
+                  messages={[
+                    'Spinning!',
+                    'Good luck',
+                  ]}
+                />
+              ) : result ? (
+                <>
+                  Payout: <TokenValue mint={result.token} amount={result.payout} />
+                </>
+              ) : isValid ? (
+                <Messages
+                  messages={[
+                    'SPIN ME!',
+                    'FEELING LUCKY?',
+                  ]}
+                />
+              ) : (
+                <>
+                  Choose a lower wager!
+                </>
+              )}
+            </div>
+            <div className="controls-inline">
+              <WagerInputPatched value={wager} onChange={setWager} />
+              <GambaUi.Button main disabled={!isValid || spinning} onClick={play}>
+                Spin
+              </GambaUi.Button>
             </div>
           </StyledSlots>
         </GambaUi.Responsive>

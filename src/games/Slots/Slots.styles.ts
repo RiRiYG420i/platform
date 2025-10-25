@@ -5,18 +5,13 @@ export const StyledSlots = styled.div`
   perspective: 100px;
   user-select: none;
   position: relative;
-  min-height: 100vh;
+  height: 100%;
+  width: 100%;
   background: transparent;
   display: flex;
   flex-direction: column;
   padding: 1rem;
-
-  & > div {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    flex: 1;
-  }
+  gap: 1rem;
 
   @keyframes pulse {
     0%, 30% {
