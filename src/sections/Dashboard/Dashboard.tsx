@@ -9,7 +9,7 @@ import LeaderboardsPanel from '../LeaderBoard/LeaderboardsPanel'
 import FAQ from './FAQ'
 import { PLATFORM_CREATOR_ADDRESS } from '../../constants'
 // src/sections/Dashboard/Dashboard.tsx
-import FeaturedInlineGame from './FeaturedInlineGame'
+import FeaturedGameViewport from './FeaturedGameViewport'
 import topGamesTitle from '../../../topgames.png'
 
 
@@ -56,7 +56,8 @@ const SectionTitleImage = styled.img`
 export default function Dashboard() {
   return (
     <>
-      <FeaturedInlineGame />
+  {/* Fixed viewport version renders the featured game directly under the header */}
+  <FeaturedGameViewport />
       <WelcomeBanner />
       <SectionTitleImage src={topGamesTitle} alt="Top Games" />
   <VCardCarousel />
