@@ -47,7 +47,7 @@ export const Splash = styled.div`
   font-weight: bold;
 `
 
-export const Screen = styled.div`
+export const Screen = styled.div<{$fixed?: boolean}>`
   position: relative;
   flex-grow: 1;
   background: #0c0c11;
@@ -62,6 +62,19 @@ export const Screen = styled.div`
     width: 100%;
     border-radius: 0; /* edge-to-edge */
   }
+
+  /* When fixed mode is enabled, pin the screen under the header across all viewports */
+  ${(p: { $fixed?: boolean }) => p.$fixed && css`
+    position: fixed;
+    top: var(--header-height, 60px);
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: calc(100vh - var(--header-height, 60px));
+    max-height: calc(100vh - var(--header-height, 60px));
+    border-radius: 0;
+    z-index: 5;
+  `}
 `
 
 export const IconButton = styled.button`
@@ -93,7 +106,7 @@ export const StyledLoadingIndicator = styled.div<{$active: boolean}>`
     opacity: 0;
     background: #9564ff;
     transition: opacity .5s;
-    ${(props) => props.$active && css`opacity: 1;`}
+    ${(props: { $active: boolean }) => props.$active && css`opacity: 1;`}
   }
 `
 

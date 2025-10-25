@@ -36,6 +36,14 @@ function CustomRenderer() {
   const [txModal, setTxModal] = React.useState(false)
   const loading = useLoadingState()
 
+  // Force the game screen to be fixed under the header while this view is active
+  React.useEffect(() => {
+    document.body.classList.add('game-fullscreen')
+    return () => {
+      document.body.classList.remove('game-fullscreen')
+    }
+  }, [])
+
   React.useEffect(() => {
     const t = setTimeout(() => setReady(true), 750)
     return () => clearTimeout(t)
@@ -72,7 +80,7 @@ function CustomRenderer() {
       {txModal     && <TransactionModal onClose={() => setTxModal(false)} />}
 
       <Container>
-        <Screen>
+        <Screen $fixed>
           <Splash><img height="150" src={game.meta.image} /></Splash>
           <GambaUi.PortalTarget target="error" />
           {ready && <GambaUi.PortalTarget target="screen" />}

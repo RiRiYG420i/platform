@@ -161,6 +161,11 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* When a game is fullscreen-fixed under the header, disable background scrolling */
+body.game-fullscreen {
+  overflow: hidden;
+}
+
 /* Use mobile background on smaller screens, portrait orientation, touch devices, and narrow aspect ratios */
 @media (max-width: 1200px), 
        (orientation: portrait), 
